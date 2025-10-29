@@ -321,5 +321,26 @@
     }
   })();
 </script>
+<script>
+  // Auto-redirect from Splash to Dashboard after 4 seconds
+  setTimeout(function() {
+    // Redirect to dashboard.html (must exist in same folder)
+    window.location.href = "dashboard.html";
+  }, 4000); // 4000 = 4 seconds, change as needed
+</script>
+<style>
+body {
+  opacity: 0;
+  transition: opacity 0.8s ease-in-out;
+}
+body.loaded {
+  opacity: 1;
+}
+</style>
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  document.body.classList.add("loaded");
+});
+</script>
 
 </body></html>
