@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>ZipZapZoi - Search Results</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Spline+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet"/>
+<script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#14b8a6", // Teal
+                        "secondary": "#f472b6", // Playful Magenta
+                        "accent-yellow": "#facc15", // Sunny Yellow
+                        "accent-blue": "#38bdf8", // Sky Blue
+                        "coral": "#f97316",
+                        "background-light": "#f8fafc",
+                        "background-dark": "#1e293b",
+                        "surface-light": "#ffffff",
+                        "surface-dark": "#334155",
+                        "text-light-primary": "#0f172a",
+                        "text-dark-primary": "#f8fafc",
+                        "text-light-secondary": "#64748b",
+                        "text-dark-secondary": "#cbd5e1",
+                    },
+                    fontFamily: {
+                        "display": ["Spline Sans", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "1rem",
+                        "lg": "1.5rem",
+                        "xl": "2rem",
+                        "full": "9999px"
+                    },
+                    boxShadow: {
+                        'soft-lift': '0 4px 10px -2px rgba(0, 0, 0, 0.05), 0 2px 6px -2px rgba(0, 0, 0, 0.04)',
+                        'soft-lift-hover': '0 10px 20px -5px rgba(0, 0, 0, 0.06), 0 4px 8px -3px rgba(0, 0, 0, 0.05)',
+                        'bouncy-inset': 'inset 0 2px 4px 0 rgba(0, 0, 0, 0.05)',
+                        'primary-glow': '0 0 20px 0 rgba(20, 184, 166, 0.3)',
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            font-size: 24px;
+        }
+    </style>
+</head>
+<body class="font-display bg-background-light dark:bg-background-dark text-text-light-primary dark:text-text-dark-primary">
+<div class="relative flex h-auto min-h-screen w-full flex-col">
+<!-- Top Navigation Bar -->
+<header class="sticky top-0 z-40 flex items-center justify-between whitespace-nowrap border-b border-slate-200/80 dark:border-slate-700/80 bg-background-light/80 dark:bg-background-dark/80 backdrop-blur-sm px-4 md:px-8 lg:px-16 py-3">
+<div class="flex items-center gap-8">
+<div class="flex items-center gap-3 text-text-light-primary dark:text-text-dark-primary">
+<div class="size-8 text-primary">
+<svg fill="none" viewbox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+<path d="M36.7273 44C33.9891 44 31.6043 39.8386 30.3636 33.69C29.123 39.8386 26.7382 44 24 44C21.2618 44 18.877 39.8386 17.6364 33.69C16.3957 39.8386 14.0109 44 11.2727 44C7.25611 44 4 35.0457 4 24C4 12.9543 7.25611 4 11.2727 4C14.0109 4 16.3957 8.16144 17.6364 14.31C18.877 8.16144 21.2618 4 24 4C26.7382 4 29.123 8.16144 30.3636 14.31C31.6043 8.16144 33.9891 4 36.7273 4C40.7439 4 44 12.9543 44 24C44 35.0457 40.7439 44 36.7273 44Z" fill="currentColor"></path>
+</svg>
+</div>
+<h2 class="text-xl font-bold tracking-tight">ZipZapZoi</h2>
+</div>
+</div>
+<div class="flex-1 max-w-xl">
+<label class="flex flex-col w-full h-12">
+<div class="flex w-full flex-1 items-stretch rounded-full h-full shadow-soft-lift bg-surface-light dark:bg-surface-dark">
+<div class="text-text-light-secondary dark:text-text-dark-secondary flex items-center justify-center pl-5">
+<span class="material-symbols-outlined">search</span>
+</div>
+<input class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden text-text-light-primary dark:text-text-dark-primary focus:outline-0 focus:ring-0 border-none bg-transparent h-full placeholder:text-text-light-secondary placeholder:dark:text-text-dark-secondary pl-2 text-base font-normal" placeholder="Search for 'bicycles'..." value="bicycles"/>
+</div>
+</label>
+</div>
+<div class="flex items-center gap-3">
+<button class="flex cursor-pointer items-center justify-center overflow-hidden rounded-full h-11 w-11 bg-slate-100 dark:bg-slate-700 text-text-light-secondary dark:text-text-dark-secondary hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<button class="flex cursor-pointer items-center justify-center overflow-hidden rounded-full h-11 w-11 bg-slate-100 dark:bg-slate-700 text-text-light-secondary dark:text-text-dark-secondary hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors">
+<span class="material-symbols-outlined">account_circle</span>
+</button>
+</div>
+</header>
+<!-- Main Content -->
+<main class="flex-1 w-full max-w-screen-2xl mx-auto p-4 md:p-8">
+<div class="grid grid-cols-1 lg:grid-cols-4 gap-8">
+<!-- Filters Sidebar -->
+<aside class="lg:col-span-1">
+<div class="sticky top-28 bg-surface-light dark:bg-surface-dark p-6 rounded-lg shadow-soft-lift">
+<div class="flex items-center gap-3 mb-6">
+<span class="material-symbols-outlined text-primary" style="font-size: 28px;">tune</span>
+<h2 class="text-xl font-bold">Filters</h2>
+</div>
+<div class="flex flex-col gap-2">
+<details class="flex flex-col border-b border-slate-200 dark:border-slate-600 py-2 group">
+<summary class="flex cursor-pointer items-center justify-between gap-6 py-3 list-none">
+<p class="font-semibold">Category</p>
+<span class="material-symbols-outlined text-text-light-secondary dark:text-text-dark-secondary group-open:rotate-180 transition-transform">expand_more</span>
+</summary>
+<div class="text-sm pb-2 space-y-2">
+<p class="text-text-light-secondary dark:text-text-dark-secondary">Dropdowns or checkboxes for categories would go here.</p>
+</div>
+</details>
+<details class="flex flex-col border-b border-slate-200 dark:border-slate-600 py-2 group" open="">
+<summary class="flex cursor-pointer items-center justify-between gap-6 py-3 list-none">
+<p class="font-semibold">Price Range</p>
+<span class="material-symbols-outlined text-text-light-secondary dark:text-text-dark-secondary group-open:rotate-180 transition-transform">expand_more</span>
+</summary>
+<div class="relative flex w-full flex-col items-start justify-between gap-3 pt-4 pb-2">
+<div class="flex h-[38px] w-full pt-1.5">
+<div class="flex h-2 w-full rounded-full bg-slate-200 dark:bg-slate-600 ml-[20%] mr-[40%]">
+<div class="relative">
+<div class="absolute -left-3 -top-2 flex flex-col items-center gap-1.5">
+<div class="size-5 rounded-full bg-primary cursor-pointer ring-2 ring-white dark:ring-slate-700"></div>
+<p class="text-sm font-medium">$50</p>
+</div>
+</div>
+<div class="h-2 flex-1 rounded-full bg-primary"></div>
+<div class="relative">
+<div class="absolute -right-3 -top-2 flex flex-col items-center gap-1.5">
+<div class="size-5 rounded-full bg-primary cursor-pointer ring-2 ring-white dark:ring-slate-700"></div>
+<p class="text-sm font-medium">$300</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</details>
+<details class="flex flex-col border-b border-slate-200 dark:border-slate-600 py-2 group">
+<summary class="flex cursor-pointer items-center justify-between gap-6 py-3 list-none">
+<p class="font-semibold">Item Condition</p>
+<span class="material-symbols-outlined text-text-light-secondary dark:text-text-dark-secondary group-open:rotate-180 transition-transform">expand_more</span>
+</summary>
+<div class="text-sm pt-2 pb-2 space-y-2">
+<label class="flex items-center gap-3"><input checked="" class="form-checkbox rounded-md border-slate-300 dark:border-slate-500 bg-transparent text-primary focus:ring-primary/50" type="checkbox"/> New</label>
+<label class="flex items-center gap-3"><input checked="" class="form-checkbox rounded-md border-slate-300 dark:border-slate-500 bg-transparent text-primary focus:ring-primary/50" type="checkbox"/> Used - Like New</label>
+<label class="flex items-center gap-3"><input class="form-checkbox rounded-md border-slate-300 dark:border-slate-500 bg-transparent text-primary focus:ring-primary/50" type="checkbox"/> Used - Good</label>
+</div>
+</details>
+<details class="flex flex-col py-2 group" open="">
+<summary class="flex cursor-pointer items-center justify-between gap-6 py-3 list-none">
+<p class="font-semibold">Distance</p>
+<span class="material-symbols-outlined text-text-light-secondary dark:text-text-dark-secondary group-open:rotate-180 transition-transform">expand_more</span>
+</summary>
+<div class="relative flex w-full flex-col items-start justify-between gap-3 pt-4 pb-2">
+<div class="flex h-4 w-full items-center gap-4">
+<div class="flex h-2 flex-1 rounded-full bg-slate-200 dark:bg-slate-600">
+<div class="h-full w-[40%] rounded-full bg-primary"></div>
+<div class="relative">
+<div class="absolute -left-2.5 -top-1.5 size-5 rounded-full bg-primary cursor-pointer ring-2 ring-white dark:ring-slate-700"></div>
+</div>
+</div>
+<p class="text-sm font-medium w-16 text-right">10 miles</p>
+</div>
+</div>
+</details>
+</div>
+<button class="w-full mt-8 flex items-center justify-center gap-2 h-12 rounded-full bg-primary text-white font-bold text-base shadow-lg shadow-primary/30 hover:shadow-xl hover:shadow-primary/40 active:scale-95 transition-all duration-200">
+                            Apply Filters
+                        </button>
+</div>
+</aside>
+<!-- Search Results -->
+<section class="lg:col-span-3">
+<div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6">
+<div>
+<h1 class="text-2xl font-bold">Results for "bicycles"</h1>
+<p class="text-text-light-secondary dark:text-text-dark-secondary">Showing 25 of 120 results</p>
+</div>
+<div class="flex items-center gap-4">
+<div class="flex items-center gap-2">
+<label class="text-sm font-medium text-text-light-secondary dark:text-text-dark-secondary whitespace-nowrap" for="sort">Sort by:</label>
+<select class="form-select w-44 rounded-full border-slate-300 dark:border-slate-600 bg-surface-light dark:bg-surface-dark text-sm font-semibold focus:border-primary focus:ring-primary/50 transition-all shadow-soft-lift" id="sort">
+<option>Relevance</option>
+<option>Newest First</option>
+<option>Price: Low to High</option>
+<option>Price: High to Low</option>
+</select>
+</div>
+<div class="bg-slate-200 dark:bg-slate-700 p-1 rounded-full flex items-center shadow-soft-lift">
+<button class="h-9 w-9 flex items-center justify-center rounded-full bg-primary text-white shadow-bouncy-inset">
+<span class="material-symbols-outlined" style="font-size: 20px;">list</span>
+</button>
+<button class="h-9 w-9 flex items-center justify-center rounded-full text-text-light-secondary dark:text-text-dark-secondary">
+<span class="material-symbols-outlined" style="font-size: 20px;">map</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Listings Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+<!-- Listing Card 1 -->
+<div class="bg-surface-light dark:bg-surface-dark rounded-lg p-4 shadow-soft-lift hover:shadow-soft-lift-hover hover:-translate-y-1 transition-all duration-300 flex flex-col gap-4">
+<div class="relative">
+<img class="w-full h-48 object-cover rounded-lg" data-alt="A modern teal-colored road bike leaning against a colorful graffiti wall" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBnBOyEhq1jAppEY1rGSkpQGlAi4oLDg-5uYOf2H4FvEDijCGE3OKX6fdpt6crSIHOdr-eY3j2c3-dJgSWfy0S_7KJTR89hVsz0MWSeNqlVNwyBz9rmJaHMFIU1fTihWGgGOUlOPMVBflYniBOp7GdPve2-shktdnTQfpzkpzUPF_7FZ1Im58RXUQoNW1UpfdpC2w6idCi1TosVfvjfQzxcIt7MOMw0J-4FvzYto8tm4Ht-MjPMbnNju5LWUsLrdqWDo1sJnYPQIOcB"/>
+<div class="absolute top-2 right-2 flex items-center justify-center size-8 bg-white/70 backdrop-blur-sm rounded-full cursor-pointer">
+<span class="material-symbols-outlined text-coral" style="font-variation-settings: 'FILL' 1;">favorite</span>
+</div>
+</div>
+<div class="flex flex-col gap-2 flex-1">
+<h3 class="font-bold text-lg leading-tight">Aero Road Bike, Carbon Frame</h3>
+<div class="flex items-center justify-between">
+<p class="px-3 py-1 text-base font-bold text-primary bg-primary/10 rounded-full">$250</p>
+<p class="text-sm text-text-light-secondary dark:text-text-dark-secondary">2.5 miles away</p>
+</div>
+<div class="flex items-center gap-2 mt-2">
+<span class="text-xs font-semibold px-2.5 py-1 bg-accent-yellow/20 text-accent-yellow-700 dark:bg-accent-yellow/30 dark:text-accent-yellow-200 rounded-full">Top Seller</span>
+<span class="text-xs font-semibold px-2.5 py-1 bg-secondary/20 text-secondary-700 dark:bg-secondary/30 dark:text-secondary-200 rounded-full">Negotiable</span>
+</div>
+</div>
+<p class="text-xs text-text-light-secondary dark:text-text-dark-secondary text-right">3 hours ago</p>
+</div>
+<!-- Listing Card 2 -->
+<div class="bg-surface-light dark:bg-surface-dark rounded-lg p-4 shadow-soft-lift hover:shadow-soft-lift-hover hover:-translate-y-1 transition-all duration-300 flex flex-col gap-4">
+<div class="relative">
+<img class="w-full h-48 object-cover rounded-lg" data-alt="A vintage-style yellow city bike with a front basket, parked on a cobblestone street" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCApyL9IanruxI2aoet0tY9X7S-uwodGiZVUu6t91pbvHMaNd8Wts9xOzO7enFWhuTp1CnnrqISqfMef_8zQcYifqeN7ldqgvWDTZMtkzXi0CL_Y0odk2oVZ2rl0prE146DLouW4ozNC2bIkq29zsbjBidj9RfiQmZhNxkQziRGcmAYVIsvP5t6qtN37ImgPzWrtOuRiCYYicvJ3El8ATak0kFQNG3bAMfv4ypRXumCMkoZdH9Q-xLgN6CRkYdfIIPSMPsaMeHVYYTh"/>
+<div class="absolute top-2 right-2 flex items-center justify-center size-8 bg-white/70 backdrop-blur-sm rounded-full cursor-pointer">
+<span class="material-symbols-outlined text-slate-400">favorite</span>
+</div>
+</div>
+<div class="flex flex-col gap-2 flex-1">
+<h3 class="font-bold text-lg leading-tight">Vintage City Cruiser</h3>
+<div class="flex items-center justify-between">
+<p class="px-3 py-1 text-base font-bold text-primary bg-primary/10 rounded-full">$120</p>
+<p class="text-sm text-text-light-secondary dark:text-text-dark-secondary">5 miles away</p>
+</div>
+<div class="flex items-center gap-2 mt-2">
+<span class="text-xs font-semibold px-2.5 py-1 bg-accent-blue/20 text-accent-blue-700 dark:bg-accent-blue/30 dark:text-accent-blue-200 rounded-full">Free Shipping</span>
+</div>
+</div>
+<p class="text-xs text-text-light-secondary dark:text-text-dark-secondary text-right">1 day ago</p>
+</div>
+<!-- Listing Card 3 -->
+<div class="bg-surface-light dark:bg-surface-dark rounded-lg p-4 shadow-soft-lift hover:shadow-soft-lift-hover hover:-translate-y-1 transition-all duration-300 flex flex-col gap-4">
+<div class="relative">
+<img class="w-full h-48 object-cover rounded-lg" data-alt="A rugged mountain bike with thick tires covered in mud, on a forest trail" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBUpgUIYW2tQFQSpdMECOWvrImwzYAy96ixkG_CzNA1vx9plQB5aU0FRMfYg10Te8ZCAJp78iM9bZ8fYnWqGx09miVgH9fjYbHzh5nxWK5Zsi9GdW-1Svy-nIxMmHVDd7bYG-20xwSEkhpEDfJoSEWclfprXEhTaJtHtsbfVVaOLHBrfgEQY1taUq3Sf0kAY-Zu9zOwM-mfcUyGUltS-YjzlzUvkx3Ux7cSzxKuCOF348UaXMG_JJFrjQcAVvY61bvxJrQJSV5d_i_H"/>
+<div class="absolute top-2 right-2 flex items-center justify-center size-8 bg-white/70 backdrop-blur-sm rounded-full cursor-pointer">
+<span class="material-symbols-outlined text-slate-400">favorite</span>
+</div>
+</div>
+<div class="flex flex-col gap-2 flex-1">
+<h3 class="font-bold text-lg leading-tight">Mountain Bike - Full Suspension</h3>
+<div class="flex items-center justify-between">
+<p class="px-3 py-1 text-base font-bold text-primary bg-primary/10 rounded-full">$450</p>
+<p class="text-sm text-text-light-secondary dark:text-text-dark-secondary">1.2 miles away</p>
+</div>
+<div class="flex items-center gap-2 mt-2">
+<span class="text-xs font-semibold px-2.5 py-1 bg-secondary/20 text-secondary-700 dark:bg-secondary/30 dark:text-secondary-200 rounded-full">Negotiable</span>
+</div>
+</div>
+<p class="text-xs text-text-light-secondary dark:text-text-dark-secondary text-right">5 hours ago</p>
+</div>
+<!-- More Cards... -->
+<div class="bg-surface-light dark:bg-surface-dark rounded-lg p-4 shadow-soft-lift hover:shadow-soft-lift-hover hover:-translate-y-1 transition-all duration-300 flex flex-col gap-4">
+<div class="relative">
+<img class="w-full h-48 object-cover rounded-lg" data-alt="A child's small pink bicycle with training wheels and handlebar tassels." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAk5bA9fmyWNYU3Bj2OvGyPPbU-SfZsx0bjwcHMDsZaID9A0BJl_GA1aJV1xEitmw01WbNp8ePwaJbFVh-QyhhhAvIQl8i4mIR_fA-PGdi1Wq0KrjKA7zP1G5FmndaIGZAXhxApK2AEOK9f0onRFZz_NYJ3ARe-WwbYoPDe1PZANKA7uBUWGciAlQWrozxg8PzAhxR6_Yi9KDCaj5eQ8jnBDx4EMx9EnvA6EjUYJyMkUUUygBf5_njU1rI24OoI1Kg8YDamvYRS0UXE"/>
+<div class="absolute top-2 right-2 flex items-center justify-center size-8 bg-white/70 backdrop-blur-sm rounded-full cursor-pointer">
+<span class="material-symbols-outlined text-slate-400">favorite</span>
+</div>
+</div>
+<div class="flex flex-col gap-2 flex-1">
+<h3 class="font-bold text-lg leading-tight">Kids Bike with Training Wheels</h3>
+<div class="flex items-center justify-between">
+<p class="px-3 py-1 text-base font-bold text-primary bg-primary/10 rounded-full">$40</p>
+<p class="text-sm text-text-light-secondary dark:text-text-dark-secondary">8 miles away</p>
+</div>
+</div>
+<p class="text-xs text-text-light-secondary dark:text-text-dark-secondary text-right">2 days ago</p>
+</div>
+<div class="bg-surface-light dark:bg-surface-dark rounded-lg p-4 shadow-soft-lift hover:shadow-soft-lift-hover hover:-translate-y-1 transition-all duration-300 flex flex-col gap-4">
+<div class="relative">
+<img class="w-full h-48 object-cover rounded-lg" data-alt="A sleek, black electric bike parked in an urban setting." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDJFIafVu12XdWAk7Ok4zjPBa9_hf8azbFEaqa0DpS7MHaJHiR7M09-SIxZcG9QbWmZIpzB38GyBbxNjDpEVSYhxLZG8muvLtAABTSYpfRqv6S4A46nnUl293Wp5FKC2bjpzmwumLTfuNwFk1knqSprupEUJr3Mzpc7ALvOByy3t5zk-RzdRv0LcTr0BAV5a_iCoOSrvdIO3Q4SkUEZXy0tEDe6ifTgcse9BJ_Y0wkQz3KGYh8DFJHkjX2bS9oZ95eOdCj0ilsbIXRj"/>
+<div class="absolute top-2 right-2 flex items-center justify-center size-8 bg-white/70 backdrop-blur-sm rounded-full cursor-pointer">
+<span class="material-symbols-outlined text-slate-400">favorite</span>
+</div>
+</div>
+<div class="flex flex-col gap-2 flex-1">
+<h3 class="font-bold text-lg leading-tight">Commuter E-Bike</h3>
+<div class="flex items-center justify-between">
+<p class="px-3 py-1 text-base font-bold text-primary bg-primary/10 rounded-full">$800</p>
+<p class="text-sm text-text-light-secondary dark:text-text-dark-secondary">3.1 miles away</p>
+</div>
+<div class="flex items-center gap-2 mt-2">
+<span class="text-xs font-semibold px-2.5 py-1 bg-accent-blue/20 text-accent-blue-700 dark:bg-accent-blue/30 dark:text-accent-blue-200 rounded-full">Free Shipping</span>
+</div>
+</div>
+<p class="text-xs text-text-light-secondary dark:text-text-dark-secondary text-right">6 hours ago</p>
+</div>
+<div class="bg-surface-light dark:bg-surface-dark rounded-lg p-4 shadow-soft-lift hover:shadow-soft-lift-hover hover:-translate-y-1 transition-all duration-300 flex flex-col gap-4">
+<div class="relative">
+<img class="w-full h-48 object-cover rounded-lg" data-alt="A bright red fixed-gear bicycle against a plain white wall." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCb5kScdF0iKLyH7pZwZv0drqv7XmcokUU5sldxcYeR6yAwUFK_nrT1E8ZFBf3gNLMCJBPinz3IGkegdrNbCud6g_z0YYIjmUG81vGNQHg3q0oCj_G8sntatYFnVC2qUQ0zAfFA80aJ-DmHONxQjR9TWqGiFf9CccMfrcA1RLgr7_2BJEiArZP1v8gquwbwFWxhtJc3QYvoUMZ0Qt_HC7diIIoI9thanjQs_1gxjJkSP1ZyUwKpg42VPpFrMqILAPkhgRtwOI68AbVB"/>
+<div class="absolute top-2 right-2 flex items-center justify-center size-8 bg-white/70 backdrop-blur-sm rounded-full cursor-pointer">
+<span class="material-symbols-outlined text-slate-400">favorite</span>
+</div>
+</div>
+<div class="flex flex-col gap-2 flex-1">
+<h3 class="font-bold text-lg leading-tight">Red Fixie / Single Speed</h3>
+<div class="flex items-center justify-between">
+<p class="px-3 py-1 text-base font-bold text-primary bg-primary/10 rounded-full">$180</p>
+<p class="text-sm text-text-light-secondary dark:text-text-dark-secondary">4.5 miles away</p>
+</div>
+<div class="flex items-center gap-2 mt-2">
+<span class="text-xs font-semibold px-2.5 py-1 bg-accent-yellow/20 text-accent-yellow-700 dark:bg-accent-yellow/30 dark:text-accent-yellow-200 rounded-full">Top Seller</span>
+</div>
+</div>
+<p class="text-xs text-text-light-secondary dark:text-text-dark-secondary text-right">18 hours ago</p>
+</div>
+</div>
+</section>
+</div>
+</main>
+</div>
+<script>
+(async function(){
+  // parse query param
+  const params = new URLSearchParams(window.location.search);
+  const q = params.get('q') || '';
+  const sort = params.get('sort') || 'relevance';
+  const page = parseInt(params.get('page')||'1',10);
+
+  // set header input value (there is an input in header with placeholder)
+  const headerInput = document.querySelector('input[placeholder*="Search"], input[type="search"]');
+  if(headerInput) headerInput.value = q;
+
+  // update results heading
+  const resultsTitle = document.querySelector('h1');
+  if(resultsTitle){
+    resultsTitle.textContent = q ? `Results for "${q}"` : 'Search results';
+  }
+
+  // Try to fetch live results from your backend (replace endpoint if different)
+  async function fetchResults(query){
+    try {
+      const res = await fetch(`/api/listings?q=${encodeURIComponent(query)}&page=${page}&limit=24`);
+      if(!res.ok) throw new Error('no-api');
+      const json = await res.json(); // expect { results: [ {...} ], total: N }
+      return json;
+    } catch(err) {
+      return null;
+    }
+  }
+
+  // Render results from API (fallback: keep existing static cards)
+  const grid = document.querySelector('.grid.grid-cols-1'); // your results grid container
+  if(!grid) return;
+
+  const apiData = await fetchResults(q);
+  if(apiData && Array.isArray(apiData.results)){
+    // clear static content
+    grid.innerHTML = '';
+    const results = apiData.results;
+    if(results.length === 0){
+      grid.innerHTML = '<div class="text-center text-gray-500 col-span-full">No results found.</div>';
+    } else {
+      results.forEach(item => {
+        const card = document.createElement('div');
+        card.className = 'bg-surface-light dark:bg-surface-dark rounded-lg p-4 shadow-soft-lift hover:shadow-soft-lift-hover hover:-translate-y-1 transition-all duration-300 flex flex-col gap-4';
+        const img = item.images && item.images[0] ? item.images[0] : 'https://via.placeholder.com/680x480?text=No+Image';
+        card.innerHTML = `
+          <div class="relative">
+            <img class="w-full h-48 object-cover rounded-lg" src="${img}" alt="${(item.title||'').replace(/"/g,'')}" />
+          </div>
+          <div class="flex flex-col gap-2 flex-1">
+            <h3 class="font-bold text-lg leading-tight">${(item.title||'').slice(0,80)}</h3>
+            <div class="flex items-center justify-between">
+              <p class="px-3 py-1 text-base font-bold text-primary bg-primary/10 rounded-full">${item.currency ? item.currency+' ' : ''}${item.price||''}</p>
+              <p class="text-sm text-text-light-secondary dark:text-text-dark-secondary">${item.distance || ''}</p>
+            </div>
+          </div>
+          <p class="text-xs text-text-light-secondary dark:text-text-dark-secondary text-right">${new Date(item.created_at||Date.now()).toLocaleString()}</p>
+        `;
+        // link to detail page (adjust path if you have /classifieds/:slug)
+        card.addEventListener('click', ()=> {
+          const slug = item.slug || item.id;
+          window.location.href = `classifieds-detail.html?slug=${encodeURIComponent(slug)}`;
+        });
+        grid.appendChild(card);
+      });
+    }
+    // update "Showing" text if element exists
+    const countEl = document.querySelector('p.text-text-light-secondary');
+    if(countEl) countEl.textContent = `Showing ${apiData.results.length} of ${apiData.total || apiData.results.length} results`;
+    return;
+  }
+
+  // fallback: no API — filter existing static cards on the client by title/description keywords
+  const cards = Array.from(grid.children);
+  if(!q){
+    // show all (keep original)
+    cards.forEach(c => c.style.display = '');
+    return;
+  }
+  const needle = q.toLowerCase();
+  let shown = 0;
+  cards.forEach(card => {
+    const title = (card.querySelector('h3')?.textContent || '').toLowerCase();
+    const desc = (card.querySelector('p')?.textContent || '').toLowerCase();
+    if(title.includes(needle) || desc.includes(needle)){
+      card.style.display = '';
+      shown++;
+    } else {
+      card.style.display = 'none';
+    }
+  });
+  // update results count text if present
+  const countEl = document.querySelector('p.text-text-light-secondary');
+  if(countEl) countEl.textContent = `Showing ${shown} results (client-filtered)`;
+})();
+</script>
+<script>
+/* Filter → redirect script
+   Paste this before </body> in classifieds.html (or dashboard.html).
+   It builds a query string and redirects to SearchResult.html with:
+     ?q=...&category=...&city=...&minPrice=...&maxPrice=...
+   It also supports quick category buttons with data-filter-link="Bicycles" */
+
+(function () {
+  // Helper: get element by id, or null
+  const $ = id => document.getElementById(id);
+
+  // If you use different IDs replace these with your element IDs
+  const applyBtn = $('btnApply') || document.querySelector('[data-action="apply-filters"]');
+  const searchInput = $('search') || document.querySelector('input[placeholder*="Search"], input[type="search"]');
+  const categoryInput = $('filterCategory') || document.querySelector('[name="category"], select#category, select.filter-category');
+  const cityInput = $('filterCity') || document.querySelector('[name="city"], input#city, input.filter-city');
+  const minPriceInput = $('minPrice') || document.querySelector('[name="minPrice"], input#minPrice');
+  const maxPriceInput = $('maxPrice') || document.querySelector('[name="maxPrice"], input#maxPrice');
+
+  function buildAndRedirect(paramsObj) {
+    const params = new URLSearchParams();
+    // optional: include q combined from search + category + city if you prefer
+    if (paramsObj.q) params.set('q', paramsObj.q);
+    if (paramsObj.category) params.set('category', paramsObj.category);
+    if (paramsObj.city) params.set('city', paramsObj.city);
+    if (paramsObj.minPrice) params.set('minPrice', paramsObj.minPrice);
+    if (paramsObj.maxPrice) params.set('maxPrice', paramsObj.maxPrice);
+    // you may add page, sort etc. here too
+    const url = `SearchResult.html?${params.toString()}`;
+    window.location.href = url;
+  }
+
+  // Apply button handler (builds params from inputs)
+  if (applyBtn) {
+    applyBtn.addEventListener('click', function (e) {
+      e.preventDefault();
+      const q = (searchInput && searchInput.value || '').trim();
+      const category = (categoryInput && (categoryInput.value || categoryInput.getAttribute('data-value')) || '').trim();
+      const city = (cityInput && cityInput.value || '').trim();
+      const minPrice = (minPriceInput && minPriceInput.value || '').trim();
+      const maxPrice = (maxPriceInput && maxPriceInput.value || '').trim();
+
+      // For nicer queries, combine keyword + category + city into q if q empty (optional)
+      const effectiveQ = q || [category, city].filter(Boolean).join(' ');
+      buildAndRedirect({ q: effectiveQ, category, city, minPrice, maxPrice });
+    });
+  }
+
+  // Quick category buttons: add data-filter-link="Bicycles" attribute to any button or anchor you want
+  document.querySelectorAll('[data-filter-link]').forEach(btn => {
+    btn.addEventListener('click', (ev) => {
+      ev.preventDefault();
+      const category = btn.getAttribute('data-filter-link') || '';
+      const q = category; // you can change to '' if you don't want q
+      const city = (cityInput && cityInput.value) || '';
+      buildAndRedirect({ q, category, city });
+    });
+  });
+
+  // Allow pressing Enter inside main search input to redirect (same behavior)
+  if (searchInput) {
+    searchInput.addEventListener('keydown', (ev) => {
+      if (ev.key === 'Enter') {
+        ev.preventDefault();
+        const q = (searchInput.value || '').trim();
+        const category = (categoryInput && (categoryInput.value || '') ) || '';
+        const city = (cityInput && cityInput.value) || '';
+        buildAndRedirect({ q, category, city });
+      }
+    });
+  }
+
+  // Debug: no controls found
+  if (!applyBtn && !document.querySelectorAll('[data-filter-link]').length && !searchInput) {
+    console.warn('Filter-redirect script: no matching controls found. Check IDs: btnApply, filterCategory, filterCity, minPrice, maxPrice, search');
+  }
+})();
+</script>
+</body></html>

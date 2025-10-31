@@ -1,0 +1,258 @@
+
+<!DOCTYPE html>
+<script>
+(function(){
+  const userData = sessionStorage.getItem('zzz_user');
+  if(!userData){
+    // Show a quick loader or message before redirect
+    document.body.innerHTML = `
+      <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100vh;font-family:sans-serif;text-align:center;">
+        <h2>Redirecting to Login...</h2>
+        <p>You need to log in to access your dashboard.</p>
+      </div>`;
+    setTimeout(()=> window.location.href = 'Login Page.html', 1200);
+  } else {
+    // Optional: you can show a greeting
+    const user = JSON.parse(userData);
+    console.log('Welcome', user.name || user.email);
+  }
+})();
+</script>
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>ZipZapZoi - Seller Dashboard</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Spline+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet"/>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "primary": "#FF6B6B",
+            "secondary": "#4D96A9",
+            "text-primary": "#2D3748",
+            "text-secondary": "#718096",
+            "surface": "#FFFFFF",
+            "background": "#F7FAFC",
+            "status-active": "#1DD1A1",
+            "status-pending": "#FFDA79",
+            "status-expired": "#FF7675",
+          },
+          fontFamily: {
+            "display": ["Spline Sans", "sans-serif"]
+          },
+          borderRadius: {
+            "DEFAULT": "1rem",
+            "lg": "1.5rem",
+            "xl": "2rem",
+            "full": "9999px"
+          },
+          boxShadow: {
+            'bouncy': '0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -4px rgba(0, 0, 0, 0.05)',
+            'bouncy-lg': '0 20px 25px -5px rgba(0, 0, 0, 0.07), 0 8px 10px -6px rgba(0, 0, 0, 0.07)',
+          }
+        },
+      },
+    }
+  </script>
+<style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      font-size: 20px;
+    }
+  </style>
+</head>
+<body class="font-display bg-background text-text-primary">
+<div class="relative flex h-auto min-h-screen w-full flex-col group/design-root overflow-x-hidden">
+<div class="layout-container flex h-full grow flex-col">
+<header class="sticky top-0 z-50 flex items-center justify-between whitespace-nowrap border-b border-solid border-gray-200/80 bg-background/80 px-6 py-3 backdrop-blur-sm md:px-10 lg:px-20">
+<div class="flex items-center gap-4 text-text-primary">
+<div class="size-6 text-primary">
+<svg fill="none" viewbox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+<path d="M36.7273 44C33.9891 44 31.6043 39.8386 30.3636 33.69C29.123 39.8386 26.7382 44 24 44C21.2618 44 18.877 39.8386 17.6364 33.69C16.3957 39.8386 14.0109 44 11.2727 44C7.25611 44 4 35.0457 4 24C4 12.9543 7.25611 4 11.2727 4C14.0109 4 16.3957 8.16144 17.6364 14.31C18.877 8.16144 21.2618 4 24 4C26.7382 4 29.123 8.16144 30.3636 14.31C31.6043 8.16144 33.9891 4 36.7273 4C40.7439 4 44 12.9543 44 24C44 35.0457 40.7439 44 36.7273 44Z" fill="currentColor"></path>
+</svg>
+</div>
+<h2 class="text-text-primary text-xl font-bold leading-tight tracking-[-0.015em]">ZipZapZoi</h2>
+</div>
+<div class="flex flex-1 justify-end gap-3 md:gap-6">
+<label class="hidden md:flex flex-col min-w-40 !h-10 max-w-64">
+<div class="flex w-full flex-1 items-stretch rounded-full h-full">
+<div class="text-text-secondary flex border-none bg-gray-200/60 items-center justify-center pl-4 rounded-l-full border-r-0">
+<span class="material-symbols-outlined">search</span>
+</div>
+<input class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-full text-text-primary focus:outline-0 focus:ring-0 border-none bg-gray-200/60 focus:border-none h-full placeholder:text-text-secondary px-4 rounded-l-none border-l-0 pl-2 text-base font-normal leading-normal" placeholder="Search listings..." value=""/>
+</div>
+</label>
+<div class="flex gap-2">
+<!-- Create New Listing (wired to Post Listing flow) -->
+<a href="Post Listing.html"
+   id="createListingLink"
+   class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-full h-10 px-5 bg-primary text-white text-sm font-bold leading-normal tracking-[0.015em] shadow-bouncy hover:shadow-bouncy-lg hover:-translate-y-0.5 transition-all duration-300"
+   aria-label="Create a new listing">
+  <span class="material-symbols-outlined text-base mr-1">add_circle</span>
+  <span class="truncate">Create New Listing</span>
+</a>
+</div>
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10" data-alt="A smiling woman with curly brown hair." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAUqDMRZjIbxAQLsyGNsrJm4U4c3xGS2fh5I9ESVJUOZA5HJdHS3WuwIO5d7P9SxBjr2p_YsMthm-tgh7WOsXw0vtxPi8N40K15nWsUTCcyPeDSYUb45Xou_DRb9-2jLdYGLa2YzFs4dU2MzHrdGeBEkXH4w_Dztr2fbB8_QW9fQyJHDnAlf1NTv9T1fsIKlbGfkTsfIeaX2Ae3jjI9JJ8OyHL0ZsGSFzADHD5jk4ExncRLgD69uCCeSJ1nKIRgao8MBfvvlotR0BWU');"></div>
+</div>
+</header>
+<main class="px-6 py-8 md:px-10 lg:px-20">
+<div class="layout-content-container mx-auto flex max-w-7xl flex-col flex-1">
+<div class="flex flex-wrap justify-between gap-4">
+<div class="flex min-w-72 flex-col gap-1">
+<p class="text-text-primary text-4xl font-black leading-tight tracking-[-0.033em]">Welcome back, Jessica!</p>
+<p class="text-text-secondary text-base font-normal leading-normal">Here's an overview of your seller activity.</p>
+</div>
+</div>
+<div class="mt-8 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
+<div class="flex flex-1 flex-col gap-4 rounded-lg bg-surface p-6 shadow-bouncy hover:shadow-bouncy-lg hover:-translate-y-1 transition-all duration-300">
+<p class="text-text-primary text-base font-medium leading-normal">Total Listing Views</p>
+<p class="text-text-primary tracking-light text-4xl font-bold leading-tight">12,450</p>
+<p class="text-status-active text-base font-bold leading-normal flex items-center gap-1"><span class="material-symbols-outlined !text-base">arrow_upward</span>+5.2%</p>
+</div>
+<div class="flex flex-1 flex-col gap-4 rounded-lg bg-surface p-6 shadow-bouncy hover:shadow-bouncy-lg hover:-translate-y-1 transition-all duration-300">
+<p class="text-text-primary text-base font-medium leading-normal">New Inquiries</p>
+<p class="text-text-primary tracking-light text-4xl font-bold leading-tight">82</p>
+<p class="text-status-active text-base font-bold leading-normal flex items-center gap-1"><span class="material-symbols-outlined !text-base">arrow_upward</span>+10%</p>
+</div>
+<div class="flex flex-1 flex-col gap-4 rounded-lg bg-surface p-6 shadow-bouncy hover:shadow-bouncy-lg hover:-translate-y-1 transition-all duration-300">
+<p class="text-text-primary text-base font-medium leading-normal">Active Listings</p>
+<p class="text-text-primary tracking-light text-4xl font-bold leading-tight">15</p>
+<p class="text-status-expired text-base font-bold leading-normal flex items-center gap-1"><span class="material-symbols-outlined !text-base">arrow_downward</span>-1</p>
+</div>
+<div class="flex items-stretch justify-between gap-4 rounded-lg bg-surface p-6 shadow-bouncy hover:shadow-bouncy-lg hover:-translate-y-1 transition-all duration-300 md:col-span-2 lg:col-span-1">
+<div class="flex flex-col gap-4">
+<div class="flex flex-col gap-1">
+<p class="text-text-primary text-base font-bold leading-tight">Available Payout</p>
+<p class="text-text-secondary text-2xl font-bold leading-normal">$1,250.75</p>
+</div>
+<button class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-full h-8 px-4 bg-gray-100 text-text-primary text-sm font-medium leading-normal w-fit hover:bg-gray-200 transition-colors">
+<span class="truncate">Manage Payouts</span>
+</button>
+</div>
+</div>
+</div>
+<div class="mt-12">
+<div class="flex flex-wrap justify-between items-center gap-4 px-2 pb-3 pt-5">
+<h2 class="text-text-primary text-[22px] font-bold leading-tight tracking-[-0.015em]">Your Listings</h2>
+<div class="flex items-center gap-2 p-1 rounded-full bg-gray-200/60">
+<button class="px-3 py-1 rounded-full bg-surface shadow-sm text-secondary font-semibold text-sm">
+<span class="material-symbols-outlined !text-base align-middle">list</span>
+</button>
+<button class="px-3 py-1 rounded-full text-text-secondary font-semibold text-sm">
+<span class="material-symbols-outlined !text-base align-middle">grid_view</span>
+</button>
+</div>
+</div>
+<div class="overflow-x-auto bg-surface rounded-lg shadow-bouncy">
+<table class="w-full text-left">
+<thead class="border-b border-gray-200">
+<tr>
+<th class="p-4 text-sm font-semibold text-text-secondary tracking-wider">ITEM</th>
+<th class="p-4 text-sm font-semibold text-text-secondary tracking-wider">STATUS</th>
+<th class="p-4 text-sm font-semibold text-text-secondary tracking-wider">PRICE</th>
+<th class="p-4 text-sm font-semibold text-text-secondary tracking-wider">VIEWS</th>
+<th class="p-4 text-sm font-semibold text-text-secondary tracking-wider">DATE LISTED</th>
+<th class="p-4 text-sm font-semibold text-text-secondary tracking-wider text-center">ACTIONS</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-gray-200/80">
+<tr class="hover:bg-gray-50 transition-colors">
+<td class="p-4">
+<div class="flex items-center gap-4">
+<div class="size-12 rounded-lg bg-cover bg-center" data-alt="Vintage leather armchair in a well-lit room." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBpIgTKw5Zft4w3Z6Jb-fBX7sQtVmh5hs5TfigrWp-cpcUIZM6-PLMFciF1Z0VeW8MjNyj8SOu9G8mPDfvw5bW-P2bRs7AOp2wEeE_ZJFzHkaY231xbhcn678pQpFDJ9nvReaUxaLjxKDDLlPcwzyD0qqzCNLJShTfwQ0oqmn5sbsky6YjD1mljIO4mx7GDWxuyhV2px8bvOJ5Zr7IrDQeae9Mvx9RDxfK6PkDxUaB7G05Qk9FWrw2vtj3xd_KWRtyvW6IU-LKnF9i3')"></div>
+<span class="font-semibold text-text-primary">Vintage Leather Armchair</span>
+</div>
+</td>
+<td class="p-4">
+<span class="inline-flex items-center rounded-full bg-status-active/20 px-3 py-1 text-xs font-bold text-status-active">Active</span>
+</td>
+<td class="p-4 font-semibold text-text-primary">$250.00</td>
+<td class="p-4 font-medium text-text-secondary">1,204</td>
+<td class="p-4 font-medium text-text-secondary">Oct 12, 2023</td>
+<td class="p-4">
+<div class="flex justify-center items-center gap-2">
+<button class="p-2 rounded-full hover:bg-gray-200 text-text-secondary transition-colors"><span class="material-symbols-outlined">edit</span></button>
+<button class="p-2 rounded-full hover:bg-gray-200 text-text-secondary transition-colors"><span class="material-symbols-outlined">visibility</span></button>
+<button class="p-2 rounded-full hover:bg-gray-200 text-red-500 transition-colors"><span class="material-symbols-outlined">delete</span></button>
+</div>
+</td>
+</tr>
+<tr class="hover:bg-gray-50 transition-colors">
+<td class="p-4">
+<div class="flex items-center gap-4">
+<div class="size-12 rounded-lg bg-cover bg-center" data-alt="A classic acoustic guitar resting on a wooden stand." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBTet-w18uw4YzTb_ZRDunpeb2qNkOM9zqDUqn02uZuwsAohhXUGtu9E2pE-pZRpIGx3mK6CcdSHFTznszBrfZht20D0TuOHoI3GDYxyrhLfTvULX054uERBjzBRwNz-Fbal78z4p2rsBYGM1nPt_B3RhtGuo9aYvqrHUkAmnIUEkQ1O66ZRIKmLjucoTpwjrCvblFVbXCV_gLQy3UBBj2yEycj23kveFahFCR6yFeHcYoNDl1bl-TsG46QoCjOJBnfy-nOSuTXiXIJ')"></div>
+<span class="font-semibold text-text-primary">Acoustic Guitar</span>
+</div>
+</td>
+<td class="p-4">
+<span class="inline-flex items-center rounded-full bg-status-pending/30 px-3 py-1 text-xs font-bold text-yellow-700">Pending</span>
+</td>
+<td class="p-4 font-semibold text-text-primary">$180.00</td>
+<td class="p-4 font-medium text-text-secondary">450</td>
+<td class="p-4 font-medium text-text-secondary">Sep 30, 2023</td>
+<td class="p-4">
+<div class="flex justify-center items-center gap-2">
+<button class="p-2 rounded-full hover:bg-gray-200 text-text-secondary transition-colors"><span class="material-symbols-outlined">edit</span></button>
+<button class="p-2 rounded-full hover:bg-gray-200 text-text-secondary transition-colors"><span class="material-symbols-outlined">visibility</span></button>
+<button class="p-2 rounded-full hover:bg-gray-200 text-red-500 transition-colors"><span class="material-symbols-outlined">delete</span></button>
+</div>
+</td>
+</tr>
+<tr class="hover:bg-gray-50 transition-colors">
+<td class="p-4">
+<div class="flex items-center gap-4">
+<div class="size-12 rounded-lg bg-cover bg-center" data-alt="An antique film camera with a leather strap." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuD7TH48IPQwU-dlwaJ5FkqRHgxVpi69ry93C2cOFEVEfbZL8KriGregak63a9RaXzU_a-T1ny5cu7mtVCNbgUgtLf5kiiv0Plor7qbCnyaobSvDkyokfkx2bq0UhC7arZ9Oc1uU7mEW-2ab2I7jbcmgRZ4gNfnyUkoiCHdVn54RjDj1tBm--jGM7E_b7O9hgNVrWXa0Uiep_54Y72MfAz6JV0WSgCoFmv4slYpiSbCBLHi0ALDi5P_lRNtMFiiz4KCwK7fj82zYw5At')"></div>
+<span class="font-semibold text-text-primary">Antique Film Camera</span>
+</div>
+</td>
+<td class="p-4">
+<span class="inline-flex items-center rounded-full bg-status-expired/20 px-3 py-1 text-xs font-bold text-status-expired">Expired</span>
+</td>
+<td class="p-4 font-semibold text-text-primary">$95.00</td>
+<td class="p-4 font-medium text-text-secondary">882</td>
+<td class="p-4 font-medium text-text-secondary">Aug 15, 2023</td>
+<td class="p-4">
+<div class="flex justify-center items-center gap-2">
+<button class="flex min-w-[84px] cursor-pointer items-center justify-center overflow-hidden rounded-full h-8 px-4 bg-secondary text-white text-xs font-bold leading-normal w-fit hover:opacity-90 transition-opacity">
+<span class="truncate">Renew Now</span>
+</button>
+</div>
+</td>
+</tr>
+<tr class="hover:bg-gray-50 transition-colors">
+<td class="p-4">
+<div class="flex items-center gap-4">
+<div class="size-12 rounded-lg bg-cover bg-center" data-alt="A modern mountain bike on a trail." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBuSOztVfTJoN2S0WBUn_qkTZz6bAJxBjYMXSok29YCv4mpYoM1VzyTE_R2NPbEi7tNfyA1kH23Ano_Hmoum_W6oHfRWNEtMQviietoS5EF7Xq6KOybsDAWLjpL28Wi9fFizRBANunydtvWSaU5pd-8PLqN4TTqD26xC1deECnN6iglnAfjUJnnKP3g77-Cnyohg_7telsN3CMeIoz4zwv7iyVojzOZstiMGTj2Pn31CwqqrjRTtMwCvlT_PvqtZCm43sUmxdpV-ToF')"></div>
+<span class="font-semibold text-text-primary">Mountain Bike</span>
+</div>
+</td>
+<td class="p-4">
+<span class="inline-flex items-center rounded-full bg-status-active/20 px-3 py-1 text-xs font-bold text-status-active">Active</span>
+</td>
+<td class="p-4 font-semibold text-text-primary">$450.00</td>
+<td class="p-4 font-medium text-text-secondary">976</td>
+<td class="p-4 font-medium text-text-secondary">Oct 10, 2023</td>
+<td class="p-4">
+<div class="flex justify-center items-center gap-2">
+<button class="flex min-w-[84px] cursor-pointer items-center justify-center overflow-hidden rounded-full h-8 px-4 bg-primary text-white text-xs font-bold leading-normal w-fit hover:opacity-90 transition-opacity">
+<span class="truncate">Upgrade Listing</span>
+</button>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</main>
+</div>
+</div>
+
+</body></html>

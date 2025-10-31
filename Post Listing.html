@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>ZipZapZoi - Create a New Listing</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Spline+Sans:wght@300..700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet"/>
+<script>
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "primary": "#FF6B6B",
+            "secondary": "#4D96FF",
+            "background-light": "#F8F9FA",
+            "background-dark": "#1A1B1C",
+            "card-light": "#FFFFFF",
+            "card-dark": "#2C2D2E",
+            "text-light": "#343A40",
+            "text-dark": "#E9ECEF",
+            "text-muted-light": "#6C757D",
+            "text-muted-dark": "#ADB5BD",
+            "border-light": "#E9ECEF",
+            "border-dark": "#495057",
+            "success": "#1DD1A1"
+          },
+          fontFamily: {
+            "display": ["Spline Sans", "sans-serif"]
+          },
+          borderRadius: {
+            "DEFAULT": "1rem",
+            "lg": "1.5rem",
+            "xl": "2rem",
+            "full": "9999px"
+          },
+          boxShadow: {
+            'bouncy': '0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.05)',
+            'bouncy-lg': '0 20px 30px -10px rgba(0, 0, 0, 0.1), 0 10px 15px -8px rgba(0, 0, 0, 0.1)',
+          }
+        },
+      },
+    }
+  </script>
+</head>
+<body class="font-display bg-background-light dark:bg-background-dark text-text-light dark:text-text-dark antialiased">
+<div class="relative flex h-auto min-h-screen w-full flex-col group/design-root overflow-x-hidden">
+<!-- TopNavBar -->
+<header class="sticky top-0 z-10 w-full bg-card-light/80 dark:bg-card-dark/80 backdrop-blur-md">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="flex items-center justify-between h-16">
+<div class="flex items-center gap-8">
+<div class="flex items-center gap-2 text-text-light dark:text-text-dark">
+<span class="material-symbols-outlined text-secondary text-3xl">all_inclusive</span>
+<h2 class="text-xl font-bold">ZipZapZoi</h2>
+</div>
+</div>
+<div class="hidden md:flex flex-1 justify-end gap-6 items-center">
+<a class="text-sm font-medium hover:text-secondary" href="#">Browse</a>
+<a class="text-sm font-medium hover:text-secondary" href="#">Messages</a>
+<a class="text-sm font-medium hover:text-secondary" href="#">Help</a>
+<button class="flex max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-full h-10 bg-card-light dark:bg-card-dark border border-border-light dark:border-border-dark text-text-light dark:text-text-dark gap-2 text-sm font-bold leading-normal tracking-[0.015em] min-w-0 px-2.5 hover:border-secondary transition-colors">
+<span class="material-symbols-outlined text-xl">notifications</span>
+</button>
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10" data-alt="User profile picture" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCk1SS5_zFqd51Qg2LVvuPaNkfTZ5rCqFM0NJIfdCVIOLhqxKr9Af8YSTK4GvnUe3VDHNFZPLksrEmewWN7ceWpig_63IdBrs_tdjjC8Vx7n2T3lafIGJHajkFPTxdlgZpiy2xOLYl5XJPCl1pb4pcEMxBuVxLrXIRwC0ljYThbZktHomGpST8u4Ury82dzGYgWuKP31WpzCIti4-G0PEPk_mZ5w5hq_bNPRYOgwcRk9FuPV00Tmflf5eKqlaY8UaToCWW2PYoTYQj_");'></div>
+</div>
+</div>
+</div>
+</header>
+<!-- Main Content -->
+<main class="flex-1 w-full py-12 md:py-20">
+<div class="layout-content-container flex flex-col max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 gap-10">
+<!-- ProgressBar -->
+<div class="flex flex-col gap-3">
+<div class="flex gap-6 justify-between">
+<p class="text-base font-medium">Step 1 of 5</p>
+</div>
+<div class="rounded-full bg-border-light dark:bg-border-dark h-3 overflow-hidden">
+<div class="h-full rounded-full bg-primary transition-all duration-500" style="width: 20%;"></div>
+</div>
+</div>
+<!-- Form Content Card -->
+<div class="bg-card-light dark:bg-card-dark rounded-xl shadow-bouncy-lg p-6 sm:p-10 flex flex-col gap-8">
+<!-- PageHeading -->
+<div class="flex flex-wrap justify-between gap-3">
+<div class="flex min-w-72 flex-col gap-3">
+<p class="text-4xl font-black leading-tight tracking-[-0.033em] text-text-light dark:text-text-dark">What are you selling?</p>
+<p class="text-base font-normal leading-normal text-text-muted-light dark:text-text-muted-dark">Choose a category to get started. This helps buyers find your item.</p>
+</div>
+</div>
+<!-- ImageGrid as Category Selection -->
+<div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+<div class="group flex flex-col gap-3 p-3 rounded-lg cursor-pointer border-2 border-transparent hover:border-primary hover:bg-primary/10 dark:hover:bg-primary/20 transition-all transform hover:-translate-y-1">
+<div class="w-full bg-center bg-no-repeat aspect-square bg-cover rounded-lg" data-alt="Illustration of a modern car" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAnG74ulNSzqLN0MYtT6ErPt17JZmLqW_NKc9r2B6c1Y0Lp1Gl0jWVl1EdsYZM_7Z5JdehlLmlq8Tm7aWGIb65Mg0O5BUGlrQ8sU8jOubfq5uROFh_x5pXhP6Z0BTRgPBzsDMvRWcV7PCv7hq2xLLKXslnZGiVYnoPMA_updcH36QmD3C9NJBPsQk_i5_NX3DairwNY2TuTjO7kRXTTXgZGWYjFFKH9uR-FDph0r-TGkzPDScp6vbw7BuXa6YEh-C3PvjSjIlYehx04");'></div>
+<div>
+<p class="text-base font-medium text-text-light dark:text-text-dark">Vehicles</p>
+<p class="text-sm font-normal text-text-muted-light dark:text-text-muted-dark">Cars, bikes &amp; boats</p>
+</div>
+</div>
+<div class="group flex flex-col gap-3 p-3 rounded-lg cursor-pointer border-2 border-primary bg-primary/10 dark:bg-primary/20 transform -translate-y-1">
+<div class="w-full bg-center bg-no-repeat aspect-square bg-cover rounded-lg" data-alt="Stylish modern living room with a sofa" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAWPLTsUEaNUU_CvjTn0Xp2cEUdr2mBodcq9EiV-4PxZ6SeoGCZbeJAUfEcyaHEuTMuBjpFxyTs8qN3LTu_mjNI7MxFmX_WkF3RuBaw_WYZakzgIXuIGprYBuSMRxVvYopEBD0m5UCvrvUqKbyo_EFzColCY7CenEX1CpS3qf-l3wuq89v3EtIGedD5FOM80_gWZtP4OlvYhXliMy5RJIa3QAdL7AVYzH-Ibg2RYmb5JEiX3_5NOZyK6xwG889R836AQFATeeBX2MNM");'></div>
+<div>
+<p class="text-base font-medium text-text-light dark:text-text-dark">Home &amp; Garden</p>
+<p class="text-sm font-normal text-text-muted-light dark:text-text-muted-dark">Furniture &amp; decor</p>
+</div>
+</div>
+<div class="group flex flex-col gap-3 p-3 rounded-lg cursor-pointer border-2 border-transparent hover:border-primary hover:bg-primary/10 dark:hover:bg-primary/20 transition-all transform hover:-translate-y-1">
+<div class="w-full bg-center bg-no-repeat aspect-square bg-cover rounded-lg" data-alt="A smartphone and a laptop on a desk" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDhVpR1nycezXGqSv7fcu9K_npuM_34VYF05Ngy7SV0dwZ0f2qKxUpyKCvj8NwdVZuk2bC1iyiv-m3dNQVxbLJvI698rcLtl5FOda9z95w2oMkBohOAoGyu6qe5AupIWdCOob30Pct0FoZiT93xcf6hMJfTgTXP1b6H2C2fh3DgVLGuRlw_HzkwdFIRj_kwwlqIy8IrHKMOz05BrqUr-4hVHHMimbajTZQ4Ov01FuyJ7Hy05jYmrRrNlSfj1AWz9TbV0V2IdrUhTtkT");'></div>
+<div>
+<p class="text-base font-medium text-text-light dark:text-text-dark">Electronics</p>
+<p class="text-sm font-normal text-text-muted-light dark:text-text-muted-dark">Phones, laptops &amp; TVs</p>
+</div>
+</div>
+<div class="group flex flex-col gap-3 p-3 rounded-lg cursor-pointer border-2 border-transparent hover:border-primary hover:bg-primary/10 dark:hover:bg-primary/20 transition-all transform hover:-translate-y-1">
+<div class="w-full bg-center bg-no-repeat aspect-square bg-cover rounded-lg" data-alt="A modern apartment building exterior" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCRU2nr9g_EfwWSKwqhsXM9c-bUV1jJ4377iMGlM2pkp-aebNGMY5OJXbkc69nm5Ocx9Skp39alne9grR994D5KrXKdougziXUZRxNO21mLudVA4S3CVoG1J7M9_WcgGfcBWNH6-OA2RJ3OtGcuFUSYveJZpC95CKUkzqriV6tYyQo93Lkgs2Bskfy4pRmkL_dxa07M1V_wlnlF_vBHFUGvJJtWkS1EUTWSBq9hKfl5CVqlgDhayZGrW-oMELUHZ0OQlJZPRlvNOIqB");'></div>
+<div>
+<p class="text-base font-medium text-text-light dark:text-text-dark">Property</p>
+<p class="text-sm font-normal text-text-muted-light dark:text-text-muted-dark">Apartments &amp; houses</p>
+</div>
+</div>
+<div class="group flex flex-col gap-3 p-3 rounded-lg cursor-pointer border-2 border-transparent hover:border-primary hover:bg-primary/10 dark:hover:bg-primary/20 transition-all transform hover:-translate-y-1">
+<div class="w-full bg-center bg-no-repeat aspect-square bg-cover rounded-lg" data-alt="Fashionable clothes on a rack" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBja-GVKP92Ne3Hoiieej7aiwo0MZdPhoF0sNy5lgiJoBus7pzZxV-4T3bT1u2CUyVWO_S15MjhcSLLgbCXA4UawnlZVG5vGpb0pC2iK6Qk_nLox12PNKVbkZPP8-ZaPWzh1n9D_mPi1Zmktgh30O0kOd1h8EwLSRBYlf2-3p_AdUjqIwbVtF7Zyt0Ok1WatF4Ud0UOe1HWnGJrx66gwbpoj_KT87q7SCnykCR0q2UJk3ScvKDLyW6lR8AwkPOzFR_tF9p-zWVyqcso");'></div>
+<div>
+<p class="text-base font-medium text-text-light dark:text-text-dark">Fashion</p>
+<p class="text-sm font-normal text-text-muted-light dark:text-text-muted-dark">Clothing, shoes &amp; more</p>
+</div>
+</div>
+<div class="group flex flex-col gap-3 p-3 rounded-lg cursor-pointer border-2 border-transparent hover:border-primary hover:bg-primary/10 dark:hover:bg-primary/20 transition-all transform hover:-translate-y-1">
+<div class="w-full bg-center bg-no-repeat aspect-square bg-cover rounded-lg" data-alt="A collection of hobby items like a camera and a guitar" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDVjEjyXeDwaMqgc_qEB_pkF8IBeC79CREPS_NyrT367_OqAcyXEmWul1Z6UnhlbAmIyaokbrr89ywg0Gd3LHEVYzTPgvMTc6VK0xXHPj6V9lQqYgcw1pDMQMr_F4KkjioREAaA9J2z-CyHKYGbLyer2WOQ4d4-8wkTFsRHZMQZ3NJrirN3b85oItihBXA4_RzcYe2Sjqis_4QQ8mc9wRbgF932TNqVFXhugXpKP9-zpn-1SZIaRJL4S409P_IRZ5TY_wTVOBgBshs3");'></div>
+<div>
+<p class="text-base font-medium text-text-light dark:text-text-dark">Hobbies</p>
+<p class="text-sm font-normal text-text-muted-light dark:text-text-muted-dark">Music, arts &amp; sports</p>
+</div>
+</div>
+<div class="group flex flex-col gap-3 p-3 rounded-lg cursor-pointer border-2 border-transparent hover:border-primary hover:bg-primary/10 dark:hover:bg-primary/20 transition-all transform hover:-translate-y-1">
+<div class="w-full bg-center bg-no-repeat aspect-square bg-cover rounded-lg" data-alt="A cute puppy playing in a field" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBTwOTXgQ1EWDYnCI0kX7hGaRTgzw_wnNENJW4mPSVFYxJ-MxcCemB13Jh_lD7HNxkVOXsirKoZFbo--g-RcMLNYi_M8fMpP2FCfOXk8dLtGAfvfd--f1OR83PdqxFb9Q4kZK8mron7P_zsY0-FivUWuafzuxXhGWw8-jjDQyYjnyCPOzhJx2iIMwqPwX1XS3t3cXDDPSEL5IqFctEvr46Gb-spaG01F4NyyIk5HB-825n6mteMgAESRZRTGnmxAJgVTSPEQXYVX3Dk");'></div>
+<div>
+<p class="text-base font-medium text-text-light dark:text-text-dark">Pets</p>
+<p class="text-sm font-normal text-text-muted-light dark:text-text-muted-dark">Dogs, cats &amp; supplies</p>
+</div>
+</div>
+<div class="group flex flex-col gap-3 p-3 rounded-lg cursor-pointer border-2 border-transparent hover:border-primary hover:bg-primary/10 dark:hover:bg-primary/20 transition-all transform hover:-translate-y-1">
+<div class="w-full bg-center bg-no-repeat aspect-square bg-cover rounded-lg" data-alt="A person performing a job service like plumbing" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCsOxTYTTSKZeC8xTmqiW6kERt31J5Ol2IkKV4XXux8g_cEQcfIhWhkoNxxHTgsDVuB8MrMQf55ANjKwjCDekyYgXXGAYuBzIx66aP8wDmQyFyGgPcM3xpfyGrtKsGD-PdF0RstYVX5YOkipF8AXEJaePmJ7tsSySN9NHIiGq_-nTlV7beVs8SONz1_QXCoiWT9qimRJx30_gYO9Ar2nKnGCvSjcGj6GDMPzzXrkCtgStbdQoWMgMyTRXCkBPbjTn4zobqf7CTgCAPA");'></div>
+<div>
+<p class="text-base font-medium text-text-light dark:text-text-dark">Services</p>
+<p class="text-sm font-normal text-text-muted-light dark:text-text-muted-dark">Local professional help</p>
+</div>
+</div>
+</div>
+<!-- ButtonGroup -->
+<div class="flex justify-stretch border-t border-border-light dark:border-border-dark mt-4">
+<div class="flex flex-1 gap-4 flex-wrap pt-6 justify-between items-center">
+<button class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-full h-14 px-6 bg-transparent text-text-muted-light dark:text-text-muted-dark text-base font-bold leading-normal tracking-[0.015em] hover:text-text-light dark:hover:text-text-dark transition-colors">
+<span class="truncate">Cancel</span>
+</button>
+<button class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-full h-14 px-8 bg-primary text-text-light text-base font-bold leading-normal tracking-[0.015em] shadow-lg shadow-primary/30 hover:shadow-xl hover:shadow-primary/40 active:scale-95 transition-all duration-200">
+<span class="truncate">Next Step</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+<script>
+(function(){
+  // track selection
+  const categories = document.querySelectorAll('.grid .group');
+  let selected = null;
+
+  categories.forEach(cat=>{
+    cat.addEventListener('click', ()=>{
+      categories.forEach(c=>c.classList.remove('border-primary','bg-primary/10','dark:bg-primary/20','-translate-y-1'));
+      cat.classList.add('border-primary','bg-primary/10','dark:bg-primary/20','-translate-y-1');
+      selected = cat.querySelector('p').textContent.trim();
+    });
+  });
+
+  // Next-Step button
+  const nextBtn = document.querySelector('button span.truncate:text-is("Next Step")') 
+               || document.querySelector('button:has(span:contains("Next Step"))')
+               || document.querySelector('button:last-child');
+  if(nextBtn){
+    nextBtn.addEventListener('click',()=>{
+      if(!selected){
+        alert('Please select a category before continuing.');
+        return;
+      }
+      // save selection
+      sessionStorage.setItem('zzz_post_category', selected);
+      // go to Step 2 (you can name it whatever you like)
+      window.location.href = 'Post Listing-Details.html';
+    });
+  }
+
+  // Cancel
+  const cancelBtn = document.querySelector('button span:contains("Cancel")')?.closest('button');
+  if(cancelBtn){
+    cancelBtn.addEventListener('click',()=>history.back());
+  }
+})();
+</script>
+</body></html>

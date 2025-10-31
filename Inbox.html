@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>ZipZapZoi - Messages</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Spline+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#007BFF", // Electric Blue
+                        "background-light": "#F7F8FC", // Off-white/light grey
+                        "background-dark": "#1A1C23",
+                        "component-light": "#FFFFFF",
+                        "component-dark": "#242731",
+                        "text-light": "#333333", // Dark charcoal grey
+                        "text-dark": "#E0E0E0",
+                        "text-muted-light": "#6b7280",
+                        "text-muted-dark": "#9ca3af",
+                        "accent-yellow": "#FFC107", // Sunny Yellow
+                        "accent-coral": "#FF7F50", // Coral
+                    },
+                    fontFamily: {
+                        "display": ["Spline Sans", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "1rem",
+                        "lg": "1.5rem",
+                        "xl": "2rem",
+                        "full": "9999px"
+                    },
+                    boxShadow: {
+                        'bouncy': '0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -2px rgba(0, 0, 0, 0.05), inset 0 -2px 3px rgba(0, 0, 0, 0.04)',
+                        'bouncy-lg': '0 10px 15px -3px rgba(0, 0, 0, 0.07), 0 4px 6px -4px rgba(0, 0, 0, 0.07), inset 0 -4px 6px rgba(0, 0, 0, 0.05)',
+                        'bouncy-inner': 'inset 0 2px 4px 0 rgba(0, 0, 0, 0.05)',
+                        'primary': '0 4px 14px 0 rgba(0, 123, 255, 0.39)',
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-text-light dark:text-text-dark">
+<div class="flex h-screen w-full p-4 lg:p-6">
+<!-- Main container with two columns -->
+<div class="grid w-full h-full grid-cols-12 gap-4 lg:gap-6">
+<!-- Left Column: Navigation Sidebar + Inbox List -->
+<aside class="col-span-12 lg:col-span-4 xl:col-span-3 flex flex-col gap-4 lg:gap-6">
+<!-- SideNavBar (Modified for App Navigation) -->
+<div class="bg-component-light dark:bg-component-dark p-4 rounded-lg shadow-bouncy flex-shrink-0">
+<div class="flex flex-col justify-between h-full">
+<div class="flex flex-col gap-4">
+<div class="flex items-center gap-3">
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-12" data-alt="John Doe's profile picture" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCUI9NB-4S_PuEF1yrhKkHgU8BGbh2G4wgNVssjvBM2pP916rFfPvMN-g-f826XKtOCzCLrZp1FcWdhTWG20FeVOVOAKYCsQgvcLqroDgD79Lfim3Kr4Pmn7szmlZsa5r98lD_ahALTRldYl7HhpA4WON9oeqZ_py274xUHJhOiYW6Sc9MdjswinPMNdt3BUshmrt1XukhWJVheJnvAMGm9MdCKuMDCnsk3KOmrfzRW6zyR3Oa9mtmcrYcbelxLon0AjRQjIwJaCUW3");'></div>
+<div class="flex flex-col">
+<h1 class="text-text-light dark:text-text-dark text-base font-semibold">John Doe</h1>
+<p class="text-text-muted-light dark:text-text-muted-dark text-sm font-normal">My Account</p>
+</div>
+</div>
+<div class="flex flex-col gap-1 mt-4">
+<a class="flex items-center gap-4 px-4 py-2.5 rounded-full text-text-muted-light dark:text-text-muted-dark hover:bg-primary/10 hover:text-primary transition-all" href="#">
+<span class="material-symbols-outlined">home</span>
+<p class="text-sm font-medium">Home</p>
+</a>
+<a class="flex items-center gap-4 px-4 py-2.5 rounded-full text-text-muted-light dark:text-text-muted-dark hover:bg-primary/10 hover:text-primary transition-all" href="#">
+<span class="material-symbols-outlined">search</span>
+<p class="text-sm font-medium">Browse</p>
+</a>
+<a class="flex items-center gap-4 px-4 py-2.5 rounded-full bg-primary/10 text-primary transition-all font-semibold" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">inbox</span>
+<p class="text-sm font-medium">Messages</p>
+</a>
+<a class="flex items-center gap-4 px-4 py-2.5 rounded-full text-text-muted-light dark:text-text-muted-dark hover:bg-primary/10 hover:text-primary transition-all" href="#">
+<span class="material-symbols-outlined">favorite</span>
+<p class="text-sm font-medium">Favorites</p>
+</a>
+<a class="flex items-center gap-4 px-4 py-2.5 rounded-full text-text-muted-light dark:text-text-muted-dark hover:bg-primary/10 hover:text-primary transition-all" href="#">
+<span class="material-symbols-outlined">person</span>
+<p class="text-sm font-medium">Profile</p>
+</a>
+</div>
+</div>
+<button class="flex w-full cursor-pointer items-center justify-center overflow-hidden rounded-full h-12 px-4 bg-accent-yellow text-text-light text-sm font-bold mt-6 shadow-md hover:scale-105 active:scale-95 transition-transform duration-150">
+<span class="truncate">Create Listing</span>
+</button>
+</div>
+</div>
+<!-- Inbox List -->
+<div class="bg-component-light dark:bg-component-dark p-4 rounded-lg shadow-bouncy flex flex-col gap-4 flex-grow min-h-0">
+<div class="flex flex-wrap justify-between items-center gap-3">
+<p class="text-text-light dark:text-text-dark text-2xl font-bold leading-tight">Messages</p>
+</div>
+<!-- SearchBar -->
+<div class="flex-shrink-0">
+<label class="flex flex-col w-full">
+<div class="flex w-full flex-1 items-stretch rounded-full h-12 bg-background-light dark:bg-background-dark shadow-bouncy-inner">
+<div class="text-text-muted-light dark:text-text-muted-dark flex items-center justify-center pl-4">
+<span class="material-symbols-outlined">search</span>
+</div>
+<input class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden text-text-light dark:text-text-dark focus:outline-0 focus:ring-0 border-none bg-transparent h-full placeholder:text-text-muted-light dark:placeholder:text-text-muted-dark px-2 text-base font-normal" placeholder="Search conversations..." value=""/>
+</div>
+</label>
+</div>
+<!-- Message Thread List -->
+<div class="flex flex-col gap-2 overflow-y-auto pr-2 -mr-2">
+<!-- Active Conversation Preview Card -->
+<div class="flex gap-4 p-3 justify-between rounded-lg bg-primary/10 cursor-pointer transition-all">
+<div class="flex items-start gap-3">
+<div class="relative">
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-12" data-alt="Jane Smith's profile picture" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDMNnmQEv1OBb4uMYgOWzcbF0PZeXrZ3WS32aIBaDFDONeJsNYdxpRkPJh_RAKQwDl-IVip3YTSbzuECFLyeXs_ofpsJeCEgRAEJjgz3yqiKa-BlVIBSmjWPFTtrDeObXvyGv9xlVKNREmYjSgD6GWgR6EMmUQjguqpoC_Hby6MnZrKmdF0UQxeg9tAzdLovMhcZfk83OkObr0A6MXyH4UkVsiKbf_2WrWkHJNUUWewmfS-VXotDD1URfdIjtDlXqu2C93zTSp-WA3C");'></div>
+<div class="absolute bottom-0 right-0 size-3 rounded-full bg-green-500 border-2 border-primary/10"></div>
+</div>
+<div class="flex flex-1 flex-col justify-center">
+<p class="text-text-light dark:text-text-dark text-base font-semibold">Jane Smith</p>
+<p class="text-primary text-sm font-medium truncate max-w-40">Is this still available?</p>
+</div>
+</div>
+<div class="shrink-0 flex flex-col items-end gap-1">
+<p class="text-text-muted-light dark:text-text-muted-dark text-xs font-normal">10:45 AM</p>
+<div class="flex size-6 items-center justify-center rounded-full bg-primary text-white text-xs font-bold">2</div>
+</div>
+</div>
+<!-- Conversation Preview Card -->
+<div class="flex gap-4 p-3 justify-between rounded-lg hover:bg-background-light dark:hover:bg-background-dark cursor-pointer transition-all">
+<div class="flex items-start gap-3">
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-12" data-alt="Robert Brown's profile picture" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBoD22ppk3CT6xPWW377RiNnrJev-GjgwK-7WT21LkyjM1xwNncp6H0xnbzRMIhN4TWeqEo0Jg2NVqchKV4oKxpw7XSxIg4IMWXQgnYxaPE7G5-2auIleg4hnuLyX3tb6oTg-BhYFs5afNgVvtljSz5gxlZS0T3-4bbdtgoW-NpFspL3hl3GlNMS4oxR5Yu8sYruHXJpKl8_shlS-ifNwOnyYTrrv5suI3jyuTG6KEnuI78HM39Xhn8fhEQXvtrkKQtdsCDn2OhvSTq");'></div>
+<div class="flex flex-1 flex-col justify-center">
+<p class="text-text-light dark:text-text-dark text-base font-medium">Robert Brown</p>
+<p class="text-text-muted-light dark:text-text-muted-dark text-sm font-normal truncate max-w-40">Great, I'll take it!</p>
+</div>
+</div>
+<div class="shrink-0">
+<p class="text-text-muted-light dark:text-text-muted-dark text-xs font-normal">Yesterday</p>
+</div>
+</div>
+<!-- Another Conversation Preview Card -->
+<div class="flex gap-4 p-3 justify-between rounded-lg hover:bg-background-light dark:hover:bg-background-dark cursor-pointer transition-all">
+<div class="flex items-start gap-3">
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-12" data-alt="Emily White's profile picture" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuD20WIoE3nZTGbi7DtM89DMTgvM9yDcm1We_AZ4ODRte1Nn5ZL_gAsWfUpuVIWXeFMEKKJ6JwnG3ugiGkilmxb7HrNcbp9hiZEX80c5Lf5bSt-Ihz16W8-s7ngExv8qmWUMDvu1ypXCHOOJMV22p60n5h6tTFQ6e_scB_QkDxHDaZXualbY41CyHngniaDgKcmJ_ipQYoeNDedOCRZlp5WG_XrVeAIeE8vrGap_nDkp7XglT0y--TI6UQSUYsI6A-7m0rR0_8UFmkoc");'></div>
+<div class="flex flex-1 flex-col justify-center">
+<p class="text-text-light dark:text-text-dark text-base font-medium">Emily White</p>
+<p class="text-text-muted-light dark:text-text-muted-dark text-sm font-normal truncate max-w-40">Sounds good, see you then!</p>
+</div>
+</div>
+<div class="shrink-0">
+<p class="text-text-muted-light dark:text-text-muted-dark text-xs font-normal">2 days ago</p>
+</div>
+</div>
+</div>
+</div>
+</aside>
+<!-- Right Column: Conversation View -->
+<main class="col-span-12 lg:col-span-8 xl:col-span-9 flex flex-col gap-4 lg:gap-6 min-h-0">
+<div class="bg-component-light dark:bg-component-dark rounded-lg shadow-bouncy-lg flex-grow flex flex-col">
+<!-- Conversation Header -->
+<header class="sticky top-0 z-10 flex items-center justify-between p-4 border-b border-background-light dark:border-background-dark flex-shrink-0">
+<div class="flex items-center gap-4">
+<div class="relative">
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-12" data-alt="Jane Smith's profile picture" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCm-1SeavDVqzibcHztOCxP7QKQdyokJGUB7hzdsXNGWl_nyvIbjsV3blxorkxGY5NnXGqcKT0IFkVIyDMFGeHm-Kx0Ts8YsgXI3FYNxFlRuplr9oGwbgGE9-_bL9ckLZfBGOVCxI2ojEYvWmKuf9Zf_g2sWA-jLESerHe74x2CdJniRID0Di05krQVbQ0Twp38eFgedT1gUOEtP-1QoPpY0CrMP7WappoaK0-7eh-rubqy6gVWV3c9f0E2NRkxbiuIEWayd0dki97H");'></div>
+<div class="absolute bottom-0 right-0 size-3 rounded-full bg-green-500 border-2 border-component-light dark:border-component-dark"></div>
+</div>
+<div>
+<h2 class="text-lg font-bold text-text-light dark:text-text-dark">Jane Smith</h2>
+<p class="text-sm text-green-500">Online</p>
+</div>
+</div>
+<button class="p-2 rounded-full hover:bg-background-light dark:hover:bg-background-dark text-text-muted-light dark:text-text-muted-dark">
+<span class="material-symbols-outlined">more_horiz</span>
+</button>
+</header>
+<!-- Associated Listing Banner -->
+<div class="p-4 border-b border-background-light dark:border-background-dark flex-shrink-0">
+<a class="flex items-center gap-4 p-3 rounded-lg bg-background-light dark:bg-background-dark hover:shadow-bouncy transition-shadow" href="#">
+<div class="bg-center bg-no-repeat aspect-video bg-cover rounded w-24" data-alt="Vintage Leather Jacket listing photo" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCCO7d_IQtO4saCrA0Rn5aLhu-pC6lLwgfRwkqpMVtaVwsNpR2_jxK-YTflTuVTepGIXehKjjRugEKNiQZD3CqSDz5SsNhfp-gB6mwBfeHCfHLEI7nge3e4fSidseaAd6QoIu430vhZ8o4e2HqI2WEgz-VDUrlVtZOcOUZGqCCwGsT-8-DRFrmhUkhrJoqqYjyo93f87RsBUVCZMALCQeE5uO6h2NzV2DSIzZFUlXq4CYBJbFkaYWxohp8b1w6mJLzyViBZoSHpOhSd");'></div>
+<div class="flex-grow">
+<p class="text-sm text-text-muted-light dark:text-text-muted-dark">Conversation about:</p>
+<h3 class="font-semibold text-text-light dark:text-text-dark">Vintage Leather Jacket</h3>
+</div>
+<p class="text-lg font-bold text-primary">$120</p>
+</a>
+</div>
+<!-- Message History -->
+<div class="flex-grow p-6 overflow-y-auto space-y-6">
+<!-- Recipient's Message Bubble -->
+<div class="flex justify-start">
+<div class="max-w-md">
+<div class="p-4 rounded-lg rounded-bl-none bg-background-light dark:bg-background-dark shadow-bouncy">
+<p>Hey! I saw your listing for the vintage leather jacket. Is it still available?</p>
+</div>
+<p class="text-xs text-text-muted-light dark:text-text-muted-dark mt-1 ml-1">10:42 AM</p>
+</div>
+</div>
+<!-- Sender's Message Bubble -->
+<div class="flex justify-end">
+<div class="max-w-md">
+<div class="p-4 rounded-lg rounded-br-none bg-primary text-white shadow-primary">
+<p>Hi! Yes, it's still available. It's in great condition.</p>
+</div>
+<p class="text-xs text-text-muted-light dark:text-text-muted-dark mt-1 mr-1 text-right">10:43 AM</p>
+</div>
+</div>
+<!-- Recipient's Message Bubble -->
+<div class="flex justify-start">
+<div class="max-w-md">
+<div class="p-4 rounded-lg rounded-bl-none bg-background-light dark:bg-background-dark shadow-bouncy">
+<p>Awesome! Would you consider $100 for it?</p>
+</div>
+<p class="text-xs text-text-muted-light dark:text-text-muted-dark mt-1 ml-1">10:44 AM</p>
+</div>
+</div>
+<!-- Unread Messages Separator -->
+<div class="flex items-center gap-4 py-2">
+<hr class="flex-grow border-t border-accent-coral/50"/>
+<span class="text-accent-coral text-xs font-semibold">New Messages</span>
+<hr class="flex-grow border-t border-accent-coral/50"/>
+</div>
+<!-- Another Recipient's Message Bubble -->
+<div class="flex justify-start">
+<div class="max-w-md">
+<div class="p-4 rounded-lg rounded-bl-none bg-background-light dark:bg-background-dark shadow-bouncy">
+<p>Just checking in again.</p>
+</div>
+<p class="text-xs text-text-muted-light dark:text-text-muted-dark mt-1 ml-1">10:44 AM</p>
+</div>
+</div>
+<div class="flex justify-start">
+<div class="max-w-md">
+<div class="p-4 rounded-lg rounded-bl-none bg-background-light dark:bg-background-dark shadow-bouncy">
+<p>Is this still available?</p>
+</div>
+<p class="text-xs text-text-muted-light dark:text-text-muted-dark mt-1 ml-1">10:45 AM</p>
+</div>
+</div>
+</div>
+<!-- Message Input Field -->
+<div class="p-4 border-t border-background-light dark:border-background-dark flex-shrink-0">
+<div class="flex items-center gap-4 bg-background-light dark:bg-background-dark rounded-full h-14 p-2 shadow-bouncy-inner">
+<button class="p-2 rounded-full hover:bg-primary/10 text-text-muted-light dark:text-text-muted-dark hover:text-primary transition-colors">
+<span class="material-symbols-outlined">add_photo_alternate</span>
+</button>
+<button class="p-2 rounded-full hover:bg-primary/10 text-text-muted-light dark:text-text-muted-dark hover:text-primary transition-colors">
+<span class="material-symbols-outlined">attach_file</span>
+</button>
+<input class="flex-grow bg-transparent border-none focus:ring-0 text-text-light dark:text-text-dark placeholder:text-text-muted-light dark:placeholder:text-text-muted-dark" placeholder="Type your message..." type="text"/>
+<button class="flex items-center justify-center size-10 rounded-full bg-primary text-white shadow-primary hover:scale-105 active:scale-95 transition-transform duration-150">
+<span class="material-symbols-outlined">send</span>
+</button>
+</div>
+</div>
+</div>
+</main>
+</div>
+</div>
+<script>
+/* Inbox prototype script
+   Paste this block just before </body> in Inbox.html
+   - Uses sessionStorage to persist mock data
+   - Replace with real API calls when backend ready
+*/
+
+(function(){
+  // DOM refs
+  const convListEl = document.querySelector('.flex.flex-col.gap-2.overflow-y-auto') || document.querySelector('aside .flex.flex-col.gap-2');
+  const convHeaderName = document.querySelector('header h2') || document.querySelector('header h2');
+  const convHeaderStatus = document.querySelector('header p');
+  const assocListingAnchor = document.querySelector('.p-4.border-b a') || document.querySelector('.p-4.border-b');
+  const messagesContainer = document.querySelector('.flex-grow.p-6.overflow-y-auto') || document.querySelector('.flex-grow.p-6');
+  const inputEl = document.querySelector('input[placeholder="Type your message..."]');
+  const sendBtn = document.querySelector('button .material-symbols-outlined:contains("send")') || Array.from(document.querySelectorAll('button')).find(b=>b.innerText.trim()==='send' || b.querySelector('.material-symbols-outlined')?.innerText==='send')?.closest('button');
+
+  // Helper selectors if above didn't find
+  function findSendButton(){
+    const byIcon = Array.from(document.querySelectorAll('button')).find(b=>{
+      return b.innerText.trim().toLowerCase().includes('send') || b.querySelector('.material-symbols-outlined')?.innerText === 'send';
+    });
+    return byIcon;
+  }
+
+  const sendButton = sendBtn || findSendButton();
+
+  // Mock data init
+  const KEY = 'zzz_inbox_data_v1';
+  let store = JSON.parse(sessionStorage.getItem(KEY) || 'null');
+  if(!store){
+    store = {
+      conversations: [
+        {
+          id: 'c1',
+          name: 'Jane Smith',
+          avatar: '',
+          online: true,
+          unread: 2,
+          listing: { id: 'l1', title: 'Vintage Leather Jacket', price: '$120', url: 'Listing Detail.html?slug=l1' },
+          messages: [
+            { id: 'm1', from: 'them', text: "Is this still available?", at: Date.now()-1000*60*60 },
+            { id: 'm2', from: 'me', text: "Yes, it's available.", at: Date.now()-1000*60*50 },
+            { id: 'm3', from: 'them', text: "Can you do $100?", at: Date.now()-1000*60*40 }
+          ]
+        },
+        {
+          id: 'c2',
+          name: 'Robert Brown',
+          avatar: '',
+          online: false,
+          unread: 0,
+          listing: { id: 'l2', title: 'Antique Camera', price: '$95', url: 'Listing Detail.html?slug=l2' },
+          messages: [
+            { id: 'm4', from: 'them', text: "Great, I'll take it!", at: Date.now()-1000*60*60*24 }
+          ]
+        }
+      ],
+      selectedId: 'c1'
+    };
+    sessionStorage.setItem(KEY, JSON.stringify(store));
+  }
+
+  // Utilities
+  function save(){ sessionStorage.setItem(KEY, JSON.stringify(store)); }
+  function timeAgo(ts){
+    const diff = Math.floor((Date.now() - ts)/60000);
+    if(diff < 1) return 'Now';
+    if(diff < 60) return diff + 'm';
+    if(diff < 1440) return Math.floor(diff/60)+'h';
+    return Math.floor(diff/1440)+'d';
+  }
+
+  // Render conversation list (left)
+  function renderList(){
+    if(!convListEl) return;
+    convListEl.innerHTML = '';
+    store.conversations.forEach(conv=>{
+      const item = document.createElement('div');
+      item.className = 'flex gap-4 p-3 justify-between rounded-lg hover:bg-background-light dark:hover:bg-background-dark cursor-pointer transition-all ' + (store.selectedId===conv.id ? 'bg-primary/10' : '');
+      item.dataset.id = conv.id;
+      item.innerHTML = `
+        <div class="flex items-start gap-3">
+          <div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-12" style="background-image: url('${conv.avatar||'https://via.placeholder.com/64'}')"></div>
+          <div class="flex flex-col">
+            <p class="text-base font-medium">${conv.name}</p>
+            <p class="text-primary text-sm font-medium truncate max-w-40">${conv.messages[conv.messages.length-1]?.text || ''}</p>
+          </div>
+        </div>
+        <div class="shrink-0 flex flex-col items-end gap-1">
+          <p class="text-text-muted-light text-xs">${timeAgo(conv.messages[conv.messages.length-1]?.at || Date.now())}</p>
+          ${conv.unread ? `<div class="flex size-6 items-center justify-center rounded-full bg-primary text-white text-xs font-bold">${conv.unread}</div>` : ''}
+        </div>
+      `;
+      item.addEventListener('click', ()=> selectConversation(conv.id));
+      convListEl.appendChild(item);
+    });
+  }
+
+  // Render selected conversation (right)
+  function renderConversation(id){
+    const conv = store.conversations.find(c=>c.id===id);
+    if(!conv) return;
+    // header
+    if(convHeaderName) convHeaderName.textContent = conv.name;
+    if(convHeaderStatus) convHeaderStatus.textContent = conv.online ? 'Online' : 'Offline';
+    // associated listing
+    if(assocListingAnchor){
+      assocListingAnchor.setAttribute('href', conv.listing.url || '#');
+      assocListingAnchor.querySelector('h3') && (assocListingAnchor.querySelector('h3').textContent = conv.listing.title);
+      assocListingAnchor.querySelector('p') && (assocListingAnchor.querySelector('p').textContent = 'Conversation about:');
+      assocListingAnchor.querySelector('.text-lg') && (assocListingAnchor.querySelector('.text-lg').textContent = conv.listing.price);
+      assocListingAnchor.querySelector('div.w-24') && (assocListingAnchor.querySelector('div.w-24').style.backgroundImage = `url('https://via.placeholder.com/240x160?text=${encodeURIComponent(conv.listing.title)}')`);
+    }
+    // messages
+    if(messagesContainer){
+      messagesContainer.innerHTML = '';
+      conv.messages.forEach(m=>{
+        const side = m.from === 'me' ? 'justify-end' : 'justify-start';
+        const bubbleBg = m.from === 'me' ? 'bg-primary text-white' : 'bg-background-light dark:bg-background-dark';
+        const pWrap = document.createElement('div');
+        pWrap.className = `${side}`;
+        pWrap.innerHTML = `
+          <div class="max-w-md">
+            <div class="p-4 rounded-lg ${m.from==='me' ? 'rounded-br-none' : 'rounded-bl-none'} ${bubbleBg} shadow-bouncy">
+              <p>${m.text}</p>
+            </div>
+            <p class="text-xs text-text-muted-light mt-1 ${m.from==='me' ? 'text-right mr-1' : 'ml-1'}">${new Date(m.at).toLocaleTimeString()}</p>
+          </div>
+        `;
+        messagesContainer.appendChild(pWrap);
+      });
+      // scroll to bottom
+      messagesContainer.scrollTop = messagesContainer.scrollHeight;
+    }
+    // mark read
+    conv.unread = 0;
+    save();
+    renderList();
+  }
+
+  function selectConversation(id){
+    store.selectedId = id;
+    save();
+    renderConversation(id);
+    // visual highlight
+    renderList();
+  }
+
+  // Send message handler
+  function sendMessage(){
+    const text = inputEl && inputEl.value && inputEl.value.trim();
+    if(!text) return;
+    const conv = store.conversations.find(c=>c.id===store.selectedId);
+    if(!conv) return alert('Select a conversation first.');
+    const newMsg = { id: 'm' + Date.now().toString(36), from: 'me', text, at: Date.now() };
+    conv.messages.push(newMsg);
+    // optional: increment unread for receiver in real app
+    inputEl.value = '';
+    save();
+    renderConversation(conv.id);
+  }
+
+  // keyboard send on Enter
+  if(inputEl){
+    inputEl.addEventListener('keydown', (e)=>{
+      if(e.key === 'Enter') { e.preventDefault(); sendMessage(); }
+    });
+  }
+  if(sendButton){
+    sendButton.addEventListener('click', sendMessage);
+  }
+
+  // init
+  renderList();
+  renderConversation(store.selectedId);
+
+  // Expose for debugging
+  window._zzz_inbox = { store, save };
+})();
+</script>
+</body></html>

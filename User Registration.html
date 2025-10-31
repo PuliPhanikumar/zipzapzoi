@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Create Your ZipZapZoi Account</title>
+
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Spline+Sans:wght@400;500;700&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+
+<script>
+tailwind.config = {
+  darkMode: "class",
+  theme: {
+    extend: {
+      colors: {
+        "primary": "#FF6B6B",
+        "secondary": "#4ECDC4",
+        "accent-yellow": "#FFD166",
+        "accent-purple": "#A06CD5",
+        "background-light": "#F7F5FF",
+        "background-dark": "#1a1a1a",
+        "google-red":"#EA4335",
+        "apple-black":"#111111",
+        "facebook-blue":"#1877F2"
+      },
+      fontFamily: { "display": ["Spline Sans", "sans-serif"] },
+      borderRadius: { "DEFAULT": "1rem", "lg": "1.5rem", "xl": "2rem", "full": "9999px" },
+      keyframes: {
+        bounceIn: { '0%': { transform: 'scale(0.8)', opacity: '0' }, '60%': { transform: 'scale(1.05)', opacity: '1' }, '100%': { transform: 'scale(1)' }},
+        pulse: { '0%,100%': { transform: 'scale(1)' }, '50%': { transform: 'scale(1.03)' }},
+        float: { '0%,100%': { transform: 'translateY(0px) rotate(-5deg)' }, '50%': { transform: 'translateY(-20px) rotate(5deg)' }}
+      },
+      animation: {
+        'bounce-in': 'bounceIn 0.6s ease-out forwards',
+        'pulse-slow': 'pulse 3s ease-in-out infinite',
+        'float-slow': 'float 8s ease-in-out infinite alternate',
+      },
+    },
+  },
+};
+</script>
+
+<style>
+.material-symbols-outlined { font-variation-settings:'FILL' 0,'wght' 400,'GRAD' 0,'opsz' 24; font-size:20px; }
+.btn-primary { transition: transform 0.2s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.2s ease-in-out; }
+.btn-primary:hover { transform: translateY(-4px) scale(1.02); box-shadow: 0 8px 16px rgba(255,107,107,0.4); }
+.btn-primary:active { transform: translateY(-1px) scale(0.98); box-shadow: 0 4px 8px rgba(255,107,107,0.3); }
+.custom-checkbox:checked { background-image: url("data:image/svg+xml,%3csvg viewBox='0 0 16 16' fill='white' xmlns='http://www.w3.org/2000/svg'%3e%3cpath d='M12.207 4.793a1 1 0 010 1.414l-5 5a1 1 0 01-1.414 0l-2-2a1 1 0 011.414-1.414L6.5 9.086l4.293-4.293a1 1 0 011.414 0z'/%3e%3c/svg%3e"); box-shadow:0 2px 8px rgba(255,107,107,0.4); transform:scale(1.1) rotate(3deg); }
+.social-btn { transition: transform 0.18s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.18s ease; }
+.social-btn:hover { transform: translateY(-3px) scale(1.03); box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
+.fake-captcha {
+  display:flex; align-items:center; gap:0.75rem; padding:0.6rem 0.75rem;
+  border-radius:0.7rem; border:1px solid rgba(0,0,0,0.06);
+  background: linear-gradient(180deg, rgba(255,255,255,0.9), rgba(250,250,250,0.9));
+}
+.fake-captcha .box {
+  width:26px; height:26px; border-radius:6px; border:2px solid #ddd; display:flex; align-items:center; justify-content:center; background:#fff;
+  transition: all .18s ease;
+}
+.fake-captcha input[type="checkbox"]:checked + .box { background: #fff; border-color: var(--tw-color-primary,#FF6B6B); transform: scale(1.05); box-shadow: 0 4px 12px rgba(255,107,107,0.15); }
+.fake-captcha .captcha-label { font-size:0.95rem; color: #444; }
+.small-muted { font-size: 12px; color: #666; margin-top:6px; }
+</style>
+</head>
+
+<body class="bg-background-light dark:bg-background-dark font-display text-[#4A4A4A] dark:text-gray-300">
+<div class="relative flex min-h-screen w-full flex-col items-center justify-center overflow-hidden p-4 sm:p-6 lg:p-8">
+
+  <!-- Decorative shapes -->
+  <div class="animate-float-slow absolute top-[-15%] left-[-10%] h-72 w-72 rounded-full bg-accent-yellow/60 blur-3xl"></div>
+  <div class="animate-float-slow animation-delay-[-4s] absolute bottom-[-20%] right-[-15%] h-80 w-80 rounded-2xl bg-accent-purple/50 blur-3xl -rotate-12"></div>
+  <div class="animate-float-slow animation-delay-[-2s] absolute top-[15%] right-[5%] h-64 w-64 rounded-full bg-secondary/40 blur-3xl"></div>
+
+  <div class="relative z-10 w-full max-w-md animate-bounce-in">
+    <header class="flex flex-col items-center gap-4 text-center mb-6">
+      <div class="flex items-center gap-3 text-[#181411] dark:text-white">
+        <div class="h-10 w-10 text-primary">
+          <!-- Logo -->
+          <svg fill="none" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg"><path d="M36.7273 44C33.9891 44 31.6043 39.8386 30.3636 33.69C29.123 39.8386 26.7382 44 24 44C21.2618 44 18.877 39.8386 17.6364 33.69C16.3957 39.8386 14.0109 44 11.2727 44C7.25611 44 4 35.0457 4 24C4 12.9543 7.25611 4 11.2727 4C14.0109 4 16.3957 8.16144 17.6364 14.31C18.877 8.16144 21.2618 4 24 4C26.7382 4 29.123 8.16144 30.3636 14.31C31.6043 8.16144 33.9891 4 36.7273 4C40.7439 4 44 12.9543 44 24C44 35.0457 40.7439 44 36.7273 44Z" fill="currentColor"/></svg>
+        </div>
+        <h2 class="text-2xl font-bold tracking-tight">ZipZapZoi</h2>
+      </div>
+      <h1 class="text-[#181411] dark:text-white tracking-tight text-3xl sm:text-4xl font-bold leading-tight">Join the Fun!</h1>
+    </header>
+
+    <main class="flex flex-col gap-6 rounded-xl bg-white/70 dark:bg-background-dark/70 backdrop-blur-lg p-6 sm:p-8 shadow-2xl">
+
+      <!-- Social logins -->
+      <div class="flex flex-col gap-3">
+        <button id="btnGoogle" class="social-btn flex w-full items-center justify-center gap-3 rounded-full h-12 px-5 bg-white dark:bg-gray-700 text-[#4A4A4A] dark:text-white border border-gray-200 dark:border-gray-600" aria-label="Continue with Google">
+          <!-- Google SVG mark -->
+          <svg class="h-5 w-5" viewBox="0 0 533.5 544.3" xmlns="http://www.w3.org/2000/svg"><path fill="#EA4335" d="M533.5 278.4c0-18.8-1.6-37-4.7-54.6H272v103.4h146.9c-6.3 34-25.3 62.8-54 82v68.2h87.2c51-47 80.4-116.2 80.4-199z"/><path fill="#34A853" d="M272 544.3c73.6 0 135.6-24.6 180.8-66.8l-87.2-68.2c-24.2 16.3-55.2 26-93.6 26-71.9 0-132.9-48.6-154.7-114.1H29v71.8C74.8 486.3 165.6 544.3 272 544.3z"/><path fill="#4A90E2" d="M117.3 325.2c-6.1-17.8-9.6-36.8-9.6-56s3.5-38.2 9.6-56V141.4H29C10.3 178.7 0 220.6 0 272s10.3 93.3 29 130.6l88.3-77.4z"/><path fill="#FBBC05" d="M272 107.7c39.9 0 75.7 13.8 103.9 40.9l77.7-77.7C405.5 24.8 345.9 0 272 0 165.6 0 74.8 58 29 141.4l88.3 71.8c21.8-65.5 82.8-114.1 154.7-114.1z"/></svg>
+          <span>Continue with Google</span>
+        </button>
+
+        <button id="btnApple" class="social-btn flex w-full items-center justify-center gap-3 rounded-full h-12 px-5 bg-white dark:bg-gray-700 text-[#4A4A4A] dark:text-white border border-gray-200 dark:border-gray-600" aria-label="Continue with Apple">
+          <svg class="h-5 w-5" viewBox="0 0 24 24"><path fill="currentColor" d="M16.365 1.43c0 1.14-.43 2.15-1.215 2.964-.82.86-2.03 1.59-3.134 1.59-.09-1.55.61-2.82 1.55-3.62.86-.73 2.04-1.29 3-1.29.05 0 .05.36.05.36zM20.5 8.38c-.04-.12-.09-.25-.14-.36-.63-1.5-2.1-2.6-3.78-2.6-.92 0-1.8.33-2.5.83-.43.31-.82.65-1.17 1.03-.16.17-.3.35-.44.54-.28.38-.64 1.12-.9 1.6-.47.86-.87 1.75-.9 2.79-.03.86.32 1.59.85 2.15.47.48 1.07.76 1.78.76.46 0 .9-.14 1.3-.4.63-.39 1.1-.98 1.42-1.67.11-.25.21-.5.3-.77.11-.33.32-.8.48-1.11.39-.8.88-1.53 1.25-2.28.37-.75.62-1.57.62-2.38 0-.05 0-.09-.02-.12z"/></svg>
+          <span>Continue with Apple</span>
+        </button>
+
+        <button id="btnFacebook" class="social-btn flex w-full items-center justify-center gap-3 rounded-full h-12 px-5 bg-white dark:bg-gray-700 text-[#4A4A4A] dark:text-white border border-gray-200 dark:border-gray-600" aria-label="Continue with Facebook">
+          <svg class="h-5 w-5" viewBox="0 0 24 24"><path fill="#1877F2" d="M22 12a10 10 0 10-11.5 9.87v-6.99h-2.3V12h2.3V9.7c0-2.26 1.35-3.5 3.42-3.5.99 0 2.03.18 2.03.18v2.23h-1.13c-1.12 0-1.47.7-1.47 1.42V12h2.5l-.4 2.88h-2.1v6.99A10 10 0 0022 12z"/></svg>
+          <span>Continue with Facebook</span>
+        </button>
+      </div>
+
+      <!-- Divider -->
+      <div class="flex items-center gap-4">
+        <hr class="w-full border-gray-200 dark:border-gray-700"/>
+        <p class="text-gray-500 dark:text-gray-400 text-sm">or</p>
+        <hr class="w-full border-gray-200 dark:border-gray-700"/>
+      </div>
+
+      <!-- Registration form -->
+      <form id="registerForm" class="flex flex-col gap-4" onsubmit="return false;">
+        <label>
+          <p class="text-sm font-medium mb-1">Email Address</p>
+          <input id="regEmail" type="email" placeholder="you@example.com" class="form-input h-12 w-full rounded-lg border-2 border-gray-200 bg-soft-gray p-3 text-base text-dark-charcoal placeholder:text-gray-500 dark:border-gray-700 dark:bg-gray-800 dark:text-white" />
+        </label>
+
+        <label>
+          <p class="text-sm font-medium mb-1">Phone Number</p>
+          <input id="regPhone" type="tel" placeholder="+91 99999 99999" class="form-input h-12 w-full rounded-lg border-2 border-gray-200 bg-soft-gray p-3 text-base text-dark-charcoal placeholder:text-gray-500 dark:border-gray-700 dark:bg-gray-800 dark:text-white" />
+        </label>
+
+        <label>
+          <p class="text-sm font-medium mb-1">Password</p>
+          <input id="regPassword" type="password" placeholder="Enter your password" class="form-input h-12 w-full rounded-lg border-2 border-gray-200 bg-soft-gray p-3 text-base text-dark-charcoal placeholder:text-gray-500 dark:border-gray-700 dark:bg-gray-800 dark:text-white" />
+        </label>
+
+        <label>
+          <p class="text-sm font-medium mb-1">Confirm Password</p>
+          <input id="regConfirm" type="password" placeholder="Confirm your password" class="form-input h-12 w-full rounded-lg border-2 border-gray-200 bg-soft-gray p-3 text-base text-dark-charcoal placeholder:text-gray-500 dark:border-gray-700 dark:bg-gray-800 dark:text-white" />
+        </label>
+
+        <!-- Fake reCAPTCHA (in-card) -->
+        <div>
+          <label class="fake-captcha" title="Click to verify">
+            <input id="fakeCaptcha" type="checkbox" class="sr-only" />
+            <div class="box" aria-hidden="true"><svg id="captchaTick" class="hidden" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#FF6B6B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></div>
+            <div>
+              <div class="captcha-label">I'm not a robot</div>
+              <div class="small-muted">Click the checkbox to verify (prototype)</div>
+            </div>
+          </label>
+        </div>
+
+        <label class="flex items-center gap-2 mt-1">
+          <input id="terms" type="checkbox" class="size-5 accent-deep-blue rounded-md border border-gray-400" />
+          <p class="text-sm">I agree to the <a href="#" class="text-deep-blue underline">Terms & Conditions</a></p>
+        </label>
+
+        <button id="registerBtn" type="button" class="btn-primary flex h-12 w-full items-center justify-center rounded-full bg-primary text-white text-lg font-bold leading-normal">
+          <span class="truncate">Create My Account</span>
+        </button>
+      </form>
+
+      <!-- Already have account -->
+      <p class="text-center text-sm mt-1">
+        Already have an account?
+        <a href="Login Page.html" class="font-bold text-primary hover:underline">Log In</a>
+      </p>
+    </main>
+
+    <footer class="mt-6 text-center">
+      <p class="text-xs text-gray-500 dark:text-gray-400">
+        By signing up, you agree to our
+        <a class="underline hover:text-primary" href="#">Terms of Service</a> and
+        <a class="underline hover:text-primary" href="#">Privacy Policy</a>.
+      </p>
+    </footer>
+  </div>
+</div>
+
+<!-- JS logic -->
+<script>
+/* Registration + social sign-in prototype
+   - Fake reCAPTCHA inside card (checkbox #fakeCaptcha)
+   - Social buttons simulate OAuth by prompting for email
+   - Uses localStorage for users and sessionStorage for login
+*/
+
+(function(){
+  // DOM refs
+  const email = document.getElementById('regEmail');
+  const phone = document.getElementById('regPhone');
+  const pass = document.getElementById('regPassword');
+  const confirm = document.getElementById('regConfirm');
+  const terms = document.getElementById('terms');
+  const btn = document.getElementById('registerBtn');
+  const fakeCaptcha = document.getElementById('fakeCaptcha');
+  const captchaTick = document.getElementById('captchaTick');
+
+  // Fake CAPTCHA visual toggle
+  fakeCaptcha.addEventListener('change', ()=> {
+    if(fakeCaptcha.checked){
+      captchaTick.classList.remove('hidden');
+    } else {
+      captchaTick.classList.add('hidden');
+    }
+  });
+
+  // Helper: normalize email
+  function normalizeEmail(e){ return (e||'').trim().toLowerCase(); }
+
+  // Helper: create or find user (prototype)
+  function upsertUser({ email, phone, password, provider }){
+    const users = JSON.parse(localStorage.getItem('zzz_users')||'[]');
+    const idx = users.findIndex(u => u.email === email);
+    if(idx >= 0){
+      // update phone/password/provider if missing
+      users[idx] = { ...users[idx], phone: phone || users[idx].phone, password: users[idx].password || password || users[idx].password, provider: users[idx].provider || provider };
+    } else {
+      users.push({ email, phone, password, provider });
+    }
+    localStorage.setItem('zzz_users', JSON.stringify(users));
+    return users.find(u => u.email === email);
+  }
+
+  // Sign in (set session)
+  function signInUser(user){
+    sessionStorage.setItem('zzz_user', JSON.stringify({ email: user.email, phone: user.phone || '', provider: user.provider || 'local' }));
+    // redirect to dashboard
+    window.location.href = 'Seller Dashboard.html';
+  }
+
+  // Social button flow (prototype)
+  async function socialSignIn(provider){
+    // default sample emails per provider to help testing
+    const defaults = { google: 'you@gmail.com', apple: 'you@icloud.com', facebook: 'you@facebook.com' };
+    const input = prompt(`Sign in with ${provider} (prototype):\nEnter your email`, defaults[provider] || '');
+    if(!input) return;
+    const e = normalizeEmail(input);
+    // create or update user record (no password for social)
+    const user = upsertUser({ email: e, phone: '', provider });
+    signInUser(user);
+  }
+
+  // Wire social buttons
+  document.getElementById('btnGoogle').addEventListener('click', ()=> socialSignIn('google'));
+  document.getElementById('btnApple').addEventListener('click', ()=> socialSignIn('apple'));
+  document.getElementById('btnFacebook').addEventListener('click', ()=> socialSignIn('facebook'));
+
+  // Register button
+  btn.addEventListener('click', ()=>{
+    const e = normalizeEmail(email.value);
+    const p = (phone.value||'').trim();
+    const pw = (pass.value||'').trim();
+    const cpw = (confirm.value||'').trim();
+
+    if(!e || !p || !pw || !cpw){
+      alert('Please fill in all fields.');
+      return;
+    }
+    if(pw !== cpw){
+      alert('Passwords do not match.');
+      return;
+    }
+    if(!fakeCaptcha.checked){
+      alert('Please verify the "I\'m not a robot" checkbox.');
+      return;
+    }
+    if(!terms.checked){
+      alert('Please agree to Terms and Conditions.');
+      return;
+    }
+
+    // store user in localStorage
+    const users = JSON.parse(localStorage.getItem('zzz_users') || '[]');
+    if(users.some(u=>u.email === e)){
+      alert('An account with this email already exists. Please Log In.');
+      // optionally redirect to login
+      // window.location.href = 'Login Page.html';
+      return;
+    }
+    users.push({ email: e, phone: p, password: pw, provider: 'local' });
+    localStorage.setItem('zzz_users', JSON.stringify(users));
+
+    // login
+    sessionStorage.setItem('zzz_user', JSON.stringify({ email: e, phone: p }));
+    alert('Account created successfully!');
+    window.location.href = 'Seller Dashboard.html';
+  });
+
+  // Allow Enter to submit form
+  [email, phone, pass, confirm].forEach(inp => {
+    if(inp) inp.addEventListener('keydown', (e) => { if(e.key === 'Enter') btn.click(); });
+  });
+
+})();
+</script>
+</body>
+</html>

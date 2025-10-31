@@ -152,15 +152,16 @@
 <p class="text-base text-gray-600 dark:text-gray-400">What's your next adventure?</p>
 </div>
 <div class="grid grid-cols-2 lg:grid-cols-3 gap-6 w-full">
-<div class="card animate-card-bounce-in card-shadow rounded-3xl bg-gradient-to-br from-blue-100 to-blue-200 dark:from-blue-900/50 dark:to-blue-800/50 p-6 flex flex-col items-start justify-between cursor-pointer" style="animation-delay: 0.4s;">
-<div>
-<div class="w-16 h-16 rounded-2xl bg-blue-500 text-white flex items-center justify-center mb-4 shadow-lg">
-<span class="material-icons text-4xl">storefront</span>
-</div>
-<h2 class="text-xl font-bold text-blue-800 dark:text-blue-200">Classifieds</h2>
-<p class="text-blue-600 dark:text-blue-300 mt-1 text-sm">Find what you need.</p>
-</div>
-</div>
+<!-- Replace the existing Classifieds card block with this -->
+<a href="classifieds.html" class="card animate-card-bounce-in card-shadow rounded-3xl bg-gradient-to-br from-blue-100 to-blue-200 dark:from-blue-900/50 dark:to-blue-800/50 p-6 flex flex-col items-start justify-between cursor-pointer" style="animation-delay: 0.4s;">
+  <div>
+    <div class="w-16 h-16 rounded-2xl bg-blue-500 text-white flex items-center justify-center mb-4 shadow-lg">
+      <span class="material-icons text-4xl">storefront</span>
+    </div>
+    <h2 class="text-xl font-bold text-blue-800 dark:text-blue-200">Classifieds</h2>
+    <p class="text-blue-600 dark:text-blue-300 mt-1 text-sm">Find & manage listings.</p>
+  </div>
+</a>
 <div class="card animate-card-bounce-in card-shadow rounded-3xl bg-gradient-to-br from-green-100 to-green-200 dark:from-green-900/50 dark:to-green-800/50 p-6 flex flex-col items-start justify-between cursor-pointer" style="animation-delay: 0.5s;">
 <div>
 <div class="w-16 h-16 rounded-2xl bg-green-500 text-white flex items-center justify-center mb-4 shadow-lg">
@@ -209,4 +210,115 @@
 </div>
 </main>
 </div>
+<script>
+// Wire header search to SearchResult.html
+(function(){
+  const searchInputs = document.querySelectorAll('input[placeholder*="Search"], input[placeholder*="search"], input[type="search"], input[value="bicycles"], input[aria-label="search"]');
+  // fallback selector: use the first visible input if specific selector fails
+  function getMainSearch(){
+    if(searchInputs && searchInputs.length) return searchInputs[0];
+    const fallback = document.querySelector('input');
+    return fallback;
+  }
+  const s = getMainSearch();
+  if(!s) return;
+  s.addEventListener('keydown', (e)=>{
+    if(e.key === 'Enter'){
+      const q = (s.value || '').trim();
+      if(!q) return;
+      window.location.href = `SearchResult.html?q=${encodeURIComponent(q)}`;
+    }
+  });
+  // If there is a nearby search button, make it redirect too:
+  const parent = s.closest('label, div, header, form');
+  if(parent){
+    const btn = parent.querySelector('button, input[type="submit"], .search-btn');
+    if(btn){
+      btn.addEventListener('click', ()=>{
+        const q = (s.value || '').trim();
+        if(!q) return;
+        window.location.href = `SearchResult.html?q=${encodeURIComponent(q)}`;
+      });
+    }
+  }
+})();
+</script>
+<script>
+/* Filter → redirect script
+   Paste this before </body> in classifieds.html (or dashboard.html).
+   It builds a query string and redirects to SearchResult.html with:
+     ?q=...&category=...&city=...&minPrice=...&maxPrice=...
+   It also supports quick category buttons with data-filter-link="Bicycles" */
+
+(function () {
+  // Helper: get element by id, or null
+  const $ = id => document.getElementById(id);
+
+  // If you use different IDs replace these with your element IDs
+  const applyBtn = $('btnApply') || document.querySelector('[data-action="apply-filters"]');
+  const searchInput = $('search') || document.querySelector('input[placeholder*="Search"], input[type="search"]');
+  const categoryInput = $('filterCategory') || document.querySelector('[name="category"], select#category, select.filter-category');
+  const cityInput = $('filterCity') || document.querySelector('[name="city"], input#city, input.filter-city');
+  const minPriceInput = $('minPrice') || document.querySelector('[name="minPrice"], input#minPrice');
+  const maxPriceInput = $('maxPrice') || document.querySelector('[name="maxPrice"], input#maxPrice');
+
+  function buildAndRedirect(paramsObj) {
+    const params = new URLSearchParams();
+    // optional: include q combined from search + category + city if you prefer
+    if (paramsObj.q) params.set('q', paramsObj.q);
+    if (paramsObj.category) params.set('category', paramsObj.category);
+    if (paramsObj.city) params.set('city', paramsObj.city);
+    if (paramsObj.minPrice) params.set('minPrice', paramsObj.minPrice);
+    if (paramsObj.maxPrice) params.set('maxPrice', paramsObj.maxPrice);
+    // you may add page, sort etc. here too
+    const url = `SearchResult.html?${params.toString()}`;
+    window.location.href = url;
+  }
+
+  // Apply button handler (builds params from inputs)
+  if (applyBtn) {
+    applyBtn.addEventListener('click', function (e) {
+      e.preventDefault();
+      const q = (searchInput && searchInput.value || '').trim();
+      const category = (categoryInput && (categoryInput.value || categoryInput.getAttribute('data-value')) || '').trim();
+      const city = (cityInput && cityInput.value || '').trim();
+      const minPrice = (minPriceInput && minPriceInput.value || '').trim();
+      const maxPrice = (maxPriceInput && maxPriceInput.value || '').trim();
+
+      // For nicer queries, combine keyword + category + city into q if q empty (optional)
+      const effectiveQ = q || [category, city].filter(Boolean).join(' ');
+      buildAndRedirect({ q: effectiveQ, category, city, minPrice, maxPrice });
+    });
+  }
+
+  // Quick category buttons: add data-filter-link="Bicycles" attribute to any button or anchor you want
+  document.querySelectorAll('[data-filter-link]').forEach(btn => {
+    btn.addEventListener('click', (ev) => {
+      ev.preventDefault();
+      const category = btn.getAttribute('data-filter-link') || '';
+      const q = category; // you can change to '' if you don't want q
+      const city = (cityInput && cityInput.value) || '';
+      buildAndRedirect({ q, category, city });
+    });
+  });
+
+  // Allow pressing Enter inside main search input to redirect (same behavior)
+  if (searchInput) {
+    searchInput.addEventListener('keydown', (ev) => {
+      if (ev.key === 'Enter') {
+        ev.preventDefault();
+        const q = (searchInput.value || '').trim();
+        const category = (categoryInput && (categoryInput.value || '') ) || '';
+        const city = (cityInput && cityInput.value) || '';
+        buildAndRedirect({ q, category, city });
+      }
+    });
+  }
+
+  // Debug: no controls found
+  if (!applyBtn && !document.querySelectorAll('[data-filter-link]').length && !searchInput) {
+    console.warn('Filter-redirect script: no matching controls found. Check IDs: btnApply, filterCategory, filterCity, minPrice, maxPrice, search');
+  }
+})();
+</script>
 </body></html>
