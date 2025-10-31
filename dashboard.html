@@ -1,324 +1,179 @@
 <!DOCTYPE html>
-<html lang="en"><head>
+<html lang="en">
+<head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <title>ZipZapZoi Dashboard</title>
 <script src="https://cdn.tailwindcss.com?plugins=forms,typography"></script>
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
-<style>
-    body {
-      overflow: hidden;height: 100vh;
-      width: 100vw;
-    }
-    @keyframes slide-in-up {
-      0% {
-        opacity: 0;
-        transform: translateY(40px);
-      }
-      100% {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-    @keyframes logo-bounce {
-      0%, 100% {
-        transform: translateY(0) scale(1);
-        animation-timing-function: cubic-bezier(0.8, 0, 1, 1);
-      }
-      50% {
-        transform: translateY(-20px) scale(1.1);
-        animation-timing-function: cubic-bezier(0, 0, 0.2, 1);
-      }
-    }
-    .animate-logo-bounce {
-        animation: logo-bounce 2s infinite;
-    }
-    .animate-slide-in-up {
-      animation: slide-in-up 0.8s cubic-bezier(0.16, 1, 0.3, 1) both;
-    }
-    .card-shadow {
-        box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.1), 
-                    inset 0px -8px 15px rgba(0, 0, 0, 0.05),
-                    0px 30px 60px -12px rgba(0, 0, 0, 0.2);
-    }
-    .dark .card-shadow {
-        box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.3), 
-                    inset 0px -8px 15px rgba(0, 0, 0, 0.2),
-                    0px 30px 60px -12px rgba(0, 0, 0, 0.4);
-    }
-    .card {
-      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-      transform-style: preserve-3d;
-      perspective: 1000px;
-    }
-    .card:hover {
-      transform: translateY(-15px) scale(1.08) rotateX(10deg) rotateY(5deg);
-      box-shadow: 0px 25px 40px rgba(0, 0, 0, 0.2), 
-                  inset 0px -8px 15px rgba(0, 0, 0, 0.1),
-                  0px 50px 80px -20px rgba(0, 0, 0, 0.3);
-    }
-    .card:active {
-        transform: translateY(-5px) scale(1.02) rotateX(2deg) rotateY(1deg);
-        transition: all 0.2s cubic-bezier(0.215, 0.610, 0.355, 1.000);
-    }
-    @keyframes card-bounce-in {
-        0% {
-            opacity: 0;
-            transform: translateY(50px) scale(0.8);
-        }
-        60% {
-            opacity: 1;
-            transform: translateY(-15px) scale(1.05);
-        }
-        80% {
-            transform: translateY(5px) scale(0.98);
-        }
-        100% {
-            opacity: 1;
-            transform: translateY(0) scale(1);
-        }
-    }
-    .animate-card-bounce-in {
-        animation: card-bounce-in 1s cubic-bezier(0.34, 1.56, 0.64, 1) both;
-    }
-  </style>
 <script>
-    tailwind.config = {
-      darkMode: "class",
-      theme: {
-        extend: {
-          colors: {
-            primary: "#F97316", // Orange-500
-            "background-light": "#F8FAFC", // Slate-50
-            "background-dark": "#1E293B", // Slate-800
-            "text-light": "#1E293B", // Slate-800
-            "text-dark": "#F8FAFC", // Slate-50
-          },
-          fontFamily: {
-            display: ["Poppins", "sans-serif"],
-          },
-          borderRadius: {
-            DEFAULT: "1.5rem",
-            '2xl': '2rem',
-            '3xl': '2.5rem',
-          },
-        },
+tailwind.config = {
+  darkMode: "class",
+  theme: {
+    extend: {
+      colors: {
+        primary: "#F97316",
+        "background-light": "#F8FAFC",
+        "background-dark": "#1E293B",
+        "text-light": "#1E293B",
+        "text-dark": "#F8FAFC"
       },
-    };
-  </script>
+      fontFamily: { display: ["Poppins", "sans-serif"] },
+      borderRadius: { DEFAULT: "1.5rem", "2xl": "2rem", "3xl": "2.5rem" },
+    },
+  },
+};
+</script>
+
 <style>
-    body {
-      min-height: max(884px, 100dvh);
-    }
-  </style>
-<style>
-    body {
-      min-height: max(884px, 100dvh);
-    }
-  </style>
-<style>
-    body {
-      min-height: max(884px, 100dvh);
-    }
-  </style>
-<style>
-    body {
-      min-height: max(884px, 100dvh);
-    }
-  </style>
-  </head>
+body { overflow-x: hidden; height: 100vh; width: 100vw; min-height: max(884px, 100dvh); }
+@keyframes slide-in-up {
+  0% { opacity: 0; transform: translateY(40px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+@keyframes logo-bounce {
+  0%, 100% { transform: translateY(0) scale(1); }
+  50% { transform: translateY(-20px) scale(1.1); }
+}
+.animate-logo-bounce { animation: logo-bounce 2s infinite; }
+.animate-slide-in-up { animation: slide-in-up 0.8s cubic-bezier(0.16, 1, 0.3, 1) both; }
+.card-shadow { box-shadow: 0px 10px 20px rgba(0,0,0,0.1), inset 0px -8px 15px rgba(0,0,0,0.05), 0px 30px 60px -12px rgba(0,0,0,0.2); }
+.dark .card-shadow { box-shadow: 0px 10px 20px rgba(0,0,0,0.3), inset 0px -8px 15px rgba(0,0,0,0.2), 0px 30px 60px -12px rgba(0,0,0,0.4); }
+.card { transition: all 0.4s cubic-bezier(0.175,0.885,0.32,1.275); transform-style: preserve-3d; perspective: 1000px; }
+.card:hover { transform: translateY(-15px) scale(1.08) rotateX(10deg) rotateY(5deg); box-shadow: 0px 25px 40px rgba(0,0,0,0.2), inset 0px -8px 15px rgba(0,0,0,0.1), 0px 50px 80px -20px rgba(0,0,0,0.3); }
+.card:active { transform: translateY(-5px) scale(1.02); transition: all 0.2s ease; }
+@keyframes card-bounce-in {
+  0% { opacity: 0; transform: translateY(50px) scale(0.8); }
+  60% { opacity: 1; transform: translateY(-15px) scale(1.05); }
+  100% { opacity: 1; transform: translateY(0) scale(1); }
+}
+.animate-card-bounce-in { animation: card-bounce-in 1s cubic-bezier(0.34,1.56,0.64,1) both; }
+</style>
+</head>
+
 <body class="bg-background-light dark:bg-background-dark font-display text-text-light dark:text-text-dark transition-colors duration-300">
-<div class="h-screen w-screen flex flex-col items-center justify-center p-4">
-<header class="w-full max-w-6xl mx-auto flex justify-between items-center py-4 px-4 shrink-0 animate-slide-in-up" style="animation-delay: 0.1s;">
-<div class="flex items-center space-x-2">
-<img <img src="Assets/zipzapzoi-logo.png"
-     alt="ZipZapZoi Logo"
-     class="h-8 w-8 object-contain animate-logo-bounce" />
-<span class="text-2xl font-bold text-gray-800 dark:text-white">ZipZapZoi</span>
-</div>
-<div class="flex items-center space-x-4">
-<button class="text-gray-600 dark:text-gray-300 hover:text-primary dark:hover:text-primary transition-colors">
-<span class="material-icons">notifications</span>
-</button>
-<button class="relative w-10 h-10 bg-primary rounded-full flex items-center justify-center text-white text-lg font-semibold shadow-md hover:scale-105 transition-transform">
-<span class="material-icons">person</span>
-</button>
-</div>
-</header>
-<main class="flex-grow flex flex-col items-center justify-center w-full max-w-6xl mx-auto px-4">
-<div class="text-center mb-8 animate-slide-in-up" style="animation-delay: 0.2s;">
-<h1 class="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-2">Welcome back, Alex!</h1>
-<p class="text-base text-gray-600 dark:text-gray-400">What's your next adventure?</p>
-</div>
-<div class="grid grid-cols-2 lg:grid-cols-3 gap-6 w-full">
-<!-- Replace the existing Classifieds card block with this -->
-<a href="classifieds.html" class="card animate-card-bounce-in card-shadow rounded-3xl bg-gradient-to-br from-blue-100 to-blue-200 dark:from-blue-900/50 dark:to-blue-800/50 p-6 flex flex-col items-start justify-between cursor-pointer" style="animation-delay: 0.4s;">
-  <div>
-    <div class="w-16 h-16 rounded-2xl bg-blue-500 text-white flex items-center justify-center mb-4 shadow-lg">
-      <span class="material-icons text-4xl">storefront</span>
-    </div>
-    <h2 class="text-xl font-bold text-blue-800 dark:text-blue-200">Classifieds</h2>
-    <p class="text-blue-600 dark:text-blue-300 mt-1 text-sm">Find & manage listings.</p>
+
+<!-- 🌐 Global Navigation Bar -->
+<nav class="w-full flex justify-between items-center px-6 py-4 bg-white/80 dark:bg-background-dark/80 backdrop-blur-lg shadow-bouncy sticky top-0 z-50">
+  <div class="flex items-center gap-2">
+    <img src="Assets/zipzapzoi-logo.png" alt="ZipZapZoi Logo" class="h-8 w-8 object-contain animate-logo-bounce"/>
+    <h1 class="text-2xl font-bold text-dark-charcoal dark:text-white tracking-tight">ZipZapZoi</h1>
   </div>
-</a>
-<div class="card animate-card-bounce-in card-shadow rounded-3xl bg-gradient-to-br from-green-100 to-green-200 dark:from-green-900/50 dark:to-green-800/50 p-6 flex flex-col items-start justify-between cursor-pointer" style="animation-delay: 0.5s;">
-<div>
-<div class="w-16 h-16 rounded-2xl bg-green-500 text-white flex items-center justify-center mb-4 shadow-lg">
-<span class="material-icons text-4xl">restaurant</span>
+
+  <div id="navAuthArea" class="flex items-center gap-4"></div>
+</nav>
+
+<!-- 🧭 Dashboard Content -->
+<div class="h-[calc(100vh-80px)] w-screen flex flex-col items-center justify-center p-4">
+  <main class="flex-grow flex flex-col items-center justify-center w-full max-w-6xl mx-auto px-4">
+    <div class="text-center mb-8 animate-slide-in-up">
+      <h1 id="welcomeTitle" class="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-2">Welcome!</h1>
+      <p class="text-base text-gray-600 dark:text-gray-400">What's your next adventure?</p>
+    </div>
+
+    <div class="grid grid-cols-2 lg:grid-cols-3 gap-6 w-full">
+      <a href="classifieds.html" class="card animate-card-bounce-in card-shadow rounded-3xl bg-gradient-to-br from-blue-100 to-blue-200 dark:from-blue-900/50 dark:to-blue-800/50 p-6 flex flex-col items-start justify-between cursor-pointer">
+        <div>
+          <div class="w-16 h-16 rounded-2xl bg-blue-500 text-white flex items-center justify-center mb-4 shadow-lg">
+            <span class="material-icons text-4xl">storefront</span>
+          </div>
+          <h2 class="text-xl font-bold text-blue-800 dark:text-blue-200">Classifieds</h2>
+          <p class="text-blue-600 dark:text-blue-300 mt-1 text-sm">Find & manage listings.</p>
+        </div>
+      </a>
+
+      <div class="card animate-card-bounce-in card-shadow rounded-3xl bg-gradient-to-br from-green-100 to-green-200 dark:from-green-900/50 dark:to-green-800/50 p-6 flex flex-col items-start justify-between cursor-pointer">
+        <div>
+          <div class="w-16 h-16 rounded-2xl bg-green-500 text-white flex items-center justify-center mb-4 shadow-lg">
+            <span class="material-icons text-4xl">restaurant</span>
+          </div>
+          <h2 class="text-xl font-bold text-green-800 dark:text-green-200">Food Delivery</h2>
+          <p class="text-green-600 dark:text-green-300 mt-1 text-sm">Meals to your door.</p>
+        </div>
+      </div>
+
+      <div class="card animate-card-bounce-in card-shadow rounded-3xl bg-gradient-to-br from-indigo-100 to-indigo-200 dark:from-indigo-900/50 dark:to-indigo-800/50 p-6 flex flex-col items-start justify-between cursor-pointer">
+        <div>
+          <div class="w-16 h-16 rounded-2xl bg-indigo-500 text-white flex items-center justify-center mb-4 shadow-lg">
+            <span class="material-icons text-4xl">directions_car</span>
+          </div>
+          <h2 class="text-xl font-bold text-indigo-800 dark:text-indigo-200">Drive Services</h2>
+          <p class="text-indigo-600 dark:text-indigo-300 mt-1 text-sm">Get there fast.</p>
+        </div>
+      </div>
+
+      <div class="card animate-card-bounce-in card-shadow rounded-3xl bg-gradient-to-br from-red-100 to-red-200 dark:from-red-900/50 dark:to-red-800/50 p-6 flex flex-col items-start justify-between cursor-pointer">
+        <div>
+          <div class="w-16 h-16 rounded-2xl bg-red-500 text-white flex items-center justify-center mb-4 shadow-lg">
+            <span class="material-icons text-4xl">shopping_bag</span>
+          </div>
+          <h2 class="text-xl font-bold text-red-800 dark:text-red-200">Shopping</h2>
+          <p class="text-red-600 dark:text-red-300 mt-1 text-sm">Discover products.</p>
+        </div>
+      </div>
+
+      <div class="card animate-card-bounce-in card-shadow rounded-3xl bg-gradient-to-br from-yellow-100 to-yellow-200 dark:from-yellow-900/50 dark:to-yellow-800/50 p-6 flex flex-col items-start justify-between cursor-pointer">
+        <div>
+          <div class="w-16 h-16 rounded-2xl bg-yellow-500 text-white flex items-center justify-center mb-4 shadow-lg">
+            <span class="material-icons text-4xl">explore</span>
+          </div>
+          <h2 class="text-xl font-bold text-yellow-800 dark:text-yellow-200">Explore</h2>
+          <p class="text-yellow-600 dark:text-yellow-300 mt-1 text-sm">Uncover hidden gems.</p>
+        </div>
+      </div>
+
+      <div class="card animate-card-bounce-in card-shadow rounded-3xl bg-gradient-to-br from-cyan-100 to-cyan-200 dark:from-cyan-900/50 dark:to-cyan-800/50 p-6 flex flex-col items-start justify-between cursor-pointer">
+        <div>
+          <div class="w-16 h-16 rounded-2xl bg-cyan-500 text-white flex items-center justify-center mb-4 shadow-lg">
+            <span class="material-icons text-4xl">menu_book</span>
+          </div>
+          <h2 class="text-xl font-bold text-cyan-800 dark:text-cyan-200">Recipes</h2>
+          <p class="text-cyan-600 dark:text-cyan-300 mt-1 text-sm">Inspire your cooking.</p>
+        </div>
+      </div>
+    </div>
+  </main>
 </div>
-<h2 class="text-xl font-bold text-green-800 dark:text-green-200">Food Delivery</h2>
-<p class="text-green-600 dark:text-green-300 mt-1 text-sm">Meals to your door.</p>
-</div>
-</div>
-<div class="card animate-card-bounce-in card-shadow rounded-3xl bg-gradient-to-br from-indigo-100 to-indigo-200 dark:from-indigo-900/50 dark:to-indigo-800/50 p-6 flex flex-col items-start justify-between cursor-pointer" style="animation-delay: 0.6s;">
-<div>
-<div class="w-16 h-16 rounded-2xl bg-indigo-500 text-white flex items-center justify-center mb-4 shadow-lg">
-<span class="material-icons text-4xl">directions_car</span>
-</div>
-<h2 class="text-xl font-bold text-indigo-800 dark:text-indigo-200">Drive Services</h2>
-<p class="text-indigo-600 dark:text-indigo-300 mt-1 text-sm">Get there fast.</p>
-</div>
-</div>
-<div class="card animate-card-bounce-in card-shadow rounded-3xl bg-gradient-to-br from-red-100 to-red-200 dark:from-red-900/50 dark:to-red-800/50 p-6 flex flex-col items-start justify-between cursor-pointer" style="animation-delay: 0.7s;">
-<div>
-<div class="w-16 h-16 rounded-2xl bg-red-500 text-white flex items-center justify-center mb-4 shadow-lg">
-<span class="material-icons text-4xl">shopping_bag</span>
-</div>
-<h2 class="text-xl font-bold text-red-800 dark:text-red-200">Shopping</h2>
-<p class="text-red-600 dark:text-red-300 mt-1 text-sm">Discover products.</p>
-</div>
-</div>
-<div class="card animate-card-bounce-in card-shadow rounded-3xl bg-gradient-to-br from-yellow-100 to-yellow-200 dark:from-yellow-900/50 dark:to-yellow-800/50 p-6 flex flex-col items-start justify-between cursor-pointer" style="animation-delay: 0.8s;">
-<div>
-<div class="w-16 h-16 rounded-2xl bg-yellow-500 text-white flex items-center justify-center mb-4 shadow-lg">
-<span class="material-icons text-4xl">explore</span>
-</div>
-<h2 class="text-xl font-bold text-yellow-800 dark:text-yellow-200">Explore</h2>
-<p class="text-yellow-600 dark:text-yellow-300 mt-1 text-sm">Uncover hidden gems.</p>
-</div>
-</div>
-<div class="card animate-card-bounce-in card-shadow rounded-3xl bg-gradient-to-br from-cyan-100 to-cyan-200 dark:from-cyan-900/50 dark:to-cyan-800/50 p-6 flex flex-col items-start justify-between cursor-pointer" style="animation-delay: 0.9s;">
-<div>
-<div class="w-16 h-16 rounded-2xl bg-cyan-500 text-white flex items-center justify-center mb-4 shadow-lg">
-<span class="material-icons text-4xl">menu_book</span>
-</div>
-<h2 class="text-xl font-bold text-cyan-800 dark:text-cyan-200">Recipes</h2>
-<p class="text-cyan-600 dark:text-cyan-300 mt-1 text-sm">Inspire your cooking.</p>
-</div>
-</div>
-</div>
-</main>
-</div>
+
+<!-- 🔐 Global Auth Bar Script -->
 <script>
-// Wire header search to SearchResult.html
 (function(){
-  const searchInputs = document.querySelectorAll('input[placeholder*="Search"], input[placeholder*="search"], input[type="search"], input[value="bicycles"], input[aria-label="search"]');
-  // fallback selector: use the first visible input if specific selector fails
-  function getMainSearch(){
-    if(searchInputs && searchInputs.length) return searchInputs[0];
-    const fallback = document.querySelector('input');
-    return fallback;
-  }
-  const s = getMainSearch();
-  if(!s) return;
-  s.addEventListener('keydown', (e)=>{
-    if(e.key === 'Enter'){
-      const q = (s.value || '').trim();
-      if(!q) return;
-      window.location.href = `SearchResult.html?q=${encodeURIComponent(q)}`;
-    }
-  });
-  // If there is a nearby search button, make it redirect too:
-  const parent = s.closest('label, div, header, form');
-  if(parent){
-    const btn = parent.querySelector('button, input[type="submit"], .search-btn');
-    if(btn){
-      btn.addEventListener('click', ()=>{
-        const q = (s.value || '').trim();
-        if(!q) return;
-        window.location.href = `SearchResult.html?q=${encodeURIComponent(q)}`;
-      });
-    }
+  const navArea = document.getElementById('navAuthArea');
+  const userData = JSON.parse(sessionStorage.getItem('zzz_user') || 'null');
+
+  if(!navArea) return;
+
+  if(userData){
+    navArea.innerHTML = `
+      <div class="flex items-center gap-3">
+        <div class="bg-primary/10 rounded-full w-10 h-10 flex items-center justify-center text-primary font-bold uppercase shadow-bouncy">
+          ${userData.email.charAt(0).toUpperCase()}
+        </div>
+        <div class="flex flex-col leading-tight">
+          <p class="font-semibold text-dark-charcoal dark:text-white">${userData.email.split('@')[0]}</p>
+          <button id="logoutBtn" class="text-sm text-red-500 font-medium hover:underline">Logout</button>
+        </div>
+      </div>
+    `;
+    document.getElementById('logoutBtn').addEventListener('click', ()=>{
+      sessionStorage.removeItem('zzz_user');
+      window.location.reload();
+    });
+
+    // Personalize welcome
+    document.getElementById('welcomeTitle').textContent = `Welcome back, ${userData.email.split('@')[0]}!`;
+
+  } else {
+    navArea.innerHTML = `
+      <a href="Login Page.html" class="px-4 py-2 text-sm font-semibold text-dark-charcoal dark:text-white hover:text-primary transition-colors">Log In</a>
+      <a href="User Registration.html" class="px-5 py-2 bg-primary text-white rounded-full font-bold shadow-bouncy hover:-translate-y-0.5 hover:shadow-bouncy-lg transition-all">Sign Up</a>
+    `;
+    // If user is not logged in, still show dashboard but unpersonalized
+    document.getElementById('welcomeTitle').textContent = 'Welcome to ZipZapZoi!';
   }
 })();
 </script>
-<script>
-/* Filter → redirect script
-   Paste this before </body> in classifieds.html (or dashboard.html).
-   It builds a query string and redirects to SearchResult.html with:
-     ?q=...&category=...&city=...&minPrice=...&maxPrice=...
-   It also supports quick category buttons with data-filter-link="Bicycles" */
 
-(function () {
-  // Helper: get element by id, or null
-  const $ = id => document.getElementById(id);
-
-  // If you use different IDs replace these with your element IDs
-  const applyBtn = $('btnApply') || document.querySelector('[data-action="apply-filters"]');
-  const searchInput = $('search') || document.querySelector('input[placeholder*="Search"], input[type="search"]');
-  const categoryInput = $('filterCategory') || document.querySelector('[name="category"], select#category, select.filter-category');
-  const cityInput = $('filterCity') || document.querySelector('[name="city"], input#city, input.filter-city');
-  const minPriceInput = $('minPrice') || document.querySelector('[name="minPrice"], input#minPrice');
-  const maxPriceInput = $('maxPrice') || document.querySelector('[name="maxPrice"], input#maxPrice');
-
-  function buildAndRedirect(paramsObj) {
-    const params = new URLSearchParams();
-    // optional: include q combined from search + category + city if you prefer
-    if (paramsObj.q) params.set('q', paramsObj.q);
-    if (paramsObj.category) params.set('category', paramsObj.category);
-    if (paramsObj.city) params.set('city', paramsObj.city);
-    if (paramsObj.minPrice) params.set('minPrice', paramsObj.minPrice);
-    if (paramsObj.maxPrice) params.set('maxPrice', paramsObj.maxPrice);
-    // you may add page, sort etc. here too
-    const url = `SearchResult.html?${params.toString()}`;
-    window.location.href = url;
-  }
-
-  // Apply button handler (builds params from inputs)
-  if (applyBtn) {
-    applyBtn.addEventListener('click', function (e) {
-      e.preventDefault();
-      const q = (searchInput && searchInput.value || '').trim();
-      const category = (categoryInput && (categoryInput.value || categoryInput.getAttribute('data-value')) || '').trim();
-      const city = (cityInput && cityInput.value || '').trim();
-      const minPrice = (minPriceInput && minPriceInput.value || '').trim();
-      const maxPrice = (maxPriceInput && maxPriceInput.value || '').trim();
-
-      // For nicer queries, combine keyword + category + city into q if q empty (optional)
-      const effectiveQ = q || [category, city].filter(Boolean).join(' ');
-      buildAndRedirect({ q: effectiveQ, category, city, minPrice, maxPrice });
-    });
-  }
-
-  // Quick category buttons: add data-filter-link="Bicycles" attribute to any button or anchor you want
-  document.querySelectorAll('[data-filter-link]').forEach(btn => {
-    btn.addEventListener('click', (ev) => {
-      ev.preventDefault();
-      const category = btn.getAttribute('data-filter-link') || '';
-      const q = category; // you can change to '' if you don't want q
-      const city = (cityInput && cityInput.value) || '';
-      buildAndRedirect({ q, category, city });
-    });
-  });
-
-  // Allow pressing Enter inside main search input to redirect (same behavior)
-  if (searchInput) {
-    searchInput.addEventListener('keydown', (ev) => {
-      if (ev.key === 'Enter') {
-        ev.preventDefault();
-        const q = (searchInput.value || '').trim();
-        const category = (categoryInput && (categoryInput.value || '') ) || '';
-        const city = (cityInput && cityInput.value) || '';
-        buildAndRedirect({ q, category, city });
-      }
-    });
-  }
-
-  // Debug: no controls found
-  if (!applyBtn && !document.querySelectorAll('[data-filter-link]').length && !searchInput) {
-    console.warn('Filter-redirect script: no matching controls found. Check IDs: btnApply, filterCategory, filterCity, minPrice, maxPrice, search');
-  }
-})();
-</script>
-</body></html>
+</body>
+</html>
