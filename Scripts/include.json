@@ -1,0 +1,23 @@
+/* =========================================================
+   ZipZapZoi HTML Include Loader — include.js
+   ---------------------------------------------------------
+   Automatically loads shared components (e.g. nav.html)
+   Usage:
+     <div data-include="scripts/components/nav.html"></div>
+   ========================================================= */
+(function(){
+  document.addEventListener('DOMContentLoaded', async ()=>{
+    const includes = document.querySelectorAll('[data-include]');
+    for(const el of includes){
+      const file = el.getAttribute('data-include');
+      if(!file) continue;
+      try {
+        const res = await fetch(file);
+        const html = await res.text();
+        el.outerHTML = html; // Replace placeholder
+      } catch(err){
+        console.error("Include failed for", file, err);
+      }
+    }
+  });
+})();

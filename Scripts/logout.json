@@ -1,0 +1,55 @@
+/* =========================================================
+   ZipZapZoi Global Logout Handler — logout.js
+   ---------------------------------------------------------
+   Works across Seller Dashboard, Admin Console, and others.
+   Detects buttons automatically (#logoutBtn, #sidebarLogout, [data-action="logout"])
+   ========================================================= */
+
+(function(){
+  function doLogout(){
+    try {
+      sessionStorage.removeItem('zzz_user');
+      localStorage.removeItem('zzz_user');
+
+      // Optional: small toast instead of alert
+      const toast = document.createElement('div');
+      toast.textContent = "You've been logged out successfully!";
+      Object.assign(toast.style, {
+        position: 'fixed',
+        bottom: '20px',
+        right: '20px',
+        background: '#FF6B6B',
+        color: '#fff',
+        padding: '12px 18px',
+        borderRadius: '8px',
+        boxShadow: '0 4px 10px rgba(0,0,0,0.15)',
+        fontFamily: 'Spline Sans, sans-serif',
+        zIndex: '9999',
+        opacity: '0',
+        transition: 'opacity .4s ease'
+      });
+      document.body.appendChild(toast);
+      requestAnimationFrame(() => toast.style.opacity = '1');
+      setTimeout(() => {
+        toast.style.opacity = '0';
+        setTimeout(() => toast.remove(), 300);
+        window.location.href = 'Login Page.html';
+      }, 1200);
+    } catch(err){
+      console.error('Logout failed:', err);
+      window.location.href = 'Login Page.html';
+    }
+  }
+
+  document.addEventListener('DOMContentLoaded', ()=>{
+    document.querySelectorAll('#logoutBtn, #sidebarLogout, [data-action="logout"]').forEach(el=>{
+      el.addEventListener('click', ev=>{
+        ev.preventDefault();
+        if (confirm("Are you sure you want to log out?")) doLogout();
+      });
+    });
+  });
+
+  // Exported object for programmatic logout
+  window.ZipZapLogout = { logout: doLogout };
+})();

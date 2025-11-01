@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>ZipZapZoi — Reports & Analytics (Admin / Alerts)</title>
+
+  <!-- Tailwind & Fonts -->
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <link href="https://fonts.googleapis.com" rel="preconnect"/>
+  <link crossorigin href="https://fonts.gstatic.com" rel="preconnect"/>
+  <link href="https://fonts.googleapis.com/css2?family=Spline+Sans:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet"/>
+
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <script>
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "primary": "#007BFF",
+            "secondary-yellow": "#FFD700",
+            "secondary-coral": "#FF6F61",
+            "text-light": "#333333",
+            "text-dark": "#F4F6F8",
+            "background-light": "#F4F6F8",
+            "background-dark": "#121212",
+            "card-light": "#FFFFFF",
+            "card-dark": "#1E1E1E",
+            "border-light": "#E0E0E0",
+            "border-dark": "#2D2D2D"
+          },
+          fontFamily: { display: ["Spline Sans", "sans-serif"] },
+          borderRadius: { "DEFAULT": "0.75rem", "lg": "1rem", "xl": "1.5rem", "full": "9999px" },
+          boxShadow: {
+            "bouncy": "0px 10px 20px -5px rgba(0, 123, 255, 0.15), 0px 4px 6px -2px rgba(0, 123, 255, 0.1)",
+            "bouncy-hover": "0px 15px 25px -5px rgba(0, 123, 255, 0.2), 0px 8px 10px -4px rgba(0, 123, 255, 0.15)"
+          }
+        }
+      }
+    };
+  </script>
+
+  <style>
+    .material-symbols-outlined{font-variation-settings:"FILL" 0,"wght" 400,"GRAD" 0,"opsz" 24;font-size:24px}
+    .data-value{transition: color .28s ease-in-out, transform .22s ease-in-out}
+    .flash-up{color:#16a34a!important;transform:scale(1.06)}
+    .flash-down{color:#dc2626!important;transform:scale(1.06)}
+    canvas{width:100% !important; height:240px !important}
+
+    /* ====== WORKING TOGGLE STYLES (applies to all toggles) ====== */
+    .toggle-wrapper { position: relative; display: inline-flex; align-items: center; cursor: pointer; width:44px; height:24px; }
+    .toggle-input { position:absolute; opacity:0; width:0; height:0; pointer-events:none; }
+    .toggle-track { width:100%; height:100%; background:#e5e7eb; border-radius:9999px; transition: background-color .18s ease; position:relative; }
+    .toggle-knob { position:absolute; top:2px; left:2px; width:20px; height:20px; background:#fff; border-radius:9999px; transition: transform .18s ease; box-shadow:0 2px 6px rgba(0,0,0,0.12); }
+    /* checked state */
+    .toggle-input:checked + .toggle-track { background: #007BFF; }
+    .toggle-input:checked + .toggle-track .toggle-knob { transform: translateX(20px); }
+    /* focus ring */
+    .toggle-input:focus + .toggle-track { box-shadow: 0 0 0 3px rgba(0,123,255,0.12); }
+    /* accessibility - larger hit area if needed */
+    .toggle-wrapper.touch-large { width:56px; height:32px; }
+    .toggle-wrapper.touch-large .toggle-knob { width:26px; height:26px; top:3px; left:3px; }
+    .toggle-wrapper.touch-large .toggle-input:checked + .toggle-track .toggle-knob { transform: translateX(26px); }
+  </style>
+</head>
+
+<body class="bg-background-light dark:bg-background-dark font-display text-text-light dark:text-text-dark"
+      data-protected="true" data-role="admin">
+
+<!-- PAGE LAYOUT -->
+<div class="relative flex h-auto min-h-screen w-full flex-row group/design-root overflow-x-hidden">
+
+  <!-- Sidebar -->
+  <aside class="flex w-64 flex-col gap-y-6 border-r border-border-light dark:border-border-dark bg-card-light dark:bg-card-dark p-4 sticky top-0 h-screen">
+    <div class="flex items-center gap-3">
+      <div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10" data-alt="Company logo"
+           style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDvczKv9cHhYiawUcdfFO-gOHBItiQewi9n_A2F2cPvoVoT4k0YFs-hYKd-VKBXB0SI9rvmDPy_Wkng2RRz8MJx0nJcmpu7TX-hQAMMFsOdLHuWdF1MLdTJnpBnRanA4iS5SVBghQ5zuiP_r2vRcHy1hVK7yc3nNEvYruzhuNaSNv4FIenJ-S_Jn5KJF92vq-20ed1hPXG4lG6KT36vCpmzJLIftsMslU_amOmVL1rcVv-TUnoVXPJUThZC7IgkBvemtFUXH5SVDRCL");'></div>
+      <div class="flex flex-col">
+        <h1 class="text-text-light dark:text-text-dark text-base font-bold leading-normal">Admin Console</h1>
+        <p class="text-gray-500 dark:text-gray-400 text-sm font-normal leading-normal">ZipZapZoi</p>
+      </div>
+    </div>
+
+    <nav class="flex flex-col gap-2 flex-grow mt-4">
+      <a class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-gray-100 dark:hover:bg-white/10 transition-all duration-200" href="#"><span class="material-symbols-outlined">dashboard</span><p class="text-sm font-medium">Dashboard</p></a>
+      <a class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-gray-100 dark:hover:bg-white/10 transition-all duration-200" href="#"><span class="material-symbols-outlined">gavel</span><p class="text-sm font-medium">Moderation</p></a>
+      <a class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-gray-100 dark:hover:bg-white/10 transition-all duration-200" href="#"><span class="material-symbols-outlined">group</span><p class="text-sm font-medium">User Management</p></a>
+      <a class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-gray-100 dark:hover:bg-white/10 transition-all duration-200" href="#"><span class="material-symbols-outlined">payments</span><p class="text-sm font-medium">Payments</p></a>
+      <a class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-gray-100 dark:hover:bg-white/10 transition-all duration-200" href="#"><span class="material-symbols-outlined">category</span><p class="text-sm font-medium">Categories</p></a>
+      <a class="flex items-center gap-3 px-3 py-2.5 rounded-lg bg-primary/10 text-primary transition-all duration-200" href="#"><span class="material-symbols-outlined fill">analytics</span><p class="text-sm font-semibold">Reports</p></a>
+      <a class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-gray-100 dark:hover:bg-white/10 transition-all duration-200" href="#"><span class="material-symbols-outlined">history</span><p class="text-sm font-medium">Activity Log</p></a>
+    </nav>
+
+    <div class="flex flex-col gap-1 mt-4">
+      <button id="sidebarLogout" class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-gray-100 dark:hover:bg-white/10 transition-all duration-200 text-left">
+        <span class="material-symbols-outlined">logout</span><p class="text-sm font-medium">Log Out</p>
+      </button>
+    </div>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="flex-1 p-8">
+    <div class="w-full max-w-7xl mx-auto">
+
+      <!-- Header -->
+      <div class="flex flex-wrap justify-between gap-4 items-center mb-8">
+        <div class="flex flex-col gap-1">
+          <div class="flex items-center gap-3">
+            <p class="text-text-light dark:text-text-dark text-4xl font-bold tracking-tight">Reports &amp; Analytics</p>
+            <div class="flex items-center gap-2 rounded-full bg-green-100 dark:bg-green-900/50 px-3 py-1 text-sm font-medium text-green-700 dark:text-green-300">
+              <span class="relative flex h-2 w-2"><span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span><span class="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span></span>
+              <span>Live</span>
+            </div>
+          </div>
+          <p class="text-gray-500 dark:text-gray-400 text-base">Real-time view of key metrics and performance data.</p>
+        </div>
+
+        <div class="flex items-center gap-3">
+          <button id="btnCustomize" class="flex items-center justify-center gap-2 px-6 py-3 text-white bg-primary rounded-full font-semibold shadow-bouncy hover:shadow-bouncy-hover transition-transform hover:-translate-y-0.5"><span class="material-symbols-outlined">edit</span> Customize</button>
+          <button id="btnCreateAlert" class="flex items-center justify-center gap-2 px-5 py-2.5 text-white bg-primary rounded-full font-semibold shadow-bouncy hover:shadow-bouncy-hover transition-transform hover:-translate-y-0.5"><span class="material-symbols-outlined text-lg">add</span>Create Alert</button>
+        </div>
+      </div>
+
+      <!-- Metrics -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+        <div class="flex flex-col justify-between rounded-xl p-6 bg-card-light dark:bg-card-dark shadow-bouncy hover:shadow-bouncy-hover transition-shadow duration-300 transform hover:-translate-y-1">
+          <div class="flex items-start justify-between">
+            <p class="text-text-light dark:text-text-dark text-base font-medium leading-normal">Revenue (Live)</p>
+            <button class="text-gray-400 hover:text-primary transition-colors"><span class="material-symbols-outlined text-xl">drag_indicator</span></button>
+          </div>
+          <p id="metric-revenue" class="data-value text-text-light dark:text-text-dark tracking-tight text-4xl font-bold leading-tight mt-2">$15,489</p>
+          <p id="metric-revenue-sub" class="text-green-500 text-sm font-medium leading-normal flex items-center mt-auto"><span class="material-symbols-outlined text-base mr-1">arrow_upward</span>+8.3% vs last month</p>
+        </div>
+
+        <div class="flex flex-col justify-between rounded-xl p-6 bg-card-light dark:bg-card-dark shadow-bouncy hover:shadow-bouncy-hover transition-shadow duration-300 transform hover:-translate-y-1">
+          <div class="flex items-start justify-between">
+            <p class="text-text-light dark:text-text-dark text-base font-medium leading-normal">Active Users (Live)</p>
+            <button class="text-gray-400 hover:text-primary transition-colors"><span class="material-symbols-outlined text-xl">drag_indicator</span></button>
+          </div>
+          <p id="metric-users" class="data-value text-text-light dark:text-text-dark tracking-tight text-4xl font-bold leading-tight mt-2">1,251</p>
+          <p id="metric-users-sub" class="text-green-500 text-sm font-medium leading-normal flex items-center mt-auto"><span class="material-symbols-outlined text-base mr-1">arrow_upward</span>+3.8% vs yesterday</p>
+        </div>
+
+        <div class="flex flex-col justify-between rounded-xl p-6 bg-card-light dark:bg-card-dark shadow-bouncy hover:shadow-bouncy-hover transition-shadow duration-300 transform hover:-translate-y-1">
+          <div class="flex items-start justify-between">
+            <p class="text-text-light dark:text-text-dark text-base font-medium leading-normal">New Listings (Live)</p>
+            <button class="text-gray-400 hover:text-primary transition-colors"><span class="material-symbols-outlined text-xl">drag_indicator</span></button>
+          </div>
+          <p id="metric-listings" class="data-value data-value-flash text-text-light dark:text-text-dark tracking-tight text-4xl font-bold leading-tight mt-2">317</p>
+          <p id="metric-listings-sub" class="text-green-500 text-sm font-medium leading-normal flex items-center mt-auto"><span class="material-symbols-outlined text-base mr-1">arrow_upward</span>+6.7% vs last hour</p>
+        </div>
+
+        <div class="flex flex-col justify-between rounded-xl p-6 bg-card-light dark:bg-card-dark shadow-bouncy hover:shadow-bouncy-hover transition-shadow duration-300 transform hover:-translate-y-1">
+          <div class="flex items-start justify-between">
+            <p class="text-text-light dark:text-text-dark text-base font-medium leading-normal">Flagged Items</p>
+            <button class="text-gray-400 hover:text-primary transition-colors"><span class="material-symbols-outlined text-xl">drag_indicator</span></button>
+          </div>
+          <p id="metric-flags" class="data-value text-text-light dark:text-text-dark tracking-tight text-4xl font-bold leading-tight mt-2">45</p>
+          <p id="metric-flags-sub" class="text-red-500 text-sm font-medium leading-normal flex items-center mt-auto"><span class="material-symbols-outlined text-base mr-1">arrow_downward</span>-3% vs yesterday</p>
+        </div>
+      </div>
+
+      <!-- Charts -->
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+        <div class="bg-card-light dark:bg-card-dark rounded-xl shadow-bouncy p-6">
+          <div class="flex items-start justify-between mb-4">
+            <div>
+              <h2 class="text-text-light dark:text-text-dark text-2xl font-bold tracking-tight">Site Metrics</h2>
+              <p class="text-gray-500 dark:text-gray-400 text-sm">Updating in real-time...</p>
+            </div>
+            <button class="text-gray-400 hover:text-primary transition-colors"><span class="material-symbols-outlined text-xl">drag_indicator</span></button>
+          </div>
+          <canvas id="chartRevenue"></canvas>
+        </div>
+
+        <div class="bg-card-light dark:bg-card-dark rounded-xl shadow-bouncy p-6">
+          <div class="flex items-start justify-between mb-4">
+            <div>
+              <h2 class="text-text-light dark:text-text-dark text-2xl font-bold tracking-tight">Conversion Funnel</h2>
+              <p class="text-gray-500 dark:text-gray-400 text-sm">User journey from view to purchase</p>
+            </div>
+            <button class="text-gray-400 hover:text-primary transition-colors"><span class="material-symbols-outlined text-xl">drag_indicator</span></button>
+          </div>
+          <canvas id="chartUsers"></canvas>
+        </div>
+      </div>
+
+      <!-- Custom Alerts -->
+      <div class="mt-8 bg-card-light dark:bg-card-dark rounded-xl shadow-bouncy p-6">
+        <div class="flex flex-wrap items-center justify-between gap-4 mb-6">
+          <div class="flex flex-col">
+            <h2 class="text-text-light dark:text-text-dark text-2xl font-bold tracking-tight">Customizable Alerts</h2>
+            <p class="text-gray-500 dark:text-gray-400 text-sm">Set up notifications for important system events.</p>
+          </div>
+          <div>
+            <button id="btnCreateAlert2" class="flex items-center justify-center gap-2 px-5 py-2.5 text-base font-semibold text-white bg-primary rounded-full shadow-bouncy hover:shadow-bouncy-hover transition-all duration-300 transform hover:-translate-y-0.5"><span class="material-symbols-outlined text-lg">add</span>Create New Alert</button>
+          </div>
+        </div>
+
+        <div class="space-y-4" id="alertsList">
+          <!-- Alert 1 -->
+          <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 p-5 bg-background-light dark:bg-background-dark rounded-xl border border-border-light dark:border-border-dark transform transition-transform hover:-translate-y-1">
+            <div class="flex items-start gap-4">
+              <div class="flex items-center justify-center size-12 bg-secondary-coral/20 text-secondary-coral rounded-full p-2"><span class="material-symbols-outlined">flag</span></div>
+              <div>
+                <h3 class="text-lg font-bold">New Flagged Listing</h3>
+                <p class="text-sm text-gray-500 dark:text-gray-400">Notify when a user flags a new listing for review.</p>
+                <div class="flex items-center gap-4 mt-2">
+                  <div class="flex items-center gap-2 text-sm"><span class="material-symbols-outlined text-primary text-xl">notifications_active</span><span class="font-medium">In-App</span></div>
+                  <div class="flex items-center gap-2 text-sm"><span class="material-symbols-outlined text-gray-400 text-xl">email</span><span class="font-medium text-gray-400">Email</span></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="flex items-center gap-2">
+              <button class="p-2 text-gray-500 hover:text-primary dark:hover:text-secondary-yellow transition-colors edit-alert" data-alert-id="alert-1"><span class="material-symbols-outlined">edit</span></button>
+
+              <!-- WORKING TOGGLE -->
+              <label class="toggle-wrapper" title="Toggle Alert">
+                <input id="alert-toggle-1" data-alert-id="alert-1" class="toggle-input alert-toggle" type="checkbox" />
+                <div class="toggle-track"><div class="toggle-knob"></div></div>
+              </label>
+            </div>
+          </div>
+
+          <!-- Alert 2 -->
+          <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 p-5 bg-background-light dark:bg-background-dark rounded-xl border border-border-light dark:border-border-dark">
+            <div class="flex items-start gap-4">
+              <div class="flex items-center justify-center size-12 bg-secondary-yellow/20 text-secondary-yellow rounded-full p-2"><span class="material-symbols-outlined">person_off</span></div>
+              <div>
+                <h3 class="text-lg font-bold">User Account Suspended</h3>
+                <p class="text-sm text-gray-500 dark:text-gray-400">Triggered when an admin suspends a user account.</p>
+                <div class="flex items-center gap-4 mt-2">
+                  <div class="flex items-center gap-2 text-sm"><span class="material-symbols-outlined text-primary text-xl">notifications_active</span><span class="font-medium">In-App</span></div>
+                  <div class="flex items-center gap-2 text-sm"><span class="material-symbols-outlined text-primary text-xl">email</span><span class="font-medium">Email</span></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="flex items-center gap-2">
+              <button class="p-2 text-gray-500 hover:text-primary dark:hover:text-secondary-yellow transition-colors edit-alert" data-alert-id="alert-2"><span class="material-symbols-outlined">edit</span></button>
+
+              <label class="toggle-wrapper" title="Toggle Alert">
+                <input id="alert-toggle-2" data-alert-id="alert-2" class="toggle-input alert-toggle" type="checkbox" />
+                <div class="toggle-track"><div class="toggle-knob"></div></div>
+              </label>
+            </div>
+          </div>
+
+          <!-- Alert 3 -->
+          <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 p-5 bg-background-light dark:bg-background-dark rounded-xl border border-border-light dark:border-border-dark">
+            <div class="flex items-start gap-4">
+              <div class="flex items-center justify-center size-12 bg-red-500/10 text-red-500 rounded-full p-2"><span class="material-symbols-outlined">credit_card_off</span></div>
+              <div>
+                <h3 class="text-lg font-bold">Payment Failure</h3>
+                <p class="text-sm text-gray-500 dark:text-gray-400">Get notified when a payment transaction fails.</p>
+                <div class="flex items-center gap-4 mt-2">
+                  <div class="flex items-center gap-2 text-sm"><span class="material-symbols-outlined text-gray-400 text-xl">notifications_active</span><span class="font-medium text-gray-400">In-App</span></div>
+                  <div class="flex items-center gap-2 text-sm"><span class="material-symbols-outlined text-primary text-xl">email</span><span class="font-medium">Email</span></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="flex items-center gap-2">
+              <button class="p-2 text-gray-500 hover:text-primary dark:hover:text-secondary-yellow transition-colors edit-alert" data-alert-id="alert-3"><span class="material-symbols-outlined">edit</span></button>
+
+              <label class="toggle-wrapper" title="Toggle Alert">
+                <input id="alert-toggle-3" data-alert-id="alert-3" class="toggle-input alert-toggle" type="checkbox" />
+                <div class="toggle-track"><div class="toggle-knob"></div></div>
+              </label>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Customize Modal -->
+      <div id="customizeModal" class="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4 hidden" aria-hidden="true">
+        <div class="bg-card-light dark:bg-card-dark rounded-xl shadow-bouncy max-w-2xl w-full p-8 relative transform transition-all duration-300">
+          <button id="closeCustomize" class="absolute top-4 right-4 text-gray-400 hover:text-primary dark:hover:text-secondary-yellow transition-colors"><span class="material-symbols-outlined">close</span></button>
+          <h2 class="text-text-light dark:text-text-dark text-3xl font-bold tracking-tight mb-2">Customize Your Dashboard</h2>
+          <p class="text-gray-500 dark:text-gray-400 mb-6">Drag and drop to reorder. Toggle visibility for each report.</p>
+
+          <div class="space-y-4">
+            <div class="flex items-center justify-between p-4 bg-background-light dark:bg-background-dark rounded-lg border border-border-light dark:border-border-dark">
+              <div class="flex items-center gap-4"><span class="material-symbols-outlined text-gray-400">drag_indicator</span><span class="material-symbols-outlined text-primary">monitoring</span><p class="font-semibold">Key Performance Indicators</p></div>
+              <label class="toggle-wrapper" title="KPI toggle">
+                <input id="kpi-toggle" class="toggle-input modal-toggle" type="checkbox" checked>
+                <div class="toggle-track"><div class="toggle-knob"></div></div>
+              </label>
+            </div>
+
+            <div class="flex items-center justify-between p-4 bg-background-light dark:bg-background-dark rounded-lg border border-border-light dark:border-border-dark">
+              <div class="flex items-center gap-4"><span class="material-symbols-outlined text-gray-400">drag_indicator</span><span class="material-symbols-outlined text-secondary-coral">bar_chart</span><p class="font-semibold">Site Metrics</p></div>
+              <label class="toggle-wrapper" title="Metrics toggle">
+                <input id="metrics-toggle" class="toggle-input modal-toggle" type="checkbox" checked>
+                <div class="toggle-track"><div class="toggle-knob"></div></div>
+              </label>
+            </div>
+
+            <div class="flex items-center justify-between p-4 bg-background-light dark:bg-background-dark rounded-lg border border-border-light dark:border-border-dark">
+              <div class="flex items-center gap-4"><span class="material-symbols-outlined text-gray-400">drag_indicator</span><span class="material-symbols-outlined text-secondary-yellow">filter_alt</span><p class="font-semibold">Conversion Funnel</p></div>
+              <label class="toggle-wrapper" title="Funnel toggle">
+                <input id="funnel-toggle" class="toggle-input modal-toggle" type="checkbox" checked>
+                <div class="toggle-track"><div class="toggle-knob"></div></div>
+              </label>
+            </div>
+
+            <div class="flex items-center justify-between p-4 bg-background-light dark:bg-background-dark rounded-lg border border-border-light dark:border-border-dark">
+              <div class="flex items-center gap-4"><span class="material-symbols-outlined text-gray-400">drag_indicator</span><span class="material-symbols-outlined text-green-500">paid</span><p class="font-semibold">Revenue Reports</p></div>
+              <label class="toggle-wrapper" title="Revenue toggle">
+                <input id="revenue-toggle" class="toggle-input modal-toggle" type="checkbox">
+                <div class="toggle-track"><div class="toggle-knob"></div></div>
+              </label>
+            </div>
+          </div>
+
+          <div class="mt-8 flex justify-end gap-4">
+            <button id="cancelCustomize" class="px-6 py-2.5 text-base font-semibold text-gray-600 dark:text-gray-300 bg-transparent rounded-full hover:bg-gray-200 dark:hover:bg-white/10 transition-all duration-300">Cancel</button>
+            <button id="saveCustomize" class="flex items-center justify-center gap-2 px-6 py-2.5 text-base font-semibold text-white bg-primary rounded-full shadow-bouncy hover:shadow-bouncy-hover transition-all duration-300 transform hover:-translate-y-0.5"><span class="material-symbols-outlined">save</span> Save Changes</button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </main>
+</div>
+
+<!-- Boot loader (injects nav + auth + logout) -->
+<script src="scripts/boot.js"></script>
+
+<!-- Live Metrics & Charts + Alerts scripting -->
+<script>
+/* CONFIG */
+const USE_API = false;
+const METRICS_ENDPOINT = "/api/admin/metrics";
+const REFRESH_MS = 4000;
+const HISTORY_LENGTH = 12;
+
+/* INITIAL METRICS */
+const metrics = { revenue: 15489, users: 1251, listings: 317, flags: 45 };
+
+/* HELPERS */
+function formatCurrency(n){ return '$' + Number(n).toLocaleString(); }
+function formatNumber(n){ return Number(n).toLocaleString(); }
+function flashElement(el, up){ if(!el) return; el.classList.remove('flash-up','flash-down'); void el.offsetWidth; el.classList.add(up ? 'flash-up' : 'flash-down'); setTimeout(()=>el.classList.remove('flash-up','flash-down'),600); }
+function animateValueTo(id, value, type='number'){ const el = document.getElementById(id); if(!el) return; const raw = el.textContent.replace(/[^0-9.-]/g,''); const old = raw===''?0:Number(raw); const diff = value - old; el.textContent = (type==='currency')?formatCurrency(value):formatNumber(value); flashElement(el, diff>=0); }
+
+/* CHARTS */
+const revenueCtx = document.getElementById('chartRevenue').getContext('2d');
+const usersCtx = document.getElementById('chartUsers').getContext('2d');
+
+const initialLabels = Array.from({length:HISTORY_LENGTH}, (_,i)=> {
+  const d = new Date(Date.now() - (HISTORY_LENGTH - i) * REFRESH_MS);
+  return d.toLocaleTimeString([], {hour:'2-digit', minute:'2-digit', second:'2-digit'});
+});
+
+const revenueData = { labels: initialLabels.slice(), datasets:[{ label:'Revenue', data:Array(HISTORY_LENGTH).fill(metrics.revenue), borderColor:'#007BFF', backgroundColor:'rgba(0,123,255,0.08)', tension:0.35, pointRadius:2, pointBackgroundColor:'#007BFF' }]};
+const usersData = { labels: initialLabels.slice(), datasets:[{ label:'Active Users', data:Array(HISTORY_LENGTH).fill(metrics.users), backgroundColor:'rgba(255,215,0,0.6)', borderColor:'#FFD700' }]};
+
+const revenueChart = new Chart(revenueCtx, { type:'line', data:revenueData, options:{ responsive:true, maintainAspectRatio:false, plugins:{legend:{display:false}}, scales:{x:{display:true}, y:{beginAtZero:false}} }});
+const usersChart = new Chart(usersCtx, { type:'bar', data:usersData, options:{ responsive:true, maintainAspectRatio:false, plugins:{legend:{display:false}}, scales:{x:{display:true}, y:{beginAtZero:true}} }});
+
+/* API */
+async function fetchMetricsFromApi(){
+  try {
+    const rawUser = sessionStorage.getItem('zzz_user') || localStorage.getItem('zzz_user') || null;
+    let token = null;
+    if(rawUser){ try { const parsed = JSON.parse(rawUser); token = parsed && parsed.token ? parsed.token : null; } catch(e){} }
+    const headers = {'Accept':'application/json'}; if(token) headers['Authorization'] = 'Bearer ' + token;
+    const res = await fetch(METRICS_ENDPOINT, {method:'GET', headers});
+    if(!res.ok) throw new Error('API ' + res.status);
+    const data = await res.json();
+    return { revenue:Number(data.revenue||metrics.revenue), users:Number(data.users||metrics.users), listings:Number(data.listings||metrics.listings), flags:Number(data.flags||metrics.flags) };
+  } catch(err){ console.warn('Metrics API failed:', err); return null; }
+}
+
+/* UPDATE PIPELINE */
+async function updateMetricsAndCharts(){
+  let apiData = null;
+  if(USE_API) apiData = await fetchMetricsFromApi();
+
+  if(apiData){
+    metrics.revenue = apiData.revenue; metrics.users = apiData.users; metrics.listings = apiData.listings; metrics.flags = apiData.flags;
+  } else {
+    metrics.revenue += Math.floor(Math.random()*500 - 250);
+    metrics.users += Math.floor(Math.random()*30 - 15);
+    metrics.listings += Math.floor(Math.random()*15 - 7);
+    metrics.flags += Math.floor(Math.random()*5 - 2);
+    metrics.revenue = Math.max(10000, metrics.revenue);
+    metrics.users = Math.max(100, metrics.users);
+    metrics.listings = Math.max(0, metrics.listings);
+    metrics.flags = Math.max(0, metrics.flags);
+  }
+
+  animateValueTo('metric-revenue', metrics.revenue, 'currency');
+  animateValueTo('metric-users', metrics.users, 'number');
+  animateValueTo('metric-listings', metrics.listings, 'number');
+  animateValueTo('metric-flags', metrics.flags, 'number');
+
+  const nowLabel = new Date().toLocaleTimeString([], {hour:'2-digit', minute:'2-digit', second:'2-digit'});
+  revenueData.labels.push(nowLabel); revenueData.labels.shift();
+  revenueData.datasets[0].data.push(metrics.revenue); revenueData.datasets[0].data.shift();
+  revenueChart.update();
+
+  usersData.labels.push(nowLabel); usersData.labels.shift();
+  usersData.datasets[0].data.push(metrics.users); usersData.datasets[0].data.shift();
+  usersChart.update();
+}
+
+/* INIT */
+document.addEventListener('DOMContentLoaded', ()=>{
+
+  // set initial cards
+  document.getElementById('metric-revenue').textContent = formatCurrency(metrics.revenue);
+  document.getElementById('metric-users').textContent = formatNumber(metrics.users);
+  document.getElementById('metric-listings').textContent = formatNumber(metrics.listings);
+  document.getElementById('metric-flags').textContent = formatNumber(metrics.flags);
+
+  // modal wiring
+  const modal = document.getElementById('customizeModal');
+  function openModal(){ modal.classList.remove('hidden'); modal.setAttribute('aria-hidden','false'); }
+  function closeModal(){ modal.classList.add('hidden'); modal.setAttribute('aria-hidden','true'); }
+  document.getElementById('btnCustomize').addEventListener('click', openModal);
+  document.getElementById('btnCreateAlert').addEventListener('click', openModal);
+  document.getElementById('btnCreateAlert2')?.addEventListener('click', openModal);
+  document.getElementById('closeCustomize').addEventListener('click', closeModal);
+  document.getElementById('cancelCustomize').addEventListener('click', closeModal);
+
+  // save modal toggles
+  document.getElementById('saveCustomize').addEventListener('click', ()=>{
+    const toggles = {};
+    document.querySelectorAll('.modal-toggle').forEach(inp => toggles[inp.id] = !!inp.checked);
+    localStorage.setItem('zzz_dashboard_toggles', JSON.stringify(toggles));
+    closeModal();
+    alert('Dashboard settings saved');
+  });
+
+  // restore modal toggles
+  const savedToggles = JSON.parse(localStorage.getItem('zzz_dashboard_toggles') || '{}');
+  Object.keys(savedToggles || {}).forEach(k => {
+    const el = document.getElementById(k);
+    if(el) el.checked = !!savedToggles[k];
+  });
+
+  // alert toggles restore + persist
+  document.querySelectorAll('.alert-toggle').forEach(inp => {
+    const id = inp.dataset.alertId;
+    const saved = localStorage.getItem('zzz_alert_'+id);
+    if(saved === '0') inp.checked = false;
+    else if(saved === '1') inp.checked = true;
+    else inp.checked = true; // default on
+    inp.addEventListener('change', ()=> localStorage.setItem('zzz_alert_'+id, inp.checked ? '1' : '0'));
+  });
+
+  // edit alert buttons
+  document.querySelectorAll('.edit-alert').forEach(btn => {
+    btn.addEventListener('click', ()=> openModal());
+  });
+
+  // sidebar logout
+  const sidebarLogout = document.getElementById('sidebarLogout');
+  if(sidebarLogout){
+    sidebarLogout.addEventListener('click', ()=> {
+      try { sessionStorage.removeItem('zzz_user'); localStorage.removeItem('zzz_user'); } catch(e){}
+      window.location.href = 'Login Page.html';
+    });
+  }
+
+  // start metrics updater
+  updateMetricsAndCharts();
+  setInterval(updateMetricsAndCharts, REFRESH_MS);
+});
+
+/* Expose for debugging */
+window.__zzz_metrics = metrics;
+window.__zzz_updateMetricsAndCharts = updateMetricsAndCharts;
+</script>
+
+</body>
+</html>

@@ -1,0 +1,145 @@
+/* =========================================================
+   ZipZapZoi Boot Loader — boot.js (ENHANCED)
+   ---------------------------------------------------------
+   - Inserts scripts/components/nav.html at top of <body>
+   - Loads scripts/auth.js and scripts/logout.js
+   - Auto-protects pages marked with data-protected
+     (and supports data-role="admin" for admin-only pages)
+   - Usage: include <script src="scripts/boot.js"></script> once (near </body>)
+   ========================================================= */
+
+(function(){
+  const NAV_PATH = "scripts/components/nav.html";
+  const AUTH_PATH = "scripts/auth.js";
+  const LOGOUT_PATH = "scripts/logout.js";
+  const STORAGE_KEY = "zzz_user";
+
+  // helper: load script and return promise
+  function loadScript(src){
+    return new Promise((resolve, reject) => {
+      // if already loaded, resolve immediately
+      if(document.querySelector(`script[src="${src}"]`)) return resolve();
+      const s = document.createElement('script');
+      s.src = src;
+      s.async = false; // keep execution order
+      s.onload = () => resolve();
+      s.onerror = (e) => reject(e);
+      document.body.appendChild(s);
+    });
+  }
+
+  // helper: fetch and prepend nav
+  async function insertNav(){
+    try {
+      // don't duplicate if nav already present
+      if(document.getElementById('zzzNav') || document.querySelector('[data-zzz-nav-inserted]')) return;
+      const res = await fetch(NAV_PATH);
+      if(!res.ok) throw new Error('Nav not found');
+      const html = await res.text();
+      const wrapper = document.createElement('div');
+      wrapper.setAttribute('data-zzz-nav-inserted', '1');
+      wrapper.innerHTML = html;
+      // prepend to body so it appears at top
+      document.body.prepend(wrapper);
+    } catch(err) {
+      console.warn('boot.js: failed to insert nav:', err);
+    }
+  }
+
+  // helper: get user from session/local
+  function getUser(){
+    try {
+      return JSON.parse(sessionStorage.getItem(STORAGE_KEY) || localStorage.getItem(STORAGE_KEY) || 'null');
+    } catch(e){
+      return null;
+    }
+  }
+
+  // small UI message (non-blocking)
+  function showMessage(msg, ms = 1200){
+    const el = document.createElement('div');
+    Object.assign(el.style, {
+      position: 'fixed', bottom: '18px', left: '50%', transform: 'translateX(-50%)',
+      background: '#111', color: '#fff', padding: '10px 14px', borderRadius: '8px',
+      fontFamily: 'Spline Sans, system-ui, sans-serif', zIndex: 99999, opacity: '0', transition: 'opacity .25s'
+    });
+    el.textContent = msg;
+    document.body.appendChild(el);
+    requestAnimationFrame(()=> el.style.opacity = '1');
+    setTimeout(()=> {
+      el.style.opacity = '0';
+      setTimeout(()=> el.remove(), 300);
+    }, ms);
+  }
+
+  // protection logic: checks body attributes and redirects if necessary
+  function protectIfNeeded(){
+    const body = document.body;
+    // If body has data-protected="true" OR meta tag <meta name="zzz-protected" content="true">
+    // default: auto-protect all pages except explicitly public ones
+const viaBody = body.getAttribute('data-protected') ?? 'true';
+    const meta = document.querySelector('meta[name="zzz-protected"]');
+    const metaProtected = meta && meta.getAttribute('content') === 'true';
+
+    const protectedPage = (viaBody === 'true') || metaProtected;
+    if(!protectedPage) return; // no protection required
+
+    const requiredRole = body.getAttribute('data-role') || (meta && meta.getAttribute('data-role')) || null;
+    const user = getUser();
+
+    if(!user){
+      // not logged in: show short message then redirect
+      showMessage('Please log in to access this page — redirecting...');
+      setTimeout(()=> window.location.href = 'Login Page.html', 1100);
+      return;
+    }
+
+    if(requiredRole && user.role !== requiredRole){
+      // logged in but insufficient role
+      showMessage('You do not have permission to view this page.');
+      setTimeout(()=> {
+        // if admin required and user is not admin send to dashboard, else send to home
+        if(user.role === 'admin') window.location.href = 'Admin Console.html';
+        else window.location.href = 'Seller Dashboard.html';
+      }, 1200);
+      return;
+    }
+
+    // all good — no redirect
+  }
+
+  // main loader
+  document.addEventListener('DOMContentLoaded', async ()=>{
+    try {
+      // 1. insert nav (non-blocking)
+      await insertNav();
+
+      // 2. load auth + logout (auth first so it can populate navAuthArea)
+      await loadScript(AUTH_PATH).catch(()=> console.warn('auth.js load failed'));
+      await loadScript(LOGOUT_PATH).catch(()=> console.warn('logout.js load failed'));
+
+      // 3. run protection check after auth has had chance to run
+      protectIfNeeded();
+
+      // 4. option: if nav inserted, ensure search wiring if nav has #navSearch etc.
+      // (safe no-op if nav doesn't include those elements)
+      try {
+        const navSearch = document.getElementById('navSearch');
+        const navSearchBtn = document.getElementById('navSearchBtn');
+        if(navSearch && navSearchBtn){
+          navSearchBtn.addEventListener('click', ()=> {
+            const q = (navSearch.value || '').trim();
+            if(!q) return;
+            window.location.href = `SearchResult.html?q=${encodeURIComponent(q)}`;
+          });
+          navSearch.addEventListener('keydown', (e)=> { if(e.key === 'Enter'){ navSearchBtn.click(); }});
+        }
+      } catch(e){ /* ignore */ }
+
+      console.log('boot.js: core loaded');
+    } catch(err){
+      console.error('boot.js: unexpected error', err);
+    }
+  });
+
+})();

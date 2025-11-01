@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>ZipZapZoi - Admin Console</title>
+
+<!-- Tailwind + Fonts -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Spline+Sans:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet"/>
+
+<!-- Tailwind Config -->
+<script>
+tailwind.config = {
+  darkMode: "class",
+  theme: {
+    extend: {
+      colors: {
+        "primary": "#007BFF",
+        "secondary-yellow": "#FFD700",
+        "secondary-coral": "#FF6F61",
+        "text-light": "#333333",
+        "text-dark": "#F4F6F8",
+        "background-light": "#F4F6F8",
+        "background-dark": "#121212",
+        "card-light": "#FFFFFF",
+        "card-dark": "#1E1E1E",
+        "border-light": "#E0E0E0",
+        "border-dark": "#2D2D2D",
+      },
+      fontFamily: {
+        "display": ["Spline Sans", "sans-serif"]
+      },
+      borderRadius: {
+        "DEFAULT": "0.75rem",
+        "lg": "1rem",
+        "xl": "1.5rem",
+        "full": "9999px",
+      },
+      boxShadow: {
+        'bouncy': '0px 10px 20px -5px rgba(0, 123, 255, 0.15), 0px 4px 6px -2px rgba(0, 123, 255, 0.1)',
+        'bouncy-hover': '0px 15px 25px -5px rgba(0, 123, 255, 0.2), 0px 8px 10px -4px rgba(0, 123, 255, 0.15)',
+      }
+    },
+  },
+};
+</script>
+
+<!-- Custom Styles -->
+<style>
+.material-symbols-outlined {
+  font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+  font-size: 24px;
+}
+.material-symbols-outlined.fill { font-variation-settings: 'FILL' 1; }
+body { min-height: 100vh; }
+</style>
+</head>
+
+<body class="bg-background-light dark:bg-background-dark font-display text-text-light dark:text-text-dark">
+
+<!-- Admin Protection -->
+<script>
+(function(){
+  try {
+    const user = JSON.parse(sessionStorage.getItem('zzz_user') || localStorage.getItem('zzz_user') || 'null');
+    if(!user || user.role !== 'admin'){
+  alert('Admin access only.');
+  window.location.href = 'Login Page.html';
+}
+  } catch(e){
+    console.warn('Auth check failed', e);
+    window.location.href = 'Login Page.html';
+  }
+})();
+</script>
+
+<!-- Global Navigation Bar -->
+<nav class="w-full flex justify-between items-center px-6 py-4 bg-white/80 dark:bg-background-dark/80 backdrop-blur-lg shadow-bouncy sticky top-0 z-50">
+  <div class="flex items-center gap-2">
+    <img src="Assets/zipzapzoi-logo.png" alt="ZipZapZoi Logo" class="h-8 w-8 object-contain"/>
+    <h1 class="text-2xl font-bold text-dark-charcoal dark:text-white tracking-tight">ZipZapZoi Admin</h1>
+  </div>
+  <!-- Dynamic Login / Logout Area -->
+  <div id="navAuthArea" class="flex items-center gap-4"></div>
+</nav>
+
+<!-- Layout -->
+<div class="relative flex h-auto min-h-screen w-full flex-row overflow-x-hidden">
+  <!-- Sidebar -->
+  <aside class="flex w-64 flex-col gap-y-6 border-r border-border-light dark:border-border-dark bg-card-light dark:bg-card-dark p-4 sticky top-0 h-screen">
+    <div class="flex items-center gap-3">
+      <div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDvczKv9cHhYiawUcdfFO-gOHBItiQewi9n_A2F2cPvoVoT4k0YFs-hYKd-VKBXB0SI9rvmDPy_Wkng2RRz8MJx0nJcmpu7TX-hQAMMFsOdLHuWdF1MLdTJnpBnRanA4iS5SVBghQ5zuiP_r2vRcHy1hVK7yc3nNEvYruzhuNaSNv4FIenJ-S_Jn5KJF92vq-20ed1hPXG4lG6KT36vCpmzJLIftsMslU_amOmVL1rcVv-TUnoVXPJUThZC7IgkBvemtFUXH5SVDRCL");'></div>
+      <div class="flex flex-col">
+        <h1 class="text-text-light dark:text-text-dark text-base font-bold">Admin Console</h1>
+        <p class="text-gray-500 dark:text-gray-400 text-sm">ZipZapZoi</p>
+      </div>
+    </div>
+
+    <nav class="flex flex-col gap-2 flex-grow">
+      <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-lg bg-primary/10 text-primary transition-all duration-200">
+        <span class="material-symbols-outlined fill">dashboard</span>
+        <p class="text-sm font-semibold">Dashboard</p>
+      </a>
+      <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-gray-100 dark:hover:bg-white/10">
+        <span class="material-symbols-outlined">gavel</span><p class="text-sm font-medium">Moderation</p>
+      </a>
+      <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-gray-100 dark:hover:bg-white/10">
+        <span class="material-symbols-outlined">group</span><p class="text-sm font-medium">User Management</p>
+      </a>
+      <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-gray-100 dark:hover:bg-white/10">
+        <span class="material-symbols-outlined">payments</span><p class="text-sm font-medium">Payments</p>
+      </a>
+      <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-gray-100 dark:hover:bg-white/10">
+        <span class="material-symbols-outlined">category</span><p class="text-sm font-medium">Categories</p>
+      </a>
+      <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-gray-100 dark:hover:bg-white/10">
+        <span class="material-symbols-outlined">analytics</span><p class="text-sm font-medium">Reports</p>
+      </a>
+    </nav>
+
+    <div class="flex flex-col gap-1">
+      <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-gray-100 dark:hover:bg-white/10">
+        <span class="material-symbols-outlined">settings</span><p class="text-sm font-medium">Settings</p>
+      </a>
+      <button id="sidebarLogout" class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-gray-100 dark:hover:bg-white/10 text-left">
+        <span class="material-symbols-outlined">logout</span><p class="text-sm font-medium">Log Out</p>
+      </button>
+    </div>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="flex-1 p-8">
+    <div class="w-full max-w-7xl mx-auto">
+      <!-- Dashboard Header -->
+      <div class="flex flex-wrap justify-between gap-4 items-center mb-8">
+        <div class="flex flex-col gap-1">
+          <p class="text-text-light dark:text-text-dark text-4xl font-bold tracking-tight">Dashboard</p>
+          <p class="text-gray-500 dark:text-gray-400 text-base">Welcome back, Admin! Here's what's happening today.</p>
+        </div>
+        <div class="flex items-center gap-4">
+          <div class="relative">
+            <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">search</span>
+            <input type="text" placeholder="Search..." class="bg-card-light dark:bg-card-dark border border-border-light dark:border-border-dark rounded-lg py-2 pl-10 pr-4 focus:ring-2 focus:ring-primary"/>
+          </div>
+          <button class="relative p-2 rounded-full hover:bg-gray-200 dark:hover:bg-white/10 transition">
+            <span class="material-symbols-outlined">notifications</span>
+            <span class="absolute top-1 right-1 block h-2.5 w-2.5 rounded-full bg-secondary-coral ring-2 ring-background-light dark:ring-background-dark"></span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Stats Cards -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+        <div class="flex flex-col gap-2 p-6 bg-card-light dark:bg-card-dark rounded-xl shadow-bouncy hover:shadow-bouncy-hover transition">
+          <p class="text-base font-medium">Listings Pending Review</p>
+          <p class="text-4xl font-bold">124</p>
+          <p class="text-green-500 text-sm flex items-center"><span class="material-symbols-outlined text-base mr-1">arrow_upward</span>+5%</p>
+        </div>
+        <div class="flex flex-col gap-2 p-6 bg-card-light dark:bg-card-dark rounded-xl shadow-bouncy hover:shadow-bouncy-hover transition">
+          <p class="text-base font-medium">Active Users Today</p>
+          <p class="text-4xl font-bold">1,230</p>
+          <p class="text-green-500 text-sm flex items-center"><span class="material-symbols-outlined text-base mr-1">arrow_upward</span>+2.1%</p>
+        </div>
+        <div class="flex flex-col gap-2 p-6 bg-card-light dark:bg-card-dark rounded-xl shadow-bouncy hover:shadow-bouncy-hover transition">
+          <p class="text-base font-medium">New Registrations (24h)</p>
+          <p class="text-4xl font-bold">88</p>
+          <p class="text-red-500 text-sm flex items-center"><span class="material-symbols-outlined text-base mr-1">arrow_downward</span>-1.5%</p>
+        </div>
+        <div class="flex flex-col gap-2 p-6 bg-card-light dark:bg-card-dark rounded-xl shadow-bouncy hover:shadow-bouncy-hover transition">
+          <p class="text-base font-medium">Revenue (This Month)</p>
+          <p class="text-4xl font-bold">$15,480</p>
+          <p class="text-green-500 text-sm flex items-center"><span class="material-symbols-outlined text-base mr-1">arrow_upward</span>+8.2%</p>
+        </div>
+      </div>
+
+      <!-- Moderation Queue -->
+      <div class="bg-card-light dark:bg-card-dark rounded-xl shadow-bouncy p-6">
+        <h2 class="text-2xl font-bold mb-4">Moderation Queue</h2>
+        <div class="overflow-x-auto">
+          <table class="w-full text-left">
+            <thead class="border-b border-border-light dark:border-border-dark">
+              <tr class="text-sm text-gray-500 dark:text-gray-400">
+                <th class="py-3 px-4 font-semibold w-12"><input type="checkbox" class="h-5 w-5 text-primary focus:ring-primary"/></th>
+                <th class="py-3 px-4 font-semibold">Item</th>
+                <th class="py-3 px-4 font-semibold">User</th>
+                <th class="py-3 px-4 font-semibold">Flagged Reason</th>
+                <th class="py-3 px-4 font-semibold text-right">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="hover:bg-background-light dark:hover:bg-background-dark transition">
+                <td class="py-3 px-4"><input type="checkbox" class="h-5 w-5 text-primary focus:ring-primary"/></td>
+                <td class="py-3 px-4 font-medium">Vintage Leather Sofa</td>
+                <td class="py-3 px-4 text-gray-600 dark:text-gray-300">john.doe@example.com</td>
+                <td class="py-3 px-4 text-gray-600 dark:text-gray-300">Inappropriate Images</td>
+                <td class="py-3 px-4 text-right">
+                  <button class="px-4 py-2 text-sm font-semibold text-white bg-green-500 rounded-full hover:bg-green-600">Approve</button>
+                  <button class="px-4 py-2 text-sm font-semibold text-white bg-secondary-coral rounded-full hover:bg-red-600">Reject</button>
+                </td>
+              </tr>
+              <!-- Repeat more rows as needed -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<!-- Auth & Logout Scripts -->
+<script src="scripts/auth.js"></script>
+<script>
+(function(){
+  const btn = document.getElementById('sidebarLogout');
+  if(btn){
+    btn.addEventListener('click', ()=>{
+      sessionStorage.removeItem('zzz_user');
+      localStorage.removeItem('zzz_user');
+      window.location.href = 'Login Page.html';
+    });
+  }
+})();
+</script>
+<script src="scripts/boot.js"></script>
+</body>
+</html>
