@@ -1,230 +1,875 @@
 <!DOCTYPE html>
-<html class="light" lang="en">
+<html lang="en" class="light">
 <head>
-<meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>ZipZapZoi - Admin Console</title>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>ZipZapZoi — Admin Console (Unified)</title>
 
-<!-- Tailwind + Fonts -->
+<!-- Tailwind -->
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-<link href="https://fonts.googleapis.com" rel="preconnect"/>
-<link crossorigin href="https://fonts.gstatic.com" rel="preconnect"/>
-<link href="https://fonts.googleapis.com/css2?family=Spline+Sans:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+<!-- Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Spline+Sans:wght@400;600;700&display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet"/>
 
-<!-- Tailwind Config -->
 <script>
-tailwind.config = {
-  darkMode: "class",
-  theme: {
-    extend: {
-      colors: {
-        "primary": "#007BFF",
-        "secondary-yellow": "#FFD700",
-        "secondary-coral": "#FF6F61",
-        "text-light": "#333333",
-        "text-dark": "#F4F6F8",
-        "background-light": "#F4F6F8",
-        "background-dark": "#121212",
-        "card-light": "#FFFFFF",
-        "card-dark": "#1E1E1E",
-        "border-light": "#E0E0E0",
-        "border-dark": "#2D2D2D",
-      },
-      fontFamily: {
-        "display": ["Spline Sans", "sans-serif"]
-      },
-      borderRadius: {
-        "DEFAULT": "0.75rem",
-        "lg": "1rem",
-        "xl": "1.5rem",
-        "full": "9999px",
-      },
-      boxShadow: {
-        'bouncy': '0px 10px 20px -5px rgba(0, 123, 255, 0.15), 0px 4px 6px -2px rgba(0, 123, 255, 0.1)',
-        'bouncy-hover': '0px 15px 25px -5px rgba(0, 123, 255, 0.2), 0px 8px 10px -4px rgba(0, 123, 255, 0.15)',
+  tailwind.config = {
+    darkMode: "class",
+    theme: {
+      extend: {
+        fontFamily: { display: ["Spline Sans","sans-serif"] },
+        colors: { primary: "#07A0FF", accent:"#FF6B6B" }
       }
-    },
-  },
-};
+    }
+  };
 </script>
 
-<!-- Custom Styles -->
 <style>
-.material-symbols-outlined {
-  font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
-  font-size: 24px;
-}
-.material-symbols-outlined.fill { font-variation-settings: 'FILL' 1; }
-body { min-height: 100vh; }
+  :root{ --bg:#f6f8fb; --card:#ffffff; --muted:#6b7280; --accent: #07A0FF; --accent-2:#7c3aed; }
+  html,body { height:100%; }
+  body { margin:0; font-family: "Spline Sans", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial; background:var(--bg); color:#0f172a; -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale; }
+  header, .card { transition: transform .28s cubic-bezier(.2,.9,.3,1), box-shadow .28s; }
+  header { background:linear-gradient(180deg, rgba(255,255,255,0.8), rgba(248,250,252,0.7)); backdrop-filter: blur(6px); border-bottom: 1px solid rgba(2,6,23,0.04); box-shadow: 0 6px 18px rgba(15,23,42,0.04); }
+  header .logo { display:flex;align-items:center;gap:.6rem;font-weight:700;font-size:1.05rem }
+  header .logo img { width:40px;height:40px;border-radius:8px;object-fit:cover; box-shadow: 0 8px 18px rgba(2,6,23,0.06); transform: translateZ(0); }
+  .container { max-width:1200px; margin: 24px auto; padding: 0 18px; }
+
+  /* card */
+  .card { background:var(--card); border-radius:14px; padding:16px; box-shadow: 0 10px 30px rgba(2,6,23,0.06); border:1px solid rgba(2,6,23,0.03); transform-style: preserve-3d; }
+  .card:hover { transform: translateY(-8px) scale(1.01); box-shadow: 0 26px 60px rgba(2,6,23,0.09); }
+
+  /* 3D tilt helper */
+  .tilt { will-change: transform; transition: transform .18s ease-out; transform-origin: center; }
+
+  /* roles style */
+  .roles-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:18px; }
+  .role-card { perspective:1200px; }
+  .role-card-inner { background: linear-gradient(180deg,#fff,#fbfdff); border-radius:14px; padding:16px; transform-style:preserve-3d; transition: transform .22s cubic-bezier(.2,.9,.3,1), box-shadow .22s; box-shadow: 0 8px 22px rgba(2,6,23,0.06); border:1px solid rgba(2,6,23,0.03); }
+  .role-card-inner:hover { transform: translateY(-8px) rotateX(2deg); box-shadow: 0 30px 60px rgba(2,6,23,0.12); }
+
+  .role-title { font-weight:700; font-size:1.02rem; }
+  .role-desc { color:var(--muted); font-size:.92rem; margin-top:6px; }
+
+  /* perms and pills */
+  .perms { margin-top:12px; display:flex; gap:8px; flex-wrap:wrap; }
+  .perm-pill { display:inline-flex; align-items:center; gap:10px; padding:8px 12px; border-radius:999px; background:linear-gradient(180deg,#f8fafc,#fff); border:1px solid rgba(2,6,23,0.03); box-shadow: 0 8px 20px rgba(2,6,23,0.03); font-size:.9rem; }
+  .perm-enabled { background: linear-gradient(90deg, rgba(7,160,255,0.08), rgba(124,58,237,0.06)); border-color: rgba(7,160,255,0.12); }
+
+  /* universal toggle */
+  .toggle-wrapper { position:relative; display:inline-flex; align-items:center; cursor:pointer; width:46px; height:26px; }
+  .toggle-input { position:absolute; opacity:0; width:0; height:0; }
+  .toggle-track { width:100%; height:100%; background:#e6e9ef; border-radius:999px; transition:background .18s; position:relative; }
+  .toggle-knob { position:absolute; left:3px; top:3px; width:20px; height:20px; background:#fff; border-radius:999px; transition: transform .18s cubic-bezier(.2,.9,.3,1); box-shadow: 0 6px 16px rgba(2,6,23,0.12); }
+  .toggle-input:checked + .toggle-track { background: linear-gradient(90deg,#7c3aed,#06b6d4); }
+  .toggle-input:checked + .toggle-track .toggle-knob { transform: translateX(20px); }
+
+  /* tables small */
+  table th, table td { padding:12px 10px; }
+  .muted { color:var(--muted); font-size:.95rem; }
+
+  /* header right */
+  .avatar { width:40px;height:40px;border-radius:10px;background:linear-gradient(135deg,#e6f7ff,#eef2ff);display:flex;align-items:center;justify-content:center;font-weight:700;color:var(--accent); box-shadow: 0 6px 18px rgba(2,6,23,0.06); }
+
+  /* small responsive */
+  @media (max-width:900px){
+    .container { padding: 0 12px; }
+    .roles-grid { grid-template-columns:repeat(1,1fr); }
+  }
+
+  /* fancy buttons */
+  .btn-3d { display:inline-flex; align-items:center; gap:8px; padding:10px 14px; border-radius:12px; background:linear-gradient(180deg,var(--accent),#0066cc); color:white; box-shadow: 0 10px 30px rgba(6,118,209,0.24), inset 0 -6px 12px rgba(255,255,255,0.06); transform: translateZ(0); transition: transform .18s, box-shadow .18s; }
+  .btn-3d:active { transform: translateY(2px) scale(.995); box-shadow:0 6px 18px rgba(6,118,209,0.16); }
+
+  /* subtle label */
+  .small { font-size:.88rem; color:var(--muted); }
+  .status-pill { padding:6px 10px; border-radius:999px; font-weight:600; font-size:.86rem; }
+
 </style>
 </head>
+<body>
 
-<body class="bg-background-light dark:bg-background-dark font-display text-text-light dark:text-text-dark">
-
-<!-- Admin Protection -->
+<!-- Quick admin auth check (requires zzz_user with role:'admin') -->
 <script>
 (function(){
   try {
-    const user = JSON.parse(sessionStorage.getItem('zzz_user') || localStorage.getItem('zzz_user') || 'null');
-    if(!user || user.role !== 'admin'){
-  alert('Admin access only.');
-  window.location.href = 'Login Page.html';
-}
-  } catch(e){
-    console.warn('Auth check failed', e);
-    window.location.href = 'Login Page.html';
-  }
+    const u = JSON.parse(sessionStorage.getItem('zzz_user') || localStorage.getItem('zzz_user') || 'null');
+    if(!u || u.role !== 'admin'){
+      document.documentElement.innerHTML = `<div style="height:100vh;display:flex;align-items:center;justify-content:center;font-family:system-ui">
+        <div style="text-align:center"><h2>Please login as admin to continue</h2><p class="small">You will be redirected to login page.</p></div></div>`;
+      setTimeout(()=> window.location.href='Login Page.html', 900);
+    }
+  } catch(e){ console.error(e); }
 })();
 </script>
 
-<!-- Global Navigation Bar -->
-<nav class="w-full flex justify-between items-center px-6 py-4 bg-white/80 dark:bg-background-dark/80 backdrop-blur-lg shadow-bouncy sticky top-0 z-50">
-  <div class="flex items-center gap-2">
-    <img src="Assets/zipzapzoi-logo.png" alt="ZipZapZoi Logo" class="h-8 w-8 object-contain"/>
-    <h1 class="text-2xl font-bold text-dark-charcoal dark:text-white tracking-tight">ZipZapZoi Admin</h1>
-  </div>
-  <!-- Dynamic Login / Logout Area -->
-  <div id="navAuthArea" class="flex items-center gap-4"></div>
-</nav>
-
-<!-- Layout -->
-<div class="relative flex h-auto min-h-screen w-full flex-row overflow-x-hidden">
-  <!-- Sidebar -->
-  <aside class="flex w-64 flex-col gap-y-6 border-r border-border-light dark:border-border-dark bg-card-light dark:bg-card-dark p-4 sticky top-0 h-screen">
-    <div class="flex items-center gap-3">
-      <div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDvczKv9cHhYiawUcdfFO-gOHBItiQewi9n_A2F2cPvoVoT4k0YFs-hYKd-VKBXB0SI9rvmDPy_Wkng2RRz8MJx0nJcmpu7TX-hQAMMFsOdLHuWdF1MLdTJnpBnRanA4iS5SVBghQ5zuiP_r2vRcHy1hVK7yc3nNEvYruzhuNaSNv4FIenJ-S_Jn5KJF92vq-20ed1hPXG4lG6KT36vCpmzJLIftsMslU_amOmVL1rcVv-TUnoVXPJUThZC7IgkBvemtFUXH5SVDRCL");'></div>
-      <div class="flex flex-col">
-        <h1 class="text-text-light dark:text-text-dark text-base font-bold">Admin Console</h1>
-        <p class="text-gray-500 dark:text-gray-400 text-sm">ZipZapZoi</p>
+<header class="p-4">
+  <div class="container flex items-center justify-between">
+    <div class="logo">
+      <img src="Assets/zipzapzoi-logo.png" alt="logo" />
+      <div style="display:flex;flex-direction:column">
+        <span style="font-weight:800">ZipZapZoi</span>
+        <span style="font-size:12px;color:#6b7280">Admin Console</span>
       </div>
     </div>
 
-    <nav class="flex flex-col gap-2 flex-grow">
-      <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-lg bg-primary/10 text-primary transition-all duration-200">
-        <span class="material-symbols-outlined fill">dashboard</span>
-        <p class="text-sm font-semibold">Dashboard</p>
-      </a>
-      <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-gray-100 dark:hover:bg-white/10">
-        <span class="material-symbols-outlined">gavel</span><p class="text-sm font-medium">Moderation</p>
-      </a>
-      <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-gray-100 dark:hover:bg-white/10">
-        <span class="material-symbols-outlined">group</span><p class="text-sm font-medium">User Management</p>
-      </a>
-      <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-gray-100 dark:hover:bg-white/10">
-        <span class="material-symbols-outlined">payments</span><p class="text-sm font-medium">Payments</p>
-      </a>
-      <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-gray-100 dark:hover:bg-white/10">
-        <span class="material-symbols-outlined">category</span><p class="text-sm font-medium">Categories</p>
-      </a>
-      <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-gray-100 dark:hover:bg-white/10">
-        <span class="material-symbols-outlined">analytics</span><p class="text-sm font-medium">Reports</p>
-      </a>
-    </nav>
+    <div style="display:flex;align-items:center;gap:14px">
+      <div style="display:flex;align-items:center;gap:8px">
+        <div style="position:relative">
+          <input id="globalSearch" placeholder="Search (listings, users...)" class="px-4 py-2 rounded-full border w-72 bg-white/90" />
+          <button id="searchBtn" class="btn-3d" style="position:absolute;right:4px;top:4px;padding:8px 10px;font-size:13px">Search</button>
+        </div>
+      </div>
 
-    <div class="flex flex-col gap-1">
-      <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-gray-100 dark:hover:bg-white/10">
-        <span class="material-symbols-outlined">settings</span><p class="text-sm font-medium">Settings</p>
-      </a>
-      <button id="sidebarLogout" class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-gray-100 dark:hover:bg-white/10 text-left">
-        <span class="material-symbols-outlined">logout</span><p class="text-sm font-medium">Log Out</p>
-      </button>
+      <div id="navUser" class="flex items-center gap-3">
+        <!-- filled dynamically -->
+      </div>
+      <button id="globalLogout" class="px-3 py-2 rounded bg-red-600 text-white">Logout</button>
+    </div>
+  </div>
+</header>
+
+<div class="container" style="display:flex;gap:20px;align-items:flex-start">
+  <!-- sidebar -->
+  <aside style="width:260px;flex-shrink:0">
+    <div class="card" style="margin-bottom:16px">
+      <h3 class="font-semibold">Sections</h3>
+      <div style="margin-top:10px; display:flex;flex-direction:column;gap:8px">
+        <button class="tab-btn px-3 py-2 text-left rounded tilt" data-tab="dashboard">Dashboard</button>
+        <button class="tab-btn px-3 py-2 text-left rounded tilt" data-tab="moderation">Moderation</button>
+        <button class="tab-btn px-3 py-2 text-left rounded tilt" data-tab="users">Users</button>
+        <button class="tab-btn px-3 py-2 text-left rounded tilt" data-tab="roles">Roles & Permissions</button>
+        <button class="tab-btn px-3 py-2 text-left rounded tilt" data-tab="reports">Reports</button>
+        <button class="tab-btn px-3 py-2 text-left rounded tilt" data-tab="payments">Payments</button>
+        <button class="tab-btn px-3 py-2 text-left rounded tilt" data-tab="inbox">Inbox</button>
+        <button class="tab-btn px-3 py-2 text-left rounded tilt" data-tab="customize">Customize</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <h4 class="font-semibold">Quick Actions</h4>
+      <div style="margin-top:10px;display:flex;flex-direction:column;gap:8px">
+        <button id="btnRefreshData" class="px-3 py-2 rounded bg-slate-100 tilt">Refresh Data</button>
+        <button id="btnExportAll" class="px-3 py-2 rounded bg-slate-100 tilt">Export Backup</button>
+        <button id="btnResetMock" class="px-3 py-2 rounded bg-yellow-100 tilt">Reset Mock Data</button>
+      </div>
     </div>
   </aside>
 
-  <!-- Main Content -->
-  <main class="flex-1 p-8">
-    <div class="w-full max-w-7xl mx-auto">
-      <!-- Dashboard Header -->
-      <div class="flex flex-wrap justify-between gap-4 items-center mb-8">
-        <div class="flex flex-col gap-1">
-          <p class="text-text-light dark:text-text-dark text-4xl font-bold tracking-tight">Dashboard</p>
-          <p class="text-gray-500 dark:text-gray-400 text-base">Welcome back, Admin! Here's what's happening today.</p>
+  <!-- main content -->
+  <main style="flex:1">
+    <!-- Dashboard -->
+    <section id="dashboard" class="tab-content">
+      <div class="card" style="display:flex;justify-content:space-between;align-items:center">
+        <div>
+          <h2 class="text-2xl font-bold">Overview</h2>
+          <p class="small muted">Live summary (mock). Replace mock API with real backend endpoints.</p>
         </div>
-        <div class="flex items-center gap-4">
-          <div class="relative">
-            <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">search</span>
-            <input type="text" placeholder="Search..." class="bg-card-light dark:bg-card-dark border border-border-light dark:border-border-dark rounded-lg py-2 pl-10 pr-4 focus:ring-2 focus:ring-primary"/>
+        <div style="display:flex;gap:18px">
+          <div style="text-align:center">
+            <div id="stat-users" class="text-3xl font-bold">0</div>
+            <div class="small muted">Active Users</div>
           </div>
-          <button class="relative p-2 rounded-full hover:bg-gray-200 dark:hover:bg-white/10 transition">
-            <span class="material-symbols-outlined">notifications</span>
-            <span class="absolute top-1 right-1 block h-2.5 w-2.5 rounded-full bg-secondary-coral ring-2 ring-background-light dark:ring-background-dark"></span>
-          </button>
+          <div style="text-align:center">
+            <div id="stat-revenue" class="text-3xl font-bold">$0</div>
+            <div class="small muted">Revenue</div>
+          </div>
+          <div style="text-align:center">
+            <div id="stat-listings" class="text-3xl font-bold">0</div>
+            <div class="small muted">New Listings</div>
+          </div>
+          <div style="text-align:center">
+            <div id="stat-flags" class="text-3xl font-bold">0</div>
+            <div class="small muted">Flagged</div>
+          </div>
         </div>
       </div>
 
-      <!-- Stats Cards -->
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-        <div class="flex flex-col gap-2 p-6 bg-card-light dark:bg-card-dark rounded-xl shadow-bouncy hover:shadow-bouncy-hover transition">
-          <p class="text-base font-medium">Listings Pending Review</p>
-          <p class="text-4xl font-bold">124</p>
-          <p class="text-green-500 text-sm flex items-center"><span class="material-symbols-outlined text-base mr-1">arrow_upward</span>+5%</p>
+      <div style="display:grid;grid-template-columns:1fr 420px;gap:16px;margin-top:16px">
+        <div class="card">
+          <h3 class="font-semibold">Recent Activity</h3>
+          <ul id="activityList" class="mt-3 small muted" style="max-height:260px;overflow:auto"></ul>
         </div>
-        <div class="flex flex-col gap-2 p-6 bg-card-light dark:bg-card-dark rounded-xl shadow-bouncy hover:shadow-bouncy-hover transition">
-          <p class="text-base font-medium">Active Users Today</p>
-          <p class="text-4xl font-bold">1,230</p>
-          <p class="text-green-500 text-sm flex items-center"><span class="material-symbols-outlined text-base mr-1">arrow_upward</span>+2.1%</p>
+
+        <div class="card">
+          <h3 class="font-semibold">Site Metrics</h3>
+          <canvas id="chartLine" height="200" class="mt-2"></canvas>
         </div>
-        <div class="flex flex-col gap-2 p-6 bg-card-light dark:bg-card-dark rounded-xl shadow-bouncy hover:shadow-bouncy-hover transition">
-          <p class="text-base font-medium">New Registrations (24h)</p>
-          <p class="text-4xl font-bold">88</p>
-          <p class="text-red-500 text-sm flex items-center"><span class="material-symbols-outlined text-base mr-1">arrow_downward</span>-1.5%</p>
+      </div>
+    </section>
+
+    <!-- Moderation -->
+    <section id="moderation" class="tab-content hidden">
+      <div class="card flex items-center justify-between">
+        <div>
+          <h2 class="text-xl font-bold">Moderation Queue</h2>
+          <p class="small muted">Approve, Reject or Flag listings.</p>
         </div>
-        <div class="flex flex-col gap-2 p-6 bg-card-light dark:bg-card-dark rounded-xl shadow-bouncy hover:shadow-bouncy-hover transition">
-          <p class="text-base font-medium">Revenue (This Month)</p>
-          <p class="text-4xl font-bold">$15,480</p>
-          <p class="text-green-500 text-sm flex items-center"><span class="material-symbols-outlined text-base mr-1">arrow_upward</span>+8.2%</p>
+        <div><button id="refreshModeration" class="px-3 py-2 rounded bg-slate-100">Refresh</button></div>
+      </div>
+      <div id="moderationList" class="mt-4"></div>
+    </section>
+
+    <!-- Users -->
+    <section id="users" class="tab-content hidden">
+      <div class="card flex items-center justify-between">
+        <div>
+          <h2 class="text-xl font-bold">User Management</h2>
+          <p class="small muted">Search, view and assign roles.</p>
+        </div>
+        <div style="display:flex;gap:8px;align-items:center">
+          <input id="userSearch" placeholder="Search users..." class="px-3 py-2 rounded border" />
+          <button id="btnAddUser" class="px-3 py-2 rounded bg-primary text-white">Add User</button>
         </div>
       </div>
 
-      <!-- Moderation Queue -->
-      <div class="bg-card-light dark:bg-card-dark rounded-xl shadow-bouncy p-6">
-        <h2 class="text-2xl font-bold mb-4">Moderation Queue</h2>
-        <div class="overflow-x-auto">
+      <div class="card mt-4">
+        <table class="w-full text-left">
+          <thead><tr><th class="small muted">Name</th><th class="small muted">Email</th><th class="small muted">Role</th><th class="small muted">Actions</th></tr></thead>
+          <tbody id="usersTable"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Roles & Permissions (enhanced) -->
+    <section id="roles" class="tab-content hidden">
+      <div class="card flex items-center justify-between">
+        <div>
+          <h2 class="text-xl font-bold">Roles & Permissions</h2>
+          <p class="small muted">Create roles and fine-tune permissions.</p>
+        </div>
+        <div><button id="btnOpenRoles" class="px-3 py-2 rounded bg-primary text-white">Open Roles Editor</button></div>
+      </div>
+
+      <div id="rolesPreview" class="card mt-4">
+        <h3 class="font-semibold">Current Roles</h3>
+        <div id="rolesListGrid" class="roles-grid mt-3"></div>
+      </div>
+    </section>
+
+    <!-- Reports -->
+    <section id="reports" class="tab-content hidden">
+      <div class="card flex items-center justify-between">
+        <div>
+          <h2 class="text-xl font-bold">Reports & Analytics</h2>
+          <p class="small muted">Charts are mocked for demo; replace with backend metrics.</p>
+        </div>
+        <div><button id="btnExportReports" class="px-3 py-2 rounded border">Export CSV</button></div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:1fr 420px;gap:16px;margin-top:16px">
+        <div class="card"><h4 class="font-semibold">Traffic</h4><canvas id="chartBar" height="240" class="mt-2"></canvas></div>
+        <div class="card"><h4 class="font-semibold">Conversion Funnel</h4><canvas id="chartDough" height="240" class="mt-2"></canvas></div>
+      </div>
+    </section>
+
+    <!-- Payments -->
+    <section id="payments" class="tab-content hidden">
+      <div class="card flex items-center justify-between">
+        <div><h2 class="text-xl font-bold">Payments & Subscriptions</h2><p class="small muted">Overview of revenue & transactions.</p></div>
+        <div><button class="px-3 py-2 rounded bg-primary text-white">Generate Bulk Invoices</button></div>
+      </div>
+
+      <div class="card mt-4">
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <div>
+            <p class="small muted">Total Revenue</p>
+            <div id="pay-revenue" class="text-3xl font-bold">$0</div>
+          </div>
+          <div style="display:flex;gap:12px">
+            <button class="px-3 py-2 rounded bg-slate-100">Filter</button>
+            <button class="px-3 py-2 rounded bg-slate-100">Export</button>
+          </div>
+        </div>
+
+        <div style="margin-top:16px;overflow:auto">
           <table class="w-full text-left">
-            <thead class="border-b border-border-light dark:border-border-dark">
-              <tr class="text-sm text-gray-500 dark:text-gray-400">
-                <th class="py-3 px-4 font-semibold w-12"><input type="checkbox" class="h-5 w-5 text-primary focus:ring-primary"/></th>
-                <th class="py-3 px-4 font-semibold">Item</th>
-                <th class="py-3 px-4 font-semibold">User</th>
-                <th class="py-3 px-4 font-semibold">Flagged Reason</th>
-                <th class="py-3 px-4 font-semibold text-right">Actions</th>
-              </tr>
+            <thead class="small muted">
+              <tr><th>Transaction ID</th><th>User</th><th>Amount</th><th>Date</th><th>Status</th><th>Actions</th></tr>
             </thead>
-            <tbody>
-              <tr class="hover:bg-background-light dark:hover:bg-background-dark transition">
-                <td class="py-3 px-4"><input type="checkbox" class="h-5 w-5 text-primary focus:ring-primary"/></td>
-                <td class="py-3 px-4 font-medium">Vintage Leather Sofa</td>
-                <td class="py-3 px-4 text-gray-600 dark:text-gray-300">john.doe@example.com</td>
-                <td class="py-3 px-4 text-gray-600 dark:text-gray-300">Inappropriate Images</td>
-                <td class="py-3 px-4 text-right">
-                  <button class="px-4 py-2 text-sm font-semibold text-white bg-green-500 rounded-full hover:bg-green-600">Approve</button>
-                  <button class="px-4 py-2 text-sm font-semibold text-white bg-secondary-coral rounded-full hover:bg-red-600">Reject</button>
-                </td>
-              </tr>
-              <!-- Repeat more rows as needed -->
-            </tbody>
+            <tbody id="paymentsTable"></tbody>
           </table>
         </div>
       </div>
-    </div>
+    </section>
+
+    <!-- Inbox -->
+    <section id="inbox" class="tab-content hidden">
+      <div class="card flex items-center justify-between">
+        <div><h2 class="text-xl font-bold">Inbox</h2><p class="small muted">User messages & reports.</p></div>
+        <div><button id="btnCompose" class="px-3 py-2 rounded bg-primary text-white">Compose</button></div>
+      </div>
+      <div id="inboxList" class="card mt-4"></div>
+    </section>
+
+    <!-- Customize -->
+    <section id="customize" class="tab-content hidden">
+      <div class="card flex items-center justify-between">
+        <div><h2 class="text-xl font-bold">Customize Layout</h2><p class="small muted">Save layout preferences locally.</p></div>
+        <div><button id="btnCustomize" class="px-3 py-2 rounded bg-primary text-white">Open</button></div>
+      </div>
+
+      <div class="card mt-4">
+        <label class="flex items-center justify-between p-3 rounded bg-slate-50">
+          <div><strong>Show Gridlines</strong><div class="small muted">Overlay grid to align widgets</div></div>
+          <label class="toggle-wrapper"><input id="custGrid" class="toggle-input" type="checkbox"><div class="toggle-track"><div class="toggle-knob"></div></div></label>
+        </label>
+        <label class="flex items-center justify-between p-3 rounded bg-slate-50 mt-3">
+          <div><strong>Compact Mode</strong><div class="small muted">Smaller padding & font</div></div>
+          <label class="toggle-wrapper"><input id="custCompact" class="toggle-input" type="checkbox"><div class="toggle-track"><div class="toggle-knob"></div></div></label>
+        </label>
+        <div style="margin-top:12px"><button id="saveCustom" class="px-3 py-2 rounded bg-primary text-white">Save</button></div>
+      </div>
+    </section>
   </main>
 </div>
 
-<!-- Auth & Logout Scripts -->
-<script src="scripts/auth.js"></script>
+<!-- Roles Modal -->
+<div id="rolesModal" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4">
+  <div class="bg-white rounded-xl p-6 w-full max-w-3xl">
+    <div style="display:flex;justify-content:space-between;align-items:center">
+      <h3 class="text-xl font-bold">Roles & Permissions Editor</h3>
+      <button id="closeRolesModal" class="small muted">Close</button>
+    </div>
+
+    <div style="margin-top:12px;display:flex;gap:14px">
+      <div style="width:32%">
+        <h4 class="font-semibold">Roles</h4>
+        <ul id="rolesEditorList" class="mt-3 space-y-2 small muted" style="max-height:360px;overflow:auto"></ul>
+        <button id="btnNewRole" class="mt-3 px-3 py-2 rounded bg-primary text-white">New Role</button>
+      </div>
+
+      <div style="width:68%">
+        <h4 class="font-semibold">Role Details</h4>
+        <div id="roleEditorDetail" class="mt-3"></div>
+      </div>
+    </div>
+
+    <div style="margin-top:12px;display:flex;justify-content:flex-end;gap:8px">
+      <button id="btnRolesClose" class="px-3 py-2 rounded border">Close</button>
+      <button id="btnRolesSave" class="px-3 py-2 rounded bg-primary text-white">Save</button>
+    </div>
+  </div>
+</div>
+
+<!-- Compose Modal -->
+<div id="composeModal" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4">
+  <div class="bg-white rounded-xl p-6 w-full max-w-lg">
+    <div style="display:flex;justify-content:space-between;align-items:center">
+      <h3 class="text-xl font-bold">Compose Message</h3>
+      <button id="closeCompose" class="small muted">Close</button>
+    </div>
+    <div style="margin-top:12px">
+      <input id="composeTo" placeholder="To (email)" class="w-full px-3 py-2 border rounded" />
+      <input id="composeSubject" placeholder="Subject" class="w-full px-3 py-2 border rounded mt-2" />
+      <textarea id="composeBody" placeholder="Message" class="w-full px-3 py-2 border rounded mt-2" rows="6"></textarea>
+      <div style="display:flex;justify-content:flex-end;margin-top:8px"><button id="sendCompose" class="px-3 py-2 bg-primary text-white rounded">Send</button></div>
+    </div>
+  </div>
+</div>
+
 <script>
-(function(){
-  const btn = document.getElementById('sidebarLogout');
-  if(btn){
-    btn.addEventListener('click', ()=>{
-      sessionStorage.removeItem('zzz_user');
-      localStorage.removeItem('zzz_user');
-      window.location.href = 'Login Page.html';
-    });
+/* =========================================================
+   Mock API + App (self-contained)
+   - Saves to localStorage keys used earlier in your project
+   ========================================================= */
+
+const API = {
+  async mockDelay(ms=180){ return new Promise(r=>setTimeout(r,ms)); },
+
+  async getDashboard(){
+    await API.mockDelay();
+    const reports = JSON.parse(localStorage.getItem('zzz_reports_v1') || '{}');
+    return {
+      users: reports.users || 1250,
+      revenue: reports.revenue || 15480,
+      listings: reports.listings || 317,
+      flags: reports.flags || 45,
+      activity: reports.activity || [
+        'User alice posted a listing',
+        'Listing #1245 flagged for review',
+        'Payment $120 processed (order #4001)',
+      ]
+    };
+  },
+
+  async getModerationQueue(){
+    await API.mockDelay();
+    let q = JSON.parse(localStorage.getItem('zzz_moderation_v1') || 'null');
+    if(!q){
+      q = [
+        { id:'m1', title:'Used Bicycle', user:'alice@example.com', reason:'Possible spam', created:Date.now()-3600e3*3 },
+        { id:'m2', title:'Leather Sofa', user:'john@example.com', reason:'Inappropriate images', created:Date.now()-3600e3*12 },
+      ];
+      localStorage.setItem('zzz_moderation_v1', JSON.stringify(q));
+    }
+    return q;
+  },
+
+  async takeModerationAction(id, action, note=''){
+    await API.mockDelay(220);
+    let q = JSON.parse(localStorage.getItem('zzz_moderation_v1') || '[]');
+    q = q.filter(x=> x.id !== id);
+    localStorage.setItem('zzz_moderation_v1', JSON.stringify(q));
+    return { ok:true };
+  },
+
+  async getUsers(){
+    await API.mockDelay();
+    let u = JSON.parse(localStorage.getItem('zzz_users_v1') || 'null');
+    if(!u){
+      u = [
+        { id:'u1', name:'Alice', email:'alice@example.com', role:'Viewer' },
+        { id:'u2', name:'John', email:'john@example.com', role:'Moderator' },
+        { id:'u3', name:'Ravi', email:'ravi@mine.com', role:'Super Admin' },
+      ];
+      localStorage.setItem('zzz_users_v1', JSON.stringify(u));
+    }
+    return u;
+  },
+
+  async saveUsers(users){
+    localStorage.setItem('zzz_users_v1', JSON.stringify(users));
+    return { ok:true };
+  },
+
+  async getRoles(){
+    await API.mockDelay();
+    let roles = JSON.parse(localStorage.getItem('zzz_roles_v1') || 'null');
+    if(!roles){
+      roles = [
+        { id:'role_admin', name:'Super Admin', desc:'Full access', perms:{ dashboard:true, users:true, analytics:true, payments:true, settings:true } },
+        { id:'role_mod', name:'Moderator', desc:'Moderation role', perms:{ dashboard:true, users:true, analytics:false, payments:false, settings:false } },
+        { id:'role_viewer', name:'Viewer', desc:'Read-only', perms:{ dashboard:true, users:false, analytics:false, payments:false, settings:false } }
+      ];
+      localStorage.setItem('zzz_roles_v1', JSON.stringify(roles));
+    }
+    return roles;
+  },
+
+  async saveRoles(roles){
+    localStorage.setItem('zzz_roles_v1', JSON.stringify(roles));
+    return { ok:true };
+  },
+
+  async getReports(){
+    await API.mockDelay();
+    let r = JSON.parse(localStorage.getItem('zzz_reports_v1') || 'null');
+    if(!r){
+      r = { users:1250, revenue:15480, listings:317, flags:45, traffic:[10,20,15,25,30,45,60], monthly:[120,150,180,140,210,260], funnel:[1000,800,350,120] };
+      localStorage.setItem('zzz_reports_v1', JSON.stringify(r));
+    }
+    return r;
+  },
+
+  async getInbox(){
+    await API.mockDelay();
+    let m = JSON.parse(localStorage.getItem('zzz_inbox_v1') || 'null');
+    if(!m){
+      m = [
+        { id:'msg1', from:'user1@example.com', subject:'Help with listing', body:'Hi admin, please help...', read:false, created:Date.now()-3600e3*10 },
+        { id:'msg2', from:'customer@example.com', subject:'Payment issue', body:'Payment failed for order 5012', read:false, created:Date.now()-3600e3*24 },
+      ];
+      localStorage.setItem('zzz_inbox_v1', JSON.stringify(m));
+    }
+    return m;
+  },
+
+  async sendMessage(to, subject, body){
+    await API.mockDelay();
+    let m = JSON.parse(localStorage.getItem('zzz_inbox_v1') || '[]');
+    m.unshift({ id:'msg_'+Date.now(), from:'admin@zipzapzoi', subject, body, read:false, created:Date.now() });
+    localStorage.setItem('zzz_inbox_v1', JSON.stringify(m));
+    return { ok:true };
   }
-})();
+};
+
+const state = { roles:[], users:[], moderation:[], reports:null, inbox:[] };
+
+/* Helpers */
+function escapeHtml(s){ if(!s) return ''; return String(s).replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;').replaceAll('"','&quot;').replaceAll("'",'&#039;'); }
+
+/* Init App */
+async function initApp(){
+  // fill nav user
+  const current = JSON.parse(sessionStorage.getItem('zzz_user') || localStorage.getItem('zzz_user') || 'null');
+  const navUser = document.getElementById('navUser');
+  if(current){
+    navUser.innerHTML = `<div style="display:flex;align-items:center;gap:10px">
+      <div class="avatar">${(current.name||current.email||'A').charAt(0).toUpperCase()}</div>
+      <div style="display:flex;flex-direction:column"><div style="font-weight:700">${current.name||current.email}</div><div class="small muted">${current.email||''}</div></div>
+    </div>`;
+  }
+
+  // logout
+  document.getElementById('globalLogout').addEventListener('click', ()=> {
+    sessionStorage.removeItem('zzz_user'); localStorage.removeItem('zzz_user'); window.location.href='Login Page.html';
+  });
+
+  // search
+  document.getElementById('searchBtn').addEventListener('click', ()=> {
+    const q = (document.getElementById('globalSearch').value || '').trim();
+    if(!q) return alert('Enter search query');
+    window.location.href = `SearchResult.html?q=${encodeURIComponent(q)}`;
+  });
+  document.getElementById('globalSearch').addEventListener('keydown', (e) => { if(e.key==='Enter') document.getElementById('searchBtn').click(); });
+
+  // tab wiring
+  document.querySelectorAll('.tab-btn').forEach(btn=>{
+    btn.addEventListener('click', ()=> {
+      document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+      btn.classList.add('active');
+      showTab(btn.dataset.tab);
+    });
+  });
+  document.querySelector('.tab-btn[data-tab="dashboard"]').classList.add('active');
+  showTab('dashboard');
+
+  // quick actions
+  document.getElementById('btnRefreshData').addEventListener('click', loadAllData);
+  document.getElementById('btnExportAll').addEventListener('click', exportAllData);
+  document.getElementById('btnResetMock').addEventListener('click', resetMockData);
+  document.getElementById('refreshModeration').addEventListener('click', renderModeration);
+  document.getElementById('btnOpenRoles').addEventListener('click', ()=> { document.getElementById('rolesModal').classList.remove('hidden'); renderRolesEditor(); });
+  document.getElementById('btnCustomize').addEventListener('click', ()=> { window.location.hash = '#customize'; showTab('customize'); });
+
+  // roles modal wiring
+  document.getElementById('closeRolesModal').addEventListener('click', ()=> document.getElementById('rolesModal').classList.add('hidden'));
+  document.getElementById('btnRolesClose').addEventListener('click', ()=> document.getElementById('rolesModal').classList.add('hidden'));
+  document.getElementById('btnRolesSave').addEventListener('click', async ()=> { await API.saveRoles(state.roles); renderRolesPreview(); alert('Roles saved (mock).'); document.getElementById('rolesModal').classList.add('hidden'); });
+
+  document.getElementById('btnNewRole').addEventListener('click', ()=> {
+    const rid = 'r_'+Math.random().toString(36).slice(2,8);
+    state.roles.push({ id:rid, name:'New Role', desc:'', perms:{ dashboard:false, users:false, analytics:false, payments:false, settings:false }});
+    renderRolesEditor();
+  });
+
+  // inbox compose
+  document.getElementById('btnCompose').addEventListener('click', ()=> document.getElementById('composeModal').classList.remove('hidden'));
+  document.getElementById('closeCompose').addEventListener('click', ()=> document.getElementById('composeModal').classList.add('hidden'));
+  document.getElementById('sendCompose').addEventListener('click', async ()=> {
+    const to = document.getElementById('composeTo').value;
+    const subject = document.getElementById('composeSubject').value;
+    const body = document.getElementById('composeBody').value;
+    if(!subject || !body) return alert('Enter subject and message');
+    await API.sendMessage(to, subject, body);
+    document.getElementById('composeModal').classList.add('hidden');
+    await renderInbox();
+    alert('Message sent (mock).');
+  });
+
+  // users
+  document.getElementById('userSearch').addEventListener('input', renderUsers);
+  document.getElementById('btnAddUser').addEventListener('click', ()=> {
+    const n = prompt('Enter new user email (mock):'); if(!n) return;
+    state.users.push({ id:'u_'+Date.now(), name:n.split('@')[0], email:n, role:'Viewer' });
+    API.saveUsers(state.users);
+    renderUsers();
+  });
+
+  // customize save
+  document.getElementById('saveCustom').addEventListener('click', saveCustomize);
+
+  // report export
+  document.getElementById('btnExportReports').addEventListener('click', ()=> {
+    const data = state.reports || {};
+    const csv = Object.keys(data).filter(k=>!Array.isArray(data[k])).map(k=>`${k},${data[k]}`).join('\n');
+    const blob = new Blob([csv], {type:'text/csv'}); const url = URL.createObjectURL(blob);
+    const a = document.createElement('a'); a.href = url; a.download = 'reports.csv'; a.click(); URL.revokeObjectURL(url);
+  });
+
+  // init
+  await loadAllData();
+  initCharts();
+}
+
+/* show tab */
+function showTab(name){
+  document.querySelectorAll('.tab-content').forEach(t=>t.classList.add('hidden'));
+  const el = document.getElementById(name);
+  if(el) el.classList.remove('hidden');
+  // scroll to top for clarity
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+/* loadAllData */
+async function loadAllData(){
+  const dash = await API.getDashboard();
+  state.reports = await API.getReports();
+  state.moderation = await API.getModerationQueue();
+  state.users = await API.getUsers();
+  state.roles = await API.getRoles();
+  state.inbox = await API.getInbox();
+
+  document.getElementById('stat-users').textContent = (dash.users || 0).toLocaleString();
+  document.getElementById('stat-revenue').textContent = '$' + (dash.revenue || 0).toLocaleString();
+  document.getElementById('stat-listings').textContent = (dash.listings || 0).toLocaleString();
+  document.getElementById('stat-flags').textContent = (dash.flags || 0).toLocaleString();
+
+  const al = document.getElementById('activityList'); al.innerHTML = '';
+  (dash.activity || []).forEach(a=>{ const li=document.createElement('li'); li.textContent=a; al.appendChild(li); });
+
+  // payments example fill
+  document.getElementById('pay-revenue').textContent = '$' + ((state.reports && state.reports.revenue) || 0).toLocaleString();
+  renderModeration();
+  renderUsers();
+  renderRolesPreview();
+  renderRolesEditor();
+  renderReportsCharts();
+  renderInbox();
+  renderPaymentsTable();
+}
+
+/* export / reset */
+function exportAllData(){
+  const obj = { roles: state.roles, users:state.users, moderation: state.moderation, reports:state.reports, inbox:state.inbox };
+  const blob = new Blob([JSON.stringify(obj,null,2)], {type:'application/json'}); const url = URL.createObjectURL(blob);
+  const a = document.createElement('a'); a.href=url; a.download='zipzapzoi_admin_backup.json'; a.click(); URL.revokeObjectURL(url);
+}
+function resetMockData(){ if(!confirm('Reset all mock data?')) return; localStorage.removeItem('zzz_roles_v1'); localStorage.removeItem('zzz_users_v1'); localStorage.removeItem('zzz_moderation_v1'); localStorage.removeItem('zzz_reports_v1'); localStorage.removeItem('zzz_inbox_v1'); loadAllData(); alert('Mock data reset.'); }
+
+/* Moderation render */
+async function renderModeration(){
+  state.moderation = await API.getModerationQueue();
+  const container = document.getElementById('moderationList'); container.innerHTML = '';
+  if(!state.moderation || state.moderation.length===0){ container.innerHTML = '<div class="card muted">No items</div>'; return; }
+  state.moderation.forEach(item=>{
+    const el = document.createElement('div'); el.className='card mt-3 tilt';
+    el.innerHTML = `<div style="display:flex;gap:16px;align-items:center">
+      <div style="width:6px;height:64px;background:linear-gradient(180deg,#ff7a5a,#f97316);border-radius:8px"></div>
+      <div style="flex:1">
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <div>
+            <div style="font-weight:700">${escapeHtml(item.title)}</div>
+            <div class="small muted">${escapeHtml(item.user)} · ${escapeHtml(item.reason)}</div>
+          </div>
+          <div style="display:flex;gap:8px">
+            <button data-id="${item.id}" class="approve px-3 py-1 rounded bg-green-600 text-white">Approve</button>
+            <button data-id="${item.id}" class="reject px-3 py-1 rounded bg-red-600 text-white">Reject</button>
+          </div>
+        </div>
+      </div>
+    </div>`;
+    container.appendChild(el);
+  });
+
+  container.querySelectorAll('.approve').forEach(b=> b.addEventListener('click', async ()=> {
+    const id = b.dataset.id; await API.takeModerationAction(id,'approve'); await renderModeration(); alert('Approved (mock).');
+  }));
+  container.querySelectorAll('.reject').forEach(b=> b.addEventListener('click', async ()=> {
+    const id = b.dataset.id; await API.takeModerationAction(id,'reject'); await renderModeration(); alert('Rejected (mock).');
+  }));
+}
+
+/* Users render */
+function renderUsers(){
+  const q = (document.getElementById('userSearch').value||'').toLowerCase();
+  const users = state.users || [];
+  const tb = document.getElementById('usersTable'); tb.innerHTML = '';
+  users.filter(u => (u.name||'').toLowerCase().includes(q) || (u.email||'').toLowerCase().includes(q)).forEach(u=>{
+    const tr = document.createElement('tr');
+    tr.innerHTML = `<td class="py-2">${escapeHtml(u.name)}</td><td>${escapeHtml(u.email)}</td>
+      <td><select data-id="${escapeHtml(u.id)}" class="assignRole px-2 py-1 border rounded">${state.roles.map(r=>`<option ${r.name===u.role ? 'selected':''}>${escapeHtml(r.name)}</option>`).join('')}</select></td>
+      <td><button data-id="${escapeHtml(u.id)}" class="btnDel px-2 py-1 rounded bg-red-50 text-red-600">Delete</button></td>`;
+    tb.appendChild(tr);
+  });
+
+  document.querySelectorAll('.assignRole').forEach(sel => {
+    sel.addEventListener('change', async ()=> {
+      const id = sel.dataset.id; const role = sel.value;
+      const u = state.users.find(x=>x.id===id);
+      if(u) { u.role = role; await API.saveUsers(state.users); alert('Role assigned (mock).'); renderUsers(); }
+    });
+  });
+  document.querySelectorAll('.btnDel').forEach(b => {
+    b.addEventListener('click', ()=> {
+      const id = b.dataset.id; if(!confirm('Delete user?')) return;
+      state.users = state.users.filter(x=>x.id!==id); API.saveUsers(state.users); renderUsers();
+    });
+  });
+}
+
+/* Roles preview (enhanced) */
+function renderRolesPreview(){
+  const container = document.getElementById('rolesListGrid'); container.innerHTML = '';
+  if(!state.roles || state.roles.length===0){ container.innerHTML = '<div class="muted">No roles defined.</div>'; return; }
+  state.roles.forEach((r, idx) => {
+    const wrap = document.createElement('div'); wrap.className='role-card';
+    wrap.innerHTML = `<div class="role-card-inner tilt" data-idx="${idx}">
+      <div style="display:flex;gap:12px;align-items:center">
+        <div style="width:52px;height:52px;border-radius:12px; display:flex;align-items:center;justify-content:center;font-weight:700;color:#fff;background:linear-gradient(135deg,#7c3aed,#06b6d4)"> ${escapeHtml((r.name||'R').slice(0,1).toUpperCase())} </div>
+        <div>
+          <div class="role-title">${escapeHtml(r.name)}</div>
+          <div class="role-desc">${escapeHtml(r.desc||'')}</div>
+        </div>
+      </div>
+      <div class="perms">
+        ${Object.keys(r.perms||{}).map(k=>{
+          const checked = r.perms[k] ? 'checked' : '';
+          return `<label class="perm-pill ${r.perms[k] ? 'perm-enabled' : ''}">
+            <span class="small">${escapeHtml(k)}</span>
+            <label class="toggle-wrapper">
+              <input data-role-idx="${idx}" data-perm="${escapeHtml(k)}" type="checkbox" class="toggle-input role-perm-toggle" ${checked} />
+              <div class="toggle-track"><div class="toggle-knob"></div></div>
+            </label>
+          </label>`;
+        }).join('')}
+      </div>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-top:12px">
+        <div class="small muted">ID: ${escapeHtml(r.id||('r'+idx))}</div>
+        <div style="display:flex;gap:8px">
+          <button data-idx="${idx}" class="editRole px-3 py-1 rounded border small">Edit</button>
+          <button data-idx="${idx}" class="delRole px-3 py-1 rounded bg-red-50 text-red-600 small">Delete</button>
+        </div>
+      </div>
+    </div>`;
+    container.appendChild(wrap);
+
+    // tilt effect mousemove
+    const inner = wrap.querySelector('.role-card-inner');
+    inner.addEventListener('mousemove', e=>{
+      const rect = inner.getBoundingClientRect();
+      const dx = (e.clientX - rect.left) - rect.width/2;
+      const dy = (e.clientY - rect.top) - rect.height/2;
+      const rx = -(dy / rect.height) * 6;
+      const ry = (dx / rect.width) * 6;
+      inner.style.transform = `translateY(-6px) rotateX(${rx}deg) rotateY(${ry}deg)`;
+    });
+    inner.addEventListener('mouseleave', ()=> inner.style.transform = '');
+  });
+
+  // toggles
+  container.querySelectorAll('.role-perm-toggle').forEach(inp=>{
+    inp.addEventListener('change', async (ev)=>{
+      const el = ev.currentTarget; const ridx = Number(el.dataset.roleIdx); const perm = el.dataset.perm; const checked = el.checked;
+      if(!state.roles || !state.roles[ridx]) return;
+      state.roles[ridx].perms[perm] = !!checked;
+      const pill = el.closest('.perm-pill'); if(pill) pill.classList.toggle('perm-enabled', !!checked);
+      await API.saveRoles(state.roles);
+      // small animation
+      const cardInner = el.closest('.role-card-inner');
+      if(cardInner) cardInner.animate([{transform:'scale(1)'},{transform:'scale(1.02)'},{transform:'scale(1)'}], {duration:220});
+    });
+  });
+
+  // edit/delete
+  container.querySelectorAll('.editRole').forEach(b=> b.addEventListener('click', ()=> { const idx = Number(b.dataset.idx); showRoleDetail(idx); document.getElementById('rolesModal').classList.remove('hidden'); }));
+  container.querySelectorAll('.delRole').forEach(b=> b.addEventListener('click', async ()=> { const idx = Number(b.dataset.idx); if(!confirm('Delete role?')) return; state.roles.splice(idx,1); await API.saveRoles(state.roles); renderRolesPreview(); renderRolesEditor(); }));
+}
+
+/* Roles Editor */
+function renderRolesEditor(){
+  const list = document.getElementById('rolesEditorList'); const detail = document.getElementById('roleEditorDetail');
+  list.innerHTML = ''; detail.innerHTML = '';
+  (state.roles || []).forEach((r, idx)=>{
+    const li = document.createElement('li'); li.innerHTML = `<div style="display:flex;justify-content:space-between;align-items:center">
+      <div><strong>${escapeHtml(r.name)}</strong><div class="small muted">${escapeHtml(r.desc||'')}</div></div>
+      <div style="display:flex;gap:8px"><button data-idx="${idx}" class="editRoleBtn px-2 py-1 rounded border small">Edit</button><button data-idx="${idx}" class="delRoleBtn px-2 py-1 rounded bg-red-50 text-red-600 small">Delete</button></div>
+    </div>`; list.appendChild(li);
+  });
+
+  list.querySelectorAll('.editRoleBtn').forEach(b=> b.addEventListener('click', ()=> showRoleDetail(Number(b.dataset.idx))));
+  list.querySelectorAll('.delRoleBtn').forEach(b=> b.addEventListener('click', async ()=> { const idx=Number(b.dataset.idx); if(!confirm('Delete role?')) return; state.roles.splice(idx,1); await API.saveRoles(state.roles); renderRolesEditor(); renderRolesPreview(); }));
+}
+
+function showRoleDetail(idx){
+  const r = state.roles[idx]; if(!r) return;
+  const detail = document.getElementById('roleEditorDetail');
+  detail.innerHTML = `<label class="block">Name<input id="editRoleName" class="w-full mt-1 px-2 py-1 border rounded" value="${escapeHtml(r.name)}"></label>
+    <label class="block mt-2">Description<input id="editRoleDesc" class="w-full mt-1 px-2 py-1 border rounded" value="${escapeHtml(r.desc||'')}"></label>
+    <div class="mt-3 grid grid-cols-2 gap-2">${Object.keys(r.perms).map(k=>`<label class="flex items-center justify-between p-2 rounded bg-slate-50">${escapeHtml(k)}<label class="toggle-wrapper"><input data-perm="${escapeHtml(k)}" class="toggle-input detail-perm" type="checkbox" ${r.perms[k] ? 'checked' : ''}><div class="toggle-track"><div class="toggle-knob"></div></div></label></label>`).join('')}</div>
+    <div class="mt-3 flex justify-end gap-2"><button id="btnApplyRole" class="px-3 py-2 rounded bg-primary text-white">Apply</button></div>`;
+  document.getElementById('btnApplyRole').addEventListener('click', async ()=>{
+    const name = document.getElementById('editRoleName').value.trim(); const desc = document.getElementById('editRoleDesc').value.trim();
+    const perms = {}; detail.querySelectorAll('.detail-perm').forEach(inp => perms[inp.dataset.perm] = inp.checked);
+    state.roles[idx].name = name || state.roles[idx].name; state.roles[idx].desc = desc; state.roles[idx].perms = perms;
+    await API.saveRoles(state.roles);
+    renderRolesEditor(); renderRolesPreview();
+    alert('Role updated (mock).');
+  });
+}
+
+/* Reports charts */
+let chartLine, chartBar, chartDough;
+function initCharts(){
+  const ctxL = document.getElementById('chartLine').getContext('2d');
+  chartLine = new Chart(ctxL, { type:'line', data:{ labels:['Mon','Tue','Wed','Thu','Fri','Sat','Sun'], datasets:[{ label:'Active Users', data:[10,20,15,25,30,45,60], tension:0.4, borderColor:'#3b82f6', backgroundColor:'rgba(59,130,246,0.08)' }] }, options:{ responsive:true }});
+  const ctxB = document.getElementById('chartBar').getContext('2d');
+  chartBar = new Chart(ctxB, { type:'bar', data:{ labels:['Jan','Feb','Mar','Apr','May','Jun'], datasets:[{ label:'Visitors', data:[120,150,180,140,210,260], backgroundColor:'#06b6d4' }] }, options:{ responsive:true }});
+  const ctxD = document.getElementById('chartDough').getContext('2d');
+  chartDough = new Chart(ctxD, { type:'doughnut', data:{ labels:['Visited','Signed up','Listed','Purchased'], datasets:[{ data:[1000,800,350,120], backgroundColor:['#60a5fa','#34d399','#f97316','#ef4444'] }] }, options:{ responsive:true }});
+}
+
+async function renderReportsCharts(){
+  const r = state.reports = await API.getReports();
+  if(chartLine) chartLine.data.datasets[0].data = (r.traffic||[10,20,15,25,30,45,60]).slice(0,7), chartLine.update();
+  if(chartBar) chartBar.data.datasets[0].data = (r.monthly||[120,150,180,140,210,260]).slice(0,6), chartBar.update();
+  if(chartDough) chartDough.data.datasets[0].data = (r.funnel||[1000,800,350,120]), chartDough.update();
+}
+
+/* Inbox render */
+async function renderInbox(){
+  state.inbox = await API.getInbox();
+  const container = document.getElementById('inboxList'); container.innerHTML = '';
+  if(!state.inbox || state.inbox.length===0){ container.innerHTML = '<div class="small muted">No messages</div>'; return; }
+  state.inbox.forEach(m => {
+    const wrap = document.createElement('div'); wrap.className = 'p-3 border-b';
+    wrap.innerHTML = `<div style="display:flex;justify-content:space-between">
+      <div><div style="font-weight:700">${escapeHtml(m.subject)}</div><div class="small muted">${escapeHtml(m.from)} • ${new Date(m.created).toLocaleString()}</div><div style="margin-top:8px">${escapeHtml(m.body)}</div></div>
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <button data-id="${m.id}" class="markRead px-2 py-1 rounded bg-slate-100 small">Mark Read</button>
+        <button data-id="${m.id}" class="reply px-2 py-1 rounded bg-primary text-white small">Reply</button>
+        <button data-id="${m.id}" class="archive px-2 py-1 rounded bg-yellow-100 small">Archive</button>
+      </div>
+    </div>`;
+    container.appendChild(wrap);
+  });
+
+  container.querySelectorAll('.markRead').forEach(b=> b.addEventListener('click', ()=>{
+    const id = b.dataset.id; let msgs = JSON.parse(localStorage.getItem('zzz_inbox_v1')||'[]');
+    msgs = msgs.map(x=> x.id===id ? {...x, read:true} : x); localStorage.setItem('zzz_inbox_v1', JSON.stringify(msgs)); renderInbox();
+  }));
+  container.querySelectorAll('.reply').forEach(b=> b.addEventListener('click', ()=>{
+    const id = b.dataset.id; const msg = state.inbox.find(x=>x.id===id); document.getElementById('composeTo').value = msg.from; document.getElementById('composeSubject').value = 'Re: '+msg.subject; document.getElementById('composeBody').value = '\n\n---\n' + msg.body; document.getElementById('composeModal').classList.remove('hidden');
+  }));
+  container.querySelectorAll('.archive').forEach(b=> b.addEventListener('click', ()=>{
+    const id = b.dataset.id; let msgs = JSON.parse(localStorage.getItem('zzz_inbox_v1')||'[]'); msgs = msgs.filter(x=> x.id !== id); localStorage.setItem('zzz_inbox_v1', JSON.stringify(msgs)); renderInbox();
+  }));
+}
+
+/* Payments table */
+function renderPaymentsTable(){
+  const rows = [
+    { id:'#TXN-12345', user:'John Doe', amount:150.00, date:'Oct 26, 2023', status:'Completed' },
+    { id:'#TXN-12346', user:'Jane Smith', amount:45.50, date:'Oct 25, 2023', status:'Pending' },
+    { id:'#TXN-12347', user:'Mike Johnson', amount:99.99, date:'Oct 24, 2023', status:'Failed' },
+    { id:'#TXN-12348', user:'Emily Davis', amount:25.00, date:'Oct 23, 2023', status:'Refunded' },
+  ];
+  const tb = document.getElementById('paymentsTable'); tb.innerHTML = '';
+  rows.forEach(r=>{
+    const tr = document.createElement('tr');
+    const statusHTML = r.status==='Completed' ? `<span class="status-pill" style="background:#ecfdf5;color:#10b981">${r.status}</span>` :
+      r.status==='Pending' ? `<span class="status-pill" style="background:#fffbeb;color:#f59e0b">${r.status}</span>` :
+      r.status==='Failed' ? `<span class="status-pill" style="background:#fff1f2;color:#ef4444">${r.status}</span>` : `<span class="status-pill" style="background:#f1f5f9;color:#64748b">${r.status}</span>`;
+    tr.innerHTML = `<td class="py-2">${r.id}</td><td>${escapeHtml(r.user)}</td><td class="font-semibold">$${r.amount.toFixed(2)}</td><td class="small muted">${r.date}</td><td>${statusHTML}</td><td><button class="p-2 rounded hover:bg-slate-50"><span class="material-symbols-outlined">more_horiz</span></button></td>`;
+    tb.appendChild(tr);
+  });
+}
+
+/* Customize */
+const CKEY='zzz_customize_v1';
+function loadCustomize(){ const c=JSON.parse(localStorage.getItem(CKEY)||'{}'); document.getElementById('custGrid').checked = !!c.grid; document.getElementById('custCompact').checked = !!c.compact; applyCustomize(); }
+function saveCustomize(){ const conf = { grid:document.getElementById('custGrid').checked, compact:document.getElementById('custCompact').checked }; localStorage.setItem(CKEY, JSON.stringify(conf)); applyCustomize(); alert('Saved (local)'); }
+function applyCustomize(){ const c=JSON.parse(localStorage.getItem(CKEY)||'{}'); document.body.classList.toggle('compact-mode', !!c.compact); document.body.classList.toggle('show-grid', !!c.grid); }
+
+/* initial run */
+document.addEventListener('DOMContentLoaded', initApp);
+loadCustomize();
+
+/* Provide small global helpers for debugging */
+window.ZZ = { API, state, loadAllData };
+
 </script>
-<script src="scripts/boot.js"></script>
+
 </body>
 </html>

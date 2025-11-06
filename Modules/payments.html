@@ -1,0 +1,76 @@
+<!-- modules/payments.html -->
+<div class="card">
+  <div class="flex items-center justify-between">
+    <div>
+      <h2 class="text-xl font-bold">Payments & Subscriptions</h2>
+      <p class="muted">Transactions, refunds and receipts (mock).</p>
+    </div>
+    <div><button id="btnGenerateInvoices" class="px-3 py-2 rounded bg-primary text-white">Generate Invoices</button></div>
+  </div>
+
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-4">
+    <div class="p-4 border rounded">
+      <p class="muted">Total Revenue</p>
+      <div id="pay-total-revenue" class="text-2xl font-bold">$0</div>
+    </div>
+    <div class="p-4 border rounded">
+      <p class="muted">Pending Refunds</p>
+      <div id="pay-pending-refunds" class="text-2xl font-bold">0</div>
+    </div>
+    <div class="p-4 border rounded">
+      <p class="muted">Active Subscriptions</p>
+      <div id="pay-active-subs" class="text-2xl font-bold">0</div>
+    </div>
+  </div>
+
+  <div class="mt-4">
+    <div class="flex gap-2 items-center mb-3">
+      <input id="paymentsSearch" placeholder="Search by user, txn id, item..." class="px-3 py-2 border rounded flex-1"/>
+      <select id="paymentsFilter" class="px-3 py-2 border rounded">
+        <option value="">All status</option>
+        <option>Completed</option>
+        <option>Pending</option>
+        <option>Failed</option>
+        <option>Refunded</option>
+      </select>
+      <button id="btnExportPayments" class="px-3 py-2 rounded border">Export CSV</button>
+    </div>
+
+    <div class="overflow-x-auto border rounded">
+      <table class="w-full text-left">
+        <thead class="bg-slate-50">
+          <tr>
+            <th class="p-3">Transaction ID</th>
+            <th class="p-3">User</th>
+            <th class="p-3">Amount</th>
+            <th class="p-3">Date</th>
+            <th class="p-3">Status</th>
+            <th class="p-3 text-right">Actions</th>
+          </tr>
+        </thead>
+        <tbody id="paymentsTableBody"></tbody>
+      </table>
+    </div>
+
+    <div class="flex justify-between items-center mt-3">
+      <div id="paymentsCount" class="muted">Showing 0 entries</div>
+      <div id="paymentsPagination" class="flex gap-2"></div>
+    </div>
+  </div>
+
+  <!-- drawer -->
+  <div id="paymentDrawer" class="hidden fixed right-0 top-0 h-full w-full max-w-lg bg-white shadow-xl z-50">
+    <header class="flex items-center justify-between p-4 border-b">
+      <div>
+        <h3 id="drawerTitle" class="text-lg font-bold">Transaction</h3>
+        <div id="drawerSub" class="muted small"></div>
+      </div>
+      <button id="closePaymentDrawer" class="px-3 py-1">Close</button>
+    </header>
+    <div id="drawerBody" class="p-4 overflow-auto"></div>
+    <footer class="p-4 flex justify-end gap-2 border-t">
+      <button id="downloadReceipt" class="px-3 py-2 border rounded">Download Receipt</button>
+      <button id="issueRefund" class="px-3 py-2 bg-red-600 text-white rounded">Issue Refund</button>
+    </footer>
+  </div>
+</div>
