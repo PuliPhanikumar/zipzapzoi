@@ -1,0 +1,961 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>ZipZapZoi - Create Your Listing</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Spline+Sans:wght@300;400;500;600;700;900&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet"/>
+<script>
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "primary": "#FF6B6B",
+            "secondary": "#4D96FF",
+            "success": "#1DD1A1",
+            "warning": "#FFC312",
+            "info": "#48DBFB",
+            "purple": "#9B59B6",
+            "background-light": "#F8F9FA",
+            "background-dark": "#1A1B1C",
+            "card-light": "#FFFFFF",
+            "card-dark": "#2C2D2E",
+            "text-light": "#343A40",
+            "text-dark": "#E9ECEF",
+            "text-muted-light": "#6C757D",
+            "text-muted-dark": "#ADB5BD",
+            "border-light": "#E9ECEF",
+            "border-dark": "#495057",
+          },
+          fontFamily: {
+            "display": ["Spline Sans", "sans-serif"]
+          },
+          borderRadius: {
+            "DEFAULT": "1rem",
+            "lg": "1.5rem",
+            "xl": "2rem",
+            "2xl": "2.5rem",
+            "full": "9999px"
+          },
+          boxShadow: {
+            'bouncy': '0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.05)',
+            'bouncy-lg': '0 20px 40px -10px rgba(0, 0, 0, 0.15), 0 10px 20px -8px rgba(0, 0, 0, 0.1)',
+            'inner-bouncy': 'inset 0 2px 8px 0 rgba(0, 0, 0, 0.06)',
+            'glow-primary': '0 0 20px rgba(255, 107, 107, 0.4)',
+            'glow-secondary': '0 0 20px rgba(77, 150, 255, 0.4)',
+          },
+          animation: {
+            'bounce-subtle': 'bounceSubtle 2s infinite',
+            'float': 'float 3s ease-in-out infinite',
+            'pulse-glow': 'pulseGlow 2s ease-in-out infinite',
+          },
+          keyframes: {
+            bounceSubtle: {
+              '0%, 100%': { transform: 'translateY(0)' },
+              '50%': { transform: 'translateY(-5px)' },
+            },
+            float: {
+              '0%, 100%': { transform: 'translateY(0px)' },
+              '50%': { transform: 'translateY(-10px)' },
+            },
+            pulseGlow: {
+              '0%, 100%': { boxShadow: '0 0 20px rgba(255, 107, 107, 0.4)' },
+              '50%': { boxShadow: '0 0 40px rgba(255, 107, 107, 0.6)' },
+            },
+          }
+        },
+      },
+    }
+</script>
+<style>
+.material-symbols-outlined {
+  font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+}
+.btn-3d {
+  position: relative;
+  transform: translateY(0);
+  transition: all 0.2s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+.btn-3d:hover {
+  transform: translateY(-4px);
+}
+.btn-3d:active {
+  transform: translateY(2px);
+}
+.card-3d {
+  transform: perspective(1000px) rotateX(0deg) rotateY(0deg);
+  transition: transform 0.3s ease;
+}
+.card-3d:hover {
+  transform: perspective(1000px) rotateX(2deg) rotateY(2deg) translateY(-5px);
+}
+.category-card {
+  transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+.category-card:hover {
+  transform: scale(1.05) translateY(-5px);
+}
+.category-card.selected {
+  transform: scale(1.05) translateY(-8px);
+}
+.step-indicator {
+  transition: all 0.5s ease;
+}
+</style>
+</head>
+<body class="font-display bg-background-light dark:bg-background-dark text-text-light dark:text-text-dark antialiased">
+<div class="relative flex min-h-screen w-full flex-col overflow-x-hidden">
+<!-- Header -->
+<header class="sticky top-0 z-50 w-full bg-card-light/90 dark:bg-card-dark/90 backdrop-blur-xl border-b border-border-light/50 dark:border-border-dark/50">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="flex items-center justify-between h-16">
+<div class="flex items-center gap-3 cursor-pointer">
+<span class="material-symbols-outlined text-secondary text-3xl animate-bounce-subtle">all_inclusive</span>
+<h2 class="text-xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">ZipZapZoi</h2>
+</div>
+<div class="hidden md:flex items-center gap-6">
+<a class="text-sm font-medium hover:text-secondary transition-colors" href="#">Browse</a>
+<a class="text-sm font-medium hover:text-secondary transition-colors" href="#">Messages</a>
+<a class="text-sm font-medium hover:text-secondary transition-colors" href="#">Help</a>
+<button class="btn-3d flex items-center justify-center rounded-full h-10 w-10 bg-gradient-to-br from-secondary/20 to-purple/20 border border-border-light dark:border-border-dark hover:shadow-glow-secondary">
+<span class="material-symbols-outlined text-xl">notifications</span>
+</button>
+<div class="bg-gradient-to-br from-primary to-secondary rounded-full size-10 p-0.5">
+<div class="bg-card-light dark:bg-card-dark rounded-full w-full h-full flex items-center justify-center">
+<span class="text-xs font-bold">U</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</header>
+
+<!-- Main Content -->
+<main class="flex-1 w-full py-8 md:py-12">
+<div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+<!-- Progress Bar -->
+<div class="mb-10">
+<div class="flex justify-between items-center mb-3">
+<p class="text-sm font-semibold text-text-muted-light dark:text-text-muted-dark">
+Step <span id="currentStep">1</span> of 5
+</p>
+<button id="darkModeToggle" class="btn-3d flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-gray-200 to-gray-300 dark:from-gray-700 dark:to-gray-800 text-xs font-bold">
+<span class="material-symbols-outlined text-sm">dark_mode</span>
+Toggle Theme
+</button>
+</div>
+<div class="relative h-4 bg-gradient-to-r from-border-light to-border-light dark:from-border-dark dark:to-border-dark rounded-full overflow-hidden shadow-inner-bouncy">
+<div id="progressBar" class="step-indicator absolute h-full bg-gradient-to-r from-primary via-secondary to-purple rounded-full transition-all duration-700 ease-out" style="width: 20%"></div>
+</div>
+</div>
+
+<!-- Step Container -->
+<div id="stepContainer" class="relative">
+<!-- Step 1: Choose Mode -->
+<div id="step1" class="step-content">
+<div class="text-center mb-10 animate-float">
+<h1 class="text-4xl md:text-5xl font-black mb-4 bg-gradient-to-r from-primary via-secondary to-purple bg-clip-text text-transparent">
+Start Your Listing
+</h1>
+<p class="text-lg text-text-muted-light dark:text-text-muted-dark">Choose how you'd like to create your listing</p>
+</div>
+
+<div class="grid md:grid-cols-2 gap-6 mb-8">
+<!-- Quick Sell Card -->
+<div class="card-3d category-card cursor-pointer group relative overflow-hidden rounded-2xl bg-gradient-to-br from-secondary/10 via-secondary/5 to-transparent border-2 border-secondary/30 p-8 shadow-bouncy-lg hover:shadow-glow-secondary">
+<div class="absolute top-0 right-0 w-32 h-32 bg-secondary/10 rounded-full blur-3xl"></div>
+<div class="relative z-10">
+<div class="flex items-center gap-4 mb-4">
+<div class="btn-3d w-16 h-16 rounded-2xl bg-gradient-to-br from-secondary to-blue-600 flex items-center justify-center shadow-bouncy">
+<span class="material-symbols-outlined text-white text-3xl">bolt</span>
+</div>
+<h3 class="text-2xl font-bold">Quick Sell</h3>
+</div>
+<p class="text-text-muted-light dark:text-text-muted-dark mb-6">
+Fast-track your listing. We'll suggest details and get you live in minutes.
+</p>
+<button onclick="startQuickSell()" class="btn-3d w-full py-4 rounded-xl bg-gradient-to-r from-secondary to-blue-600 text-white font-bold shadow-bouncy hover:shadow-glow-secondary">
+Start Quick Sell
+</button>
+</div>
+</div>
+
+<!-- Detailed Listing Card -->
+<div class="card-3d category-card cursor-pointer group relative overflow-hidden rounded-2xl bg-gradient-to-br from-primary/10 via-primary/5 to-transparent border-2 border-primary/30 p-8 shadow-bouncy-lg hover:shadow-glow-primary">
+<div class="absolute top-0 right-0 w-32 h-32 bg-primary/10 rounded-full blur-3xl"></div>
+<div class="relative z-10">
+<div class="flex items-center gap-4 mb-4">
+<div class="btn-3d w-16 h-16 rounded-2xl bg-gradient-to-br from-primary to-red-600 flex items-center justify-center shadow-bouncy">
+<span class="material-symbols-outlined text-white text-3xl">list_alt</span>
+</div>
+<h3 class="text-2xl font-bold">Detailed Listing</h3>
+</div>
+<p class="text-text-muted-light dark:text-text-muted-dark mb-6">
+Full control over every detail. Perfect for valuable or specialized items.
+</p>
+<button onclick="nextStep()" class="btn-3d w-full py-4 rounded-xl bg-gradient-to-r from-primary to-red-600 text-white font-bold shadow-bouncy hover:shadow-glow-primary">
+Create Detailed Listing
+</button>
+</div>
+</div>
+</div>
+
+<div class="relative">
+<div class="absolute inset-0 flex items-center">
+<div class="w-full border-t border-border-light dark:border-border-dark"></div>
+</div>
+<div class="relative flex justify-center text-sm">
+<span class="px-4 bg-background-light dark:bg-background-dark text-text-muted-light dark:text-text-muted-dark font-semibold">
+OR START WITH A CATEGORY
+</span>
+</div>
+</div>
+
+<div class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-8" id="categoriesGrid"></div>
+</div>
+
+<!-- Step 2: Category Selection -->
+<div id="step2" class="step-content hidden">
+<div class="card-3d bg-card-light dark:bg-card-dark rounded-2xl shadow-bouncy-lg p-8">
+<h2 class="text-3xl font-black mb-2">What are you selling?</h2>
+<p class="text-text-muted-light dark:text-text-muted-dark mb-8">Choose a category to help buyers find your item</p>
+<div class="grid grid-cols-2 md:grid-cols-4 gap-4" id="mainCategories"></div>
+</div>
+</div>
+
+<!-- Step 3: Item Details -->
+<div id="step3" class="step-content hidden">
+<div class="card-3d bg-card-light dark:bg-card-dark rounded-2xl shadow-bouncy-lg p-8">
+<h2 class="text-3xl font-black mb-2">Tell us about your item</h2>
+<p class="text-text-muted-light dark:text-text-muted-dark mb-8">Provide details to attract buyers</p>
+<div id="itemDetailsForm" class="space-y-6"></div>
+</div>
+</div>
+
+<!-- Step 4: Photos -->
+<div id="step4" class="step-content hidden">
+<div class="card-3d bg-card-light dark:bg-card-dark rounded-2xl shadow-bouncy-lg p-8">
+<h2 class="text-3xl font-black mb-2">Add photos</h2>
+<p class="text-text-muted-light dark:text-text-muted-dark mb-8">Great photos get more views! Add up to 10.</p>
+<div class="space-y-6">
+<div class="relative group">
+<input type="file" id="photoUpload" multiple accept="image/*" class="hidden" onchange="handlePhotoUpload(event)">
+<label for="photoUpload" class="btn-3d cursor-pointer flex flex-col items-center justify-center gap-4 rounded-2xl border-3 border-dashed border-border-light dark:border-border-dark bg-gradient-to-br from-secondary/5 to-primary/5 py-16 px-6 text-center transition-all hover:border-secondary hover:bg-secondary/10">
+<div class="w-20 h-20 rounded-full bg-gradient-to-br from-secondary to-primary flex items-center justify-center shadow-bouncy">
+<span class="material-symbols-outlined text-white text-4xl">upload</span>
+</div>
+<div>
+<p class="font-bold text-lg mb-1">Drop photos here or click to browse</p>
+<p class="text-sm text-text-muted-light dark:text-text-muted-dark">JPG, PNG up to 10MB each</p>
+</div>
+</label>
+</div>
+<div id="photoPreview" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4"></div>
+</div>
+</div>
+</div>
+
+<!-- Step 5: Boost & Publish -->
+<div id="step5" class="step-content hidden">
+<div class="space-y-6">
+<div class="card-3d bg-card-light dark:bg-card-dark rounded-2xl shadow-bouncy-lg p-8">
+<h2 class="text-3xl font-black mb-2">Boost your listing</h2>
+<p class="text-text-muted-light dark:text-text-muted-dark mb-8">Get more views and sell faster</p>
+<div id="boostOptions" class="space-y-4"></div>
+<div class="mt-6 p-6 rounded-xl bg-gradient-to-r from-success/10 to-success/5 border-2 border-success/30">
+<div class="flex justify-between items-center">
+<span class="text-xl font-bold">Total Cost:</span>
+<span id="totalCost" class="text-3xl font-black text-success">$0.00</span>
+</div>
+</div>
+</div>
+
+<div class="card-3d bg-gradient-to-br from-primary/10 to-secondary/10 rounded-2xl shadow-bouncy-lg p-8 border-2 border-primary/30">
+<h3 class="text-2xl font-bold mb-4">Preview Your Listing</h3>
+<div id="listingPreview" class="space-y-4"></div>
+</div>
+</div>
+</div>
+
+<!-- Navigation Buttons -->
+<div class="flex justify-between items-center mt-10 pt-6 border-t border-border-light dark:border-border-dark">
+<button id="backBtn" onclick="prevStep()" class="btn-3d px-8 py-4 rounded-xl bg-transparent border-2 border-border-light dark:border-border-dark font-bold hover:border-primary hover:text-primary transition-all hidden">
+<span class="flex items-center gap-2">
+<span class="material-symbols-outlined">arrow_back</span>
+Back
+</span>
+</button>
+<div class="flex-1"></div>
+<button id="nextBtn" onclick="nextStep()" class="btn-3d px-10 py-4 rounded-xl bg-gradient-to-r from-primary to-secondary text-white font-bold shadow-bouncy-lg hover:shadow-glow-primary transition-all">
+<span class="flex items-center gap-2">
+Next Step
+<span class="material-symbols-outlined">arrow_forward</span>
+</span>
+</button>
+<button id="publishBtn" onclick="publishListing()" class="btn-3d px-10 py-4 rounded-xl bg-gradient-to-r from-success to-green-600 text-white font-bold shadow-bouncy-lg hover:shadow-glow-primary transition-all hidden">
+<span class="flex items-center gap-2">
+<span class="material-symbols-outlined">check_circle</span>
+Publish Listing
+</span>
+</button>
+</div>
+</div>
+</div>
+</main>
+
+<!-- Success Modal -->
+<div id="successModal" class="hidden fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+<div class="card-3d bg-card-light dark:bg-card-dark rounded-2xl shadow-bouncy-lg max-w-md w-full p-8 text-center animate-float">
+<div class="w-24 h-24 mx-auto mb-6 rounded-full bg-gradient-to-br from-success to-green-600 flex items-center justify-center shadow-bouncy-lg">
+<span class="material-symbols-outlined text-white text-5xl">check_circle</span>
+</div>
+<h3 class="text-3xl font-black mb-3">Listing Published! 🎉</h3>
+<p class="text-text-muted-light dark:text-text-muted-dark mb-6">Your item is now live and ready for buyers to see</p>
+<button onclick="resetForm()" class="btn-3d w-full py-4 rounded-xl bg-gradient-to-r from-primary to-secondary text-white font-bold shadow-bouncy">
+Create Another Listing
+</button>
+</div>
+</div>
+</div>
+
+<script>
+let currentStep = 1;
+let formData = {};
+let selectedPhotos = [];
+let selectedBoosts = [];
+
+const categories = [
+  { name: 'Vehicles', icon: 'directions_car', color: 'from-blue-500 to-blue-600' },
+  { name: 'Home & Garden', icon: 'home', color: 'from-green-500 to-green-600' },
+  { name: 'Electronics', icon: 'devices', color: 'from-purple-500 to-purple-600' },
+  { name: 'Property', icon: 'apartment', color: 'from-orange-500 to-orange-600' },
+  { name: 'Fashion', icon: 'checkroom', color: 'from-pink-500 to-pink-600' },
+  { name: 'Hobbies', icon: 'sports_esports', color: 'from-indigo-500 to-indigo-600' },
+  { name: 'Pets', icon: 'pets', color: 'from-yellow-500 to-yellow-600' },
+  { name: 'Services', icon: 'handyman', color: 'from-red-500 to-red-600' },
+];
+
+const boostOptions = [
+  { id: 'featured', name: 'Featured Listing', price: 19.99, icon: 'rocket_launch', color: 'secondary', description: 'Homepage feature for 7 days' },
+  { id: 'top', name: 'Top of Category', price: 9.99, icon: 'vertical_align_top', color: 'purple', description: 'Stay at top for 3 days' },
+  { id: 'urgent', name: 'Urgent Badge', price: 5.00, icon: 'local_fire_department', color: 'primary', description: 'Stand out with urgency' },
+  { id: 'highlight', name: 'Highlight', price: 4.00, icon: 'format_ink_highlighter', color: 'warning', description: 'Eye-catching highlight' },
+];
+
+function init() {
+  renderCategories();
+  renderMainCategories();
+  renderBoostOptions();
+  updateNavigation();
+  setupDarkMode();
+}
+
+function renderCategories() {
+  const grid = document.getElementById('categoriesGrid');
+  grid.innerHTML = categories.map(cat => `
+    <div onclick="selectCategory('${cat.name}')" class="category-card cursor-pointer group relative overflow-hidden rounded-xl bg-card-light dark:bg-card-dark border-2 border-border-light dark:border-border-dark p-4 shadow-bouncy hover:border-primary transition-all">
+      <div class="flex flex-col items-center gap-3">
+        <div class="w-14 h-14 rounded-full bg-gradient-to-br ${cat.color} flex items-center justify-center shadow-bouncy group-hover:scale-110 transition-transform">
+          <span class="material-symbols-outlined text-white text-2xl">${cat.icon}</span>
+        </div>
+        <p class="font-semibold text-sm text-center">${cat.name}</p>
+      </div>
+    </div>
+  `).join('');
+}
+
+function renderMainCategories() {
+  const grid = document.getElementById('mainCategories');
+  grid.innerHTML = categories.map(cat => `
+    <div onclick="selectCategory('${cat.name}')" class="category-card cursor-pointer group relative overflow-hidden rounded-xl bg-card-light dark:bg-card-dark border-2 border-border-light dark:border-border-dark p-6 shadow-bouncy hover:border-primary transition-all">
+      <div class="flex flex-col items-center gap-3">
+        <div class="w-16 h-16 rounded-full bg-gradient-to-br ${cat.color} flex items-center justify-center shadow-bouncy group-hover:scale-110 transition-transform">
+          <span class="material-symbols-outlined text-white text-3xl">${cat.icon}</span>
+        </div>
+        <p class="font-semibold text-center">${cat.name}</p>
+      </div>
+    </div>
+  `).join('');
+}
+
+function renderBoostOptions() {
+  const container = document.getElementById('boostOptions');
+  container.innerHTML = boostOptions.map(boost => `
+    <div class="category-card relative rounded-xl border-2 border-border-light dark:border-border-dark bg-card-light dark:bg-card-dark p-5 shadow-bouncy hover:border-${boost.color} transition-all">
+      <label class="flex items-center gap-4 cursor-pointer">
+        <input type="checkbox" onchange="toggleBoost('${boost.id}', ${boost.price})" class="w-6 h-6 rounded border-2 border-border-light dark:border-border-dark text-${boost.color} focus:ring-2 focus:ring-${boost.color}/20">
+        <div class="flex-1 flex items-center gap-4">
+          <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-${boost.color}/20 to-${boost.color}/10 flex items-center justify-center">
+            <span class="material-symbols-outlined text-${boost.color} text-2xl">${boost.icon}</span>
+          </div>
+          <div class="flex-1">
+            <h4 class="font-bold text-lg">${boost.name}</h4>
+            <p class="text-sm text-text-muted-light dark:text-text-muted-dark">${boost.description}</p>
+          </div>
+          <p class="text-xl font-bold text-${boost.color}">$${boost.price}</p>
+        </div>
+      </label>
+    </div>
+  `).join('');
+}
+
+function selectCategory(category) {
+  formData.category = category;
+  renderItemDetailsForm(category);
+  setTimeout(() => nextStep(), 300);
+}
+
+function renderItemDetailsForm(category) {
+  const form = document.getElementById('itemDetailsForm');
+  form.innerHTML = `
+    <div class="space-y-6">
+      <div>
+        <label class="block text-sm font-bold mb-2">Title</label>
+        <input type="text" id="title" class="w-full rounded-xl border-2 border-border-light dark:border-border-dark bg-background-light dark:bg-background-dark py-4 px-5 text-base font-medium focus:border-secondary focus:outline-none focus:ring-2 focus:ring-secondary/20 transition-all" placeholder="e.g., Brand New iPhone 14 Pro Max">
+      </div>
+      <div>
+        <label class="block text-sm font-bold mb-2">Description</label>
+        <textarea id="description" rows="4" class="w-full rounded-xl border-2 border-border-light dark:border-border-dark bg-background-light dark:bg-background-dark py-4 px-5 text-base font-medium focus:border-secondary focus:outline-none focus:ring-2 focus:ring-secondary/20 transition-all" placeholder="Describe your item in detail..."></textarea>
+      </div>
+      <div class="grid md:grid-cols-2 gap-6">
+        <div>
+          <label class="block text-sm font-bold mb-2">Price ($)</label>
+          <input type="number" id="price" class="w-full rounded-xl border-2 border-border-light dark:border-border-dark bg-background-light dark:bg-background-dark py-4 px-5 text-base font-medium focus:border-secondary focus:outline-none focus:ring-2 focus:ring-secondary/20 transition-all" placeholder="0.00">
+        </div>
+        <div>
+          <label class="block text-sm font-bold mb-2">Condition</label>
+          <select id="condition" class="w-full rounded-xl border-2 border-border-light dark:border-border-dark bg-background-light dark:bg-background-dark py-4 px-5 text-base font-medium focus:border-secondary focus:outline-none focus:ring-2 focus:ring-secondary/20 transition-all">
+            <option>New</option>
+            <option>Used - Like New</option>
+            <option>Used - Good</option>
+            <option>Used - Fair</option>
+          </select>
+        </div>
+      </div>
+      <div>
+        <label class="block text-sm font-bold mb-2">Location</label>
+        <input type="text" id="location" class="w-full rounded-xl border-2 border-border-light dark:border-border-dark bg-background-light dark:bg-background-dark py-4 px-5 text-base font-medium focus:border-secondary focus:outline-none focus:ring-2 focus:ring-secondary/20 transition-all" placeholder="City, State">
+      </div>
+    </div>
+  `;
+}
+
+function handlePhotoUpload(event) {
+  const files = Array.from(event.target.files);
+  files.forEach(file => {
+    if (selectedPhotos.length < 10) {
+      selectedPhotos.push(file);
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        renderPhotoPreview();
+      };
+      reader.readAsDataURL(file);
+    }
+  });
+}
+
+function renderPhotoPreview() {
+  const preview = document.getElementById('photoPreview');
+  preview.innerHTML = selectedPhotos.map((photo, index) => `
+    <div class="category-card relative aspect-square rounded-xl overflow-hidden shadow-bouncy group">
+      <img src="${URL.createObjectURL(photo)}" class="w-full h-full object-cover">
+      <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+        <button onclick="removePhoto(${index})" class="btn-3d w-10 h-10 rounded-full bg-primary text-white flex items-center justify-center">
+          <span class="material-symbols-outlined">delete</span>
+        </button>
+      </div>
+      <div class="absolute top-2 left-2 w-8 h-8 rounded-full bg-black/70 text-white flex items-center justify-center text-xs font-bold">${index + 1}</div>
+    </div>
+  `).join('');
+}
+
+function removePhoto(index) {
+  selectedPhotos.splice(index, 1);
+  renderPhotoPreview();
+}
+
+function toggleBoost(id, price) {
+  const index = selectedBoosts.findIndex(b => b.id === id);
+  if (index > -1) {
+    selectedBoosts.splice(index, 1);
+  } else {
+    selectedBoosts.push({ id, price });
+  }
+  updateTotalCost();
+}
+
+function updateTotalCost() {
+  const total = selectedBoosts.reduce((sum, boost) => sum + boost.price, 0);
+  document.getElementById('totalCost').textContent = `${total.toFixed(2)}`;
+}
+
+function startQuickSell() {
+  alert('Quick Sell mode would guide you through a simplified flow with AI suggestions!');
+  nextStep();
+}
+
+function nextStep() {
+  if (currentStep === 3) {
+    formData.title = document.getElementById('title').value;
+    formData.description = document.getElementById('description').value;
+    formData.price = document.getElementById('price').value;
+    formData.condition = document.getElementById('condition').value;
+    formData.location = document.getElementById('location').value;
+    
+    if (!formData.title || !formData.price) {
+      alert('Please fill in required fields (Title and Price)');
+      return;
+    }
+  }
+  
+  if (currentStep < 5) {
+    document.getElementById(`step${currentStep}`).classList.add('hidden');
+    currentStep++;
+    document.getElementById(`step${currentStep}`).classList.remove('hidden');
+    document.getElementById('currentStep').textContent = currentStep;
+    updateProgressBar();
+    updateNavigation();
+    
+    if (currentStep === 5) {
+      renderListingPreview();
+    }
+    
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+}
+
+function prevStep() {
+  if (currentStep > 1) {
+    document.getElementById(`step${currentStep}`).classList.add('hidden');
+    currentStep--;
+    document.getElementById(`step${currentStep}`).classList.remove('hidden');
+    document.getElementById('currentStep').textContent = currentStep;
+    updateProgressBar();
+    updateNavigation();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+}
+
+function updateProgressBar() {
+  const progress = (currentStep / 5) * 100;
+  document.getElementById('progressBar').style.width = `${progress}%`;
+}
+
+function updateNavigation() {
+  const backBtn = document.getElementById('backBtn');
+  const nextBtn = document.getElementById('nextBtn');
+  const publishBtn = document.getElementById('publishBtn');
+  
+  if (currentStep === 1) {
+    backBtn.classList.add('hidden');
+  } else {
+    backBtn.classList.remove('hidden');
+  }
+  
+  if (currentStep === 5) {
+    nextBtn.classList.add('hidden');
+    publishBtn.classList.remove('hidden');
+  } else {
+    nextBtn.classList.remove('hidden');
+    publishBtn.classList.add('hidden');
+  }
+}
+
+function renderListingPreview() {
+  const preview = document.getElementById('listingPreview');
+  preview.innerHTML = `
+    <div class="grid md:grid-cols-2 gap-4">
+      <div class="space-y-2">
+        <p class="text-sm text-text-muted-light dark:text-text-muted-dark">Category</p>
+        <p class="font-bold text-lg">${formData.category || 'Not selected'}</p>
+      </div>
+      <div class="space-y-2">
+        <p class="text-sm text-text-muted-light dark:text-text-muted-dark">Price</p>
+        <p class="font-bold text-lg text-success">${formData.price || '0.00'}</p>
+      </div>
+      <div class="space-y-2 md:col-span-2">
+        <p class="text-sm text-text-muted-light dark:text-text-muted-dark">Title</p>
+        <p class="font-bold text-xl">${formData.title || 'No title'}</p>
+      </div>
+      <div class="space-y-2 md:col-span-2">
+        <p class="text-sm text-text-muted-light dark:text-text-muted-dark">Description</p>
+        <p class="text-base">${formData.description || 'No description'}</p>
+      </div>
+      <div class="space-y-2">
+        <p class="text-sm text-text-muted-light dark:text-text-muted-dark">Condition</p>
+        <p class="font-bold">${formData.condition || 'Not specified'}</p>
+      </div>
+      <div class="space-y-2">
+        <p class="text-sm text-text-muted-light dark:text-text-muted-dark">Location</p>
+        <p class="font-bold">${formData.location || 'Not specified'}</p>
+      </div>
+      <div class="space-y-2 md:col-span-2">
+        <p class="text-sm text-text-muted-light dark:text-text-muted-dark">Photos</p>
+        <p class="font-bold">${selectedPhotos.length} photo(s) uploaded</p>
+      </div>
+      ${selectedBoosts.length > 0 ? `
+        <div class="space-y-2 md:col-span-2">
+          <p class="text-sm text-text-muted-light dark:text-text-muted-dark">Selected Boosts</p>
+          <div class="flex flex-wrap gap-2">
+            ${selectedBoosts.map(b => {
+              const boost = boostOptions.find(opt => opt.id === b.id);
+              return `<span class="px-3 py-1 rounded-full bg-${boost.color}/20 text-${boost.color} text-sm font-bold">${boost.name}</span>`;
+            }).join('')}
+          </div>
+        </div>
+      ` : ''}
+    </div>
+  `;
+}
+
+function publishListing() {
+  document.getElementById('successModal').classList.remove('hidden');
+  setTimeout(() => {
+    document.getElementById('successModal').classList.add('animate-bounce-subtle');
+  }, 100);
+}
+
+function resetForm() {
+  document.getElementById('successModal').classList.add('hidden');
+  currentStep = 1;
+  formData = {};
+  selectedPhotos = [];
+  selectedBoosts = [];
+  document.querySelectorAll('.step-content').forEach(step => step.classList.add('hidden'));
+  document.getElementById('step1').classList.remove('hidden');
+  document.getElementById('currentStep').textContent = '1';
+  updateProgressBar();
+  updateNavigation();
+  updateTotalCost();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function setupDarkMode() {
+  const toggle = document.getElementById('darkModeToggle');
+  const html = document.documentElement;
+  
+  const savedTheme = localStorage.getItem('theme') || 'light';
+  html.classList.toggle('dark', savedTheme === 'dark');
+  
+  toggle.addEventListener('click', () => {
+    html.classList.toggle('dark');
+    const newTheme = html.classList.contains('dark') ? 'dark' : 'light';
+    localStorage.setItem('theme', newTheme);
+  });
+}
+
+// Initialize on page load
+document.addEventListener('DOMContentLoaded', init);
+</script>
+<script>
+/* --- Category-based dynamic fields for All-in-one Listing Builder --- */
+
+/*
+Assumptions:
+- There is a container element with id="categoryFields" where the dynamic fields will be rendered.
+- There is a submit button with id="submitListing".
+- If incoming category was passed via sessionStorage 'zzz_post_category', we read it on load.
+- formData is the object holding listing data. We'll create it if not present.
+- You can change saveListing() to POST to your server or save to IndexedDB/localStorage.
+*/
+
+let formData = window.formData || {};           // reuse existing if available
+let currentCategory = null;
+let categoryFieldContainer = document.getElementById('categoryFields') || null;
+
+// Field templates per category (HTML strings). Keep them minimal & accessible.
+const fieldTemplates = {
+  'Property': `
+    <div class="field-group">
+      <label for="title">Title <span aria-hidden="true">*</span></label>
+      <input id="title" name="title" type="text" required />
+    </div>
+    <div class="field-group">
+      <label for="price">Price (₹) <span aria-hidden="true">*</span></label>
+      <input id="price" name="price" type="number" min="0" required />
+    </div>
+    <div class="field-group">
+      <label for="area">Area (sq ft)</label>
+      <input id="area" name="area" type="text" />
+    </div>
+    <div class="field-group">
+      <label for="bedrooms">Bedrooms</label>
+      <input id="bedrooms" name="bedrooms" type="number" min="0" />
+    </div>
+    <div class="field-group">
+      <label for="bathrooms">Bathrooms</label>
+      <input id="bathrooms" name="bathrooms" type="number" min="0" />
+    </div>
+    <div class="field-group">
+      <label for="furnishing">Furnishing</label>
+      <select id="furnishing" name="furnishing">
+        <option value="">Select</option><option>Furnished</option><option>Semi-furnished</option><option>Unfurnished</option>
+      </select>
+    </div>
+    <div class="field-group">
+      <label for="city">City <span aria-hidden="true">*</span></label>
+      <input id="city" name="city" type="text" required />
+    </div>
+    <div class="field-group">
+      <label for="description">Description</label>
+      <textarea id="description" name="description" rows="4"></textarea>
+    </div>
+    <div class="field-group">
+      <label for="images">Upload images</label>
+      <input id="images" name="images" type="file" accept="image/*" multiple />
+    </div>
+  `,
+
+  'Vehicles': `
+    <div class="field-group">
+      <label for="title_v">Title <span aria-hidden="true">*</span></label>
+      <input id="title_v" name="title" type="text" required />
+    </div>
+    <div class="field-group">
+      <label for="brand">Brand</label>
+      <input id="brand" name="brand" type="text" />
+    </div>
+    <div class="field-group">
+      <label for="model">Model</label>
+      <input id="model" name="model" type="text" />
+    </div>
+    <div class="field-group">
+      <label for="year">Year</label>
+      <input id="year" name="year" type="number" min="1900" max="2099" />
+    </div>
+    <div class="field-group">
+      <label for="km">KM Driven</label>
+      <input id="km" name="km" type="text" />
+    </div>
+    <div class="field-group">
+      <label for="fuel">Fuel Type</label>
+      <select id="fuel" name="fuel">
+        <option value="">Select</option><option>Petrol</option><option>Diesel</option><option>Electric</option><option>Hybrid</option>
+      </select>
+    </div>
+    <div class="field-group">
+      <label for="price_v">Price (₹) <span aria-hidden="true">*</span></label>
+      <input id="price_v" name="price" type="number" min="0" required />
+    </div>
+    <div class="field-group">
+      <label for="images_v">Upload images</label>
+      <input id="images_v" name="images" type="file" accept="image/*" multiple />
+    </div>
+  `,
+
+  'Electronics': `
+    <div class="field-group">
+      <label for="title_e">Title <span aria-hidden="true">*</span></label>
+      <input id="title_e" name="title" type="text" required />
+    </div>
+    <div class="field-group">
+      <label for="brand_e">Brand</label>
+      <input id="brand_e" name="brand" type="text" />
+    </div>
+    <div class="field-group">
+      <label for="model_e">Model</label>
+      <input id="model_e" name="model" type="text" />
+    </div>
+    <div class="field-group">
+      <label for="condition">Condition</label>
+      <select id="condition" name="condition"><option value="">Select</option><option>New</option><option>Used</option></select>
+    </div>
+    <div class="field-group">
+      <label for="price_e">Price (₹)</label>
+      <input id="price_e" name="price" type="number" min="0" />
+    </div>
+    <div class="field-group">
+      <label for="specs">Specifications</label>
+      <textarea id="specs" name="specs"></textarea>
+    </div>
+    <div class="field-group">
+      <label for="images_e">Upload images</label>
+      <input id="images_e" name="images" type="file" accept="image/*" multiple />
+    </div>
+  `,
+
+  'Jobs': `
+    <div class="field-group">
+      <label for="title_j">Job Title <span aria-hidden="true">*</span></label>
+      <input id="title_j" name="title" type="text" required />
+    </div>
+    <div class="field-group">
+      <label for="company">Company</label>
+      <input id="company" name="company" type="text" />
+    </div>
+    <div class="field-group">
+      <label for="salary">Salary</label>
+      <input id="salary" name="salary" type="text" />
+    </div>
+    <div class="field-group">
+      <label for="jobtype">Job Type</label>
+      <select id="jobtype" name="jobtype"><option value="">Select</option><option>Full-time</option><option>Part-time</option><option>Contract</option></select>
+    </div>
+    <div class="field-group">
+      <label for="experience">Experience (years)</label>
+      <input id="experience" name="experience" type="number" min="0" />
+    </div>
+    <div class="field-group">
+      <label for="location_j">Location</label>
+      <input id="location_j" name="location" type="text" />
+    </div>
+    <div class="field-group">
+      <label for="description_j">Description</label>
+      <textarea id="description_j" name="description"></textarea>
+    </div>
+  `,
+
+  'Services': `
+    <div class="field-group">
+      <label for="title_s">Service Title <span aria-hidden="true">*</span></label>
+      <input id="title_s" name="title" type="text" required />
+    </div>
+    <div class="field-group">
+      <label for="service_category">Service Category</label>
+      <input id="service_category" name="service_category" type="text" />
+    </div>
+    <div class="field-group">
+      <label for="price_s">Price / Rate</label>
+      <input id="price_s" name="price" type="text" />
+    </div>
+    <div class="field-group">
+      <label for="availability">Availability</label>
+      <input id="availability" name="availability" type="text" />
+    </div>
+    <div class="field-group">
+      <label for="description_s">Description</label>
+      <textarea id="description_s" name="description"></textarea>
+    </div>
+  `
+};
+
+// Utility: create accessible DOM from template string
+function renderFieldsForCategory(category) {
+  currentCategory = category;
+  formData.category = category;
+  if(!categoryFieldContainer){
+    // create container if missing
+    categoryFieldContainer = document.createElement('div');
+    categoryFieldContainer.id = 'categoryFields';
+    const target = document.getElementById('step-content') || document.body;
+    target.appendChild(categoryFieldContainer);
+  }
+  const template = fieldTemplates[category] || `<div><p>No custom fields for ${category}.</p></div>`;
+  categoryFieldContainer.innerHTML = template;
+
+  // after rendering, wire up input listeners to keep formData updated
+  categoryFieldContainer.querySelectorAll('input, select, textarea').forEach(el=>{
+    // set accessible attributes if missing
+    if(!el.id) {
+      el.id = 'fld_' + Math.random().toString(36).slice(2,9);
+    }
+    const name = el.name || el.id;
+    el.addEventListener('input', (e)=> {
+      const val = (el.type === 'file') ? el.files : el.value;
+      // For files store a placeholder or array of file names; actual upload handled separately
+      if(el.type === 'file') {
+        formData[name] = Array.from(el.files).map(f => f.name);
+      } else {
+        formData[name] = val;
+      }
+    });
+
+    // keyboard accessibility: already native for inputs; but ensure non-inputs have key handler (none here)
+  });
+
+  // focus first input for accessibility
+  const firstInput = categoryFieldContainer.querySelector('input, select, textarea');
+  if(firstInput) { firstInput.focus(); }
+}
+
+// Call this when a user selects a category card (wired to your category selection code)
+function onCategorySelected(categoryName) {
+  // visually mark selected card (if you have card nodes)
+  document.querySelectorAll('.category-card.selected').forEach(c=>c.classList.remove('selected'));
+  const cards = Array.from(document.querySelectorAll('.category-card'));
+  const match = cards.find(c => (c.textContent || '').trim().includes(categoryName));
+  if(match) match.classList.add('selected');
+
+  renderFieldsForCategory(categoryName);
+}
+
+// On load: check sessionStorage and wire up existing category controls
+document.addEventListener('DOMContentLoaded', () => {
+  // 1) If incoming category from Post Listing, auto-render it
+  const incoming = sessionStorage.getItem('zzz_post_category');
+  if(incoming){
+    onCategorySelected(incoming);
+    // optionally remove key to avoid reusing accidentally
+    sessionStorage.removeItem('zzz_post_category');
+  }
+
+  // 2) Wire up any .category-card clicks on the page to switch fields
+  document.querySelectorAll('.category-card').forEach(card=>{
+    card.setAttribute('tabindex','0');
+    card.setAttribute('role','button');
+    card.addEventListener('click', ()=> {
+      const name = (card.dataset.category || card.textContent).trim();
+      onCategorySelected(name);
+    });
+    card.addEventListener('keydown', (e) => {
+      if(e.key === 'Enter' || e.key === ' ') { e.preventDefault(); card.click(); }
+    });
+  });
+
+  // 3) Wire up submit
+  const submitBtn = document.getElementById('submitListing');
+  if(submitBtn){
+    submitBtn.addEventListener('click', submitListing);
+  }
+});
+
+// Basic validation and save handler
+function validateFormData() {
+  // Simple required check: every rendered element with required attribute must be non-empty
+  const missing = [];
+  (categoryFieldContainer ? categoryFieldContainer.querySelectorAll('[required]') : []).forEach(el=>{
+    if(el.type === 'file'){
+      if(!el.files || el.files.length === 0) missing.push(el);
+    } else if(!el.value || String(el.value).trim() === ''){
+      missing.push(el);
+    }
+  });
+  if(missing.length){
+    missing[0].focus();
+    return { ok:false, missing };
+  }
+  return { ok:true };
+}
+
+function submitListing(e){
+  e && e.preventDefault && e.preventDefault();
+  const res = validateFormData();
+  if(!res.ok){
+    alert('Please fill required fields.');
+    return;
+  }
+
+  // finalize formData timestamp & category
+  formData.submittedAt = new Date().toISOString();
+  formData.category = currentCategory || formData.category || 'Uncategorized';
+
+  // Example: save to localStorage (for testing). Replace with fetch POST to your API.
+  const saved = JSON.parse(localStorage.getItem('zzz_listings') || '[]');
+  saved.push(formData);
+  localStorage.setItem('zzz_listings', JSON.stringify(saved));
+
+  // If you want to POST to server:
+  // fetch('/api/listings', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(formData)})
+  //  .then(r=>r.json()).then(resp => { /* handle */ });
+
+  // Provide feedback and optionally navigate to the listing page
+  alert('Listing saved locally. (Replace storage with server call when ready.)');
+  // optional: go to the listing preview page
+  // window.location.href = 'listing-preview.html?id=' + SOME_ID;
+}
+</script>
+</body>
+</html>

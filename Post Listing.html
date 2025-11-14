@@ -4,6 +4,13 @@
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <title>ZipZapZoi - Create a New Listing</title>
+<style>
+/* focus styles for keyboard users */
+:focus {
+  outline: 3px solid rgba(77,150,255,0.25);
+  outline-offset: 2px;
+}
+</style>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 <link href="https://fonts.googleapis.com" rel="preconnect"/>
 <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
@@ -168,7 +175,7 @@
 </div>
 <script>
 (function(){
-  // track selection
+  // existing category selection code likely already present...
   const categories = document.querySelectorAll('.grid .group');
   let selected = null;
 
@@ -177,28 +184,34 @@
       categories.forEach(c=>c.classList.remove('border-primary','bg-primary/10','dark:bg-primary/20','-translate-y-1'));
       cat.classList.add('border-primary','bg-primary/10','dark:bg-primary/20','-translate-y-1');
       selected = cat.querySelector('p').textContent.trim();
+      // accessibility: announce selection for screen readers
+      cat.setAttribute('aria-pressed','true');
     });
   });
 
-  // Next-Step button
-  const nextBtn = document.querySelector('button span.truncate:text-is("Next Step")') 
-               || document.querySelector('button:has(span:contains("Next Step"))')
-               || document.querySelector('button:last-child');
+  // Improved Next button selector and handler:
+  const nextBtn = document.querySelector('button:last-child') || document.querySelector('button:contains("Next Step")');
+
   if(nextBtn){
     nextBtn.addEventListener('click',()=>{
       if(!selected){
+        // better accessible alert (focus a hidden live region if you have one). simple fallback:
         alert('Please select a category before continuing.');
         return;
       }
-      // save selection
+      // save selection so the all-in-one builder can pick it up
       sessionStorage.setItem('zzz_post_category', selected);
-      // go to Step 2 (you can name it whatever you like)
-      window.location.href = 'Post Listing-Details.html';
+      // optionally save a source page so builder can show a return button
+      sessionStorage.setItem('zzz_post_source','post-listing');
+
+      // Redirect to your All-in-one listing builder page
+      // <-- CHANGE this filename if your file is named differently
+      window.location.href = 'All in one Listing Builder (Post Listing).html';
     });
   }
 
   // Cancel
-  const cancelBtn = document.querySelector('button span:contains("Cancel")')?.closest('button');
+  const cancelBtn = Array.from(document.querySelectorAll('button')).find(b => b.textContent.trim().toLowerCase() === 'cancel');
   if(cancelBtn){
     cancelBtn.addEventListener('click',()=>history.back());
   }
