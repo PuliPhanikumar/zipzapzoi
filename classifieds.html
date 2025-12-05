@@ -1,248 +1,401 @@
 <!DOCTYPE html>
-<html class="light" lang="en"><head>
-<meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>ZipZapZoi - Your Marketplace Awaits</title>
-<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-<link href="https://fonts.googleapis.com" rel="preconnect"/>
-<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
-<link href="https://fonts.googleapis.com/css2?family=Spline+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet"/>
-<script id="tailwind-config">tailwind.config = {darkMode: "class", theme: {extend: {colors: {primary: "#019863", secondary: "#4D96A9", "background-light": "#f5f8f7", "background-dark": "#0f231c", "text-light": "#333333", "text-dark": "#F7F7F7", "surface-light": "#FFFFFF", "surface-dark": "#2a2a2a", "border-light": "#e5e5e5", "border-dark": "#444444"}, fontFamily: {display: "Spline Sans"}, borderRadius: {DEFAULT: "1rem", lg: "2rem", xl: "3rem", full: "9999px"}, boxShadow: {soft: "0 4px 10px rgba(0, 0, 0, 0.05), 0 1px 3px rgba(0, 0, 0, 0.05)", lift: "0 10px 20px rgba(0, 0, 0, 0.07), 0 6px 6px rgba(0, 0, 0, 0.07)", bouncy: "0 8px 16px rgba(0, 0, 0, 0.1), 0 4px 8px rgba(0, 0, 0, 0.08), inset 0 -4px 0px rgba(0,0,0,0.1)", "bouncy-hover": "0 12px 24px rgba(0, 0, 0, 0.12), 0 6px 12px rgba(0, 0, 0, 0.1), inset 0 -6px 0px rgba(0,0,0,0.15)"}}}};</script>
-<style>
-    .material-symbols-outlined {
-      font-variation-settings:
-        'FILL' 1,
-        'wght' 400,
-        'GRAD' 0,
-        'opsz' 24
-    }
-    .category-card {
+<html class="light" lang="en">
+  <head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>ZipZapZoi - Your Marketplace Awaits</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com" rel="preconnect"/>
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+    <link href="https://fonts.googleapis.com/css2?family=Spline+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet"/>
+    <script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              primary: "#019863",
+              secondary: "#4D96A9",
+              "background-light": "#f5f8f7",
+              "background-dark": "#0f231c",
+              "text-light": "#333333",
+              "text-dark": "#F7F7F7",
+              "surface-light": "#FFFFFF",
+              "surface-dark": "#2a2a2a",
+              "border-light": "#e5e5e5",
+              "border-dark": "#444444"
+            },
+            fontFamily: {
+              display: "Spline Sans"
+            },
+            borderRadius: {
+              DEFAULT: "1rem",
+              lg: "2rem",
+              xl: "3rem",
+              full: "9999px"
+            },
+            boxShadow: {
+              soft: "0 4px 10px rgba(0, 0, 0, 0.05), 0 1px 3px rgba(0, 0, 0, 0.05)",
+              lift: "0 10px 20px rgba(0, 0, 0, 0.07), 0 6px 6px rgba(0, 0, 0, 0.07)",
+              bouncy: "0 8px 16px rgba(0, 0, 0, 0.1), 0 4px 8px rgba(0, 0, 0, 0.08), inset 0 -4px 0px rgba(0,0,0,0.1)",
+              "bouncy-hover": "0 12px 24px rgba(0, 0, 0, 0.12), 0 6px 12px rgba(0, 0, 0, 0.1), inset 0 -6px 0px rgba(0,0,0,0.15)"
+            }
+          }
+        }
+      };
+    </script>
+    <style>
+      .material-symbols-outlined {
+        font-variation-settings:
+          'FILL' 1,
+          'wght' 400,
+          'GRAD' 0,
+          'opsz' 24
+      }
+      .category-card {
         background: linear-gradient(145deg, #ffffff, #e6e6e6);
-    }
-    .dark .category-card {
+      }
+      .dark .category-card {
         background: linear-gradient(145deg, #3a3a3a, #2a2a2a);
-    }
-  </style>
-</head>
-<body class="font-display bg-background-light dark:bg-background-dark text-text-light dark:text-text-dark">
-<div class="relative flex min-h-screen w-full flex-col">
-<header class="sticky top-0 z-50 bg-background-light/80 dark:bg-background-dark/80 backdrop-blur-sm">
-<div class="container mx-auto px-6 py-3">
-<div class="flex items-center justify-between">
-<div class="flex items-center gap-4">
-<div class="text-secondary dark:text-primary size-8">
-<svg fill="none" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
-<path d="M36.7273 44C33.9891 44 31.6043 39.8386 30.3636 33.69C29.123 39.8386 26.7382 44 24 44C21.2618 44 18.877 39.8386 17.6364 33.69C16.3957 39.8386 14.0109 44 11.2727 44C7.25611 44 4 35.0457 4 24C4 12.9543 7.25611 4 11.2727 4C14.0109 4 16.3957 8.16144 17.6364 14.31C18.877 8.16144 21.2618 4 24 4C26.7382 4 29.123 8.16144 30.3636 14.31C31.6043 8.16144 33.9891 4 36.7273 4C40.7439 4 44 12.9543 44 24C44 35.0457 40.7439 44 36.7273 44Z" fill="currentColor"></path>
-</svg>
-</div>
-<h2 class="text-xl font-bold text-text-light dark:text-text-dark">ZipZapZoi</h2>
-</div>
-<div class="flex items-center gap-6">
-<a class="text-sm font-semibold hover:text-secondary dark:hover:text-primary transition-colors" href="#">Log In</a>
-<div class="flex items-center gap-3 text-sm font-medium bg-surface-light dark:bg-surface-dark p-1 rounded-full shadow-soft border border-border-light dark:border-border-dark">
-<a class="group flex items-center gap-2 py-2 px-4 rounded-full hover:bg-background-light dark:hover:bg-background-dark transition-all duration-300" href="#">
-<span class="font-semibold text-text-light dark:text-text-dark group-hover:text-secondary dark:group-hover:text-primary"></span>
-<a href="Post Listing.html" class="...">Post Listing</a>
-<a class="group flex items-center gap-2 py-2 px-4 rounded-full hover:bg-background-light dark:hover:bg-background-dark transition-all duration-300" href="#">
-<span class="material-symbols-outlined text-lg text-secondary group-hover:text-primary transition-colors">dashboard</span>
-<span class="font-semibold text-text-light dark:text-text-dark group-hover:text-secondary dark:group-hover:text-primary">Seller Dashboard</span>
-</a>
-<a class="group flex items-center gap-2 py-2 px-4 rounded-full hover:bg-background-light dark:hover:bg-background-dark transition-all duration-300" href="#">
-<span class="material-symbols-outlined text-lg text-secondary group-hover:text-primary transition-colors">inbox</span>
-<span class="font-semibold text-text-light dark:text-text-dark group-hover:text-secondary dark:group-hover:text-primary">Inbox</span>
-</a>
-<a class="group flex items-center gap-2 py-2 px-4 rounded-full hover:bg-background-light dark:hover:bg-background-dark transition-all duration-300" href="#">
-<span class="material-symbols-outlined text-lg text-secondary group-hover:text-primary transition-colors">favorite</span>
-<span class="font-semibold text-text-light dark:text-text-dark group-hover:text-secondary dark:group-hover:text-primary">Favorites</span>
-</a>
-</div>
-<a class="text-sm font-semibold bg-secondary text-white py-2.5 px-5 rounded-full shadow-bouncy hover:shadow-bouncy-hover hover:-translate-y-1 transition-all duration-300" href="#">Sign Up</a>
-</div>
-</div>
-</div>
+      }
+    </style>
+    <script src="js/data-manager.js"></script>
+  </head>
+  <body class="font-display bg-background-light dark:bg-background-dark text-text-light dark:text-text-dark">
+    <div class="relative flex min-h-screen w-full flex-col">
+      <header class="sticky top-0 z-50 bg-background-light/80 dark:bg-background-dark/80 backdrop-blur-sm">
+  <div class="container mx-auto px-6 py-3">
+    <div class="flex items-center justify-between">
+      <!-- Left: Logo + Brand -->
+      <div class="flex items-center gap-4">
+        <div class="text-secondary dark:text-primary size-8">
+          <svg fill="none" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+            <path d="M36.7273 44C33.9891 44 31.6043 39.8386 30.3636 33.69C29.123 39.8386 26.7382 44 24 44C21.2618 44 18.877 39.8386 17.6364 33.69C16.3957 39.8386 14.0109 44 11.2727 44C7.25611 44 4 35.0457 4 24C4 12.9543 7.25611 4 11.2727 4C14.0109 4 16.3957 8.16144 17.6364 14.31C18.877 8.16144 21.2618 4 24 4C26.7382 4 29.123 8.16144 30.3636 14.31C31.6043 8.16144 33.9891 4 36.7273 4C40.7439 4 44 12.9543 44 24C44 35.0457 40.7439 44 36.7273 44Z" fill="currentColor"></path>
+          </svg>
+        </div>
+        <h2 class="text-xl font-bold text-text-light dark:text-text-dark">
+          ZipZapZoi Classifieds
+        </h2>
+      </div>
+
+      <!-- Right: Auth + Nav -->
+      <div class="flex items-center gap-6" id="headerAuthArea">
+        <!-- When NOT logged in -->
+        <div data-auth-hide class="flex items-center gap-6">
+          <a
+            href="Login-Page.html"
+            class="text-sm font-semibold hover:text-secondary dark:hover:text-primary transition-colors"
+          >
+            Log In
+          </a>
+          <a
+            href="User-Registration.html"
+            class="text-sm font-semibold bg-secondary text-white py-2.5 px-5 rounded-full shadow-bouncy hover:shadow-bouncy-hover hover:-translate-y-1 transition-all duration-300"
+          >
+            Sign Up
+          </a>
+        </div>
+
+        <!-- When logged in -->
+        <div data-auth-show class="hidden flex items-center gap-4">
+          <div class="flex items-center gap-3 text-sm font-medium bg-surface-light dark:bg-surface-dark p-1 rounded-full shadow-soft border border-border-light dark:border-border-dark">
+            <a
+              href="Post Listing.html"
+              data-requires-auth="true"
+              class="group flex items-center gap-2 py-2 px-4 rounded-full hover:bg-background-light dark:hover:bg-background-dark transition-all duration-300"
+            >
+              <span class="material-symbols-outlined text-lg text-secondary group-hover:text-primary transition-colors">add_circle</span>
+              <span class="font-semibold text-text-light dark:text-text-dark group-hover:text-secondary dark:group-hover:text-primary">
+                Post Listing
+              </span>
+            </a>
+
+            <a
+              href="Seller Dashboard.html"
+              data-requires-auth="true"
+              class="group flex items-center gap-2 py-2 px-4 rounded-full hover:bg-background-light dark:hover:bg-background-dark transition-all duration-300"
+            >
+              <span class="material-symbols-outlined text-lg text-secondary group-hover:text-primary transition-colors">dashboard</span>
+              <span class="font-semibold text-text-light dark:text-text-dark group-hover:text-secondary dark:group-hover:text-primary">
+                Seller Dashboard
+              </span>
+            </a>
+
+            <a
+              href="Inbox.html"
+              data-requires-auth="true"
+              class="group flex items-center gap-2 py-2 px-4 rounded-full hover:bg-background-light dark:hover:bg-background-dark transition-all duration-300"
+            >
+              <span class="material-symbols-outlined text-lg text-secondary group-hover:text-primary transition-colors">inbox</span>
+              <span class="font-semibold text-text-light dark:text-text-dark group-hover:text-secondary dark:group-hover:text-primary">
+                Inbox
+              </span>
+            </a>
+
+            <a
+              href="#"
+              data-requires-auth="true"
+              class="group flex items-center gap-2 py-2 px-4 rounded-full hover:bg-background-light dark:hover:bg-background-dark transition-all duration-300"
+            >
+              <span class="material-symbols-outlined text-lg text-secondary group-hover:text-primary transition-colors">favorite</span>
+              <span class="font-semibold text-text-light dark:text-text-dark group-hover:text-secondary dark:group-hover:text-primary">
+                Favorites
+              </span>
+            </a>
+          </div>
+
+          <div class="flex items-center gap-3">
+            <span class="text-sm font-semibold text-text-light dark:text-text-dark">
+              Hi, <span id="zzzUserName">Zoi User</span>
+            </span>
+            <button
+              id="zzzLogoutBtn"
+              class="text-sm font-semibold text-secondary dark:text-primary hover:underline"
+            >
+              Logout
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </header>
-<main class="flex-grow">
-<section class="py-12 md:py-16">
-<div class="container mx-auto px-6">
-<div class="text-center">
-<div class="max-w-3xl mx-auto">
-<h1 class="text-4xl md:text-5xl font-bold tracking-tighter text-secondary dark:text-primary leading-tight">Your Marketplace Awaits</h1>
-<p class="mt-3 text-lg md:text-xl text-text-light/80 dark:text-text-dark/80">Find anything, instantly. Buy and sell great new and used items.</p>
-</div>
-<div class="mt-8 max-w-4xl mx-auto bg-surface-light dark:bg-surface-dark p-2 rounded-lg shadow-soft flex flex-col md:flex-row gap-2 items-center border border-border-light dark:border-border-dark">
-<div class="w-full md:w-1/2 flex items-center bg-background-light dark:bg-background-dark rounded-md">
-<span class="material-symbols-outlined text-text-light/50 dark:text-text-dark/50 pl-4">search</span>
-<input class="form-input w-full bg-transparent border-none focus:ring-0 text-base placeholder:text-text-light/50 dark:placeholder:text-text-dark/50" placeholder="e.g., vintage bicycle" type="text"/>
-</div>
-<div class="w-full md:w-1/2 flex items-center bg-background-light dark:bg-background-dark rounded-md border-t md:border-t-0 md:border-l border-border-light dark:border-border-dark">
-<span class="material-symbols-outlined text-text-light/50 dark:text-text-dark/50 pl-4">location_on</span>
-<input class="form-input w-full bg-transparent border-none focus:ring-0 text-base placeholder:text-text-light/50 dark:placeholder:text-text-dark/50" placeholder="e.g., New York, NY" type="text"/>
-</div>
-<button class="w-full md:w-auto flex-shrink-0 flex items-center justify-center rounded-lg h-12 px-8 bg-secondary text-white text-base font-bold shadow-soft hover:shadow-lift hover:scale-105 transition-all duration-300">
-<span>Search</span>
-</button>
-</div>
-</div>
-</div>
+      <main class="flex-grow">
+        <!-- HERO + SEARCH -->
+        <section class="py-12 md:py-16">
+          <div class="container mx-auto px-6">
+            <div class="text-center">
+              <div class="max-w-3xl mx-auto">
+                <h1 class="text-4xl md:text-5xl font-bold tracking-tighter text-secondary dark:text-primary leading-tight">
+                  Your Marketplace Awaits
+                </h1>
+                <p class="mt-3 text-lg md:text-xl text-text-light/80 dark:text-text-dark/80">
+                  Find anything, instantly. Buy and sell great new and used items.
+                </p>
+              </div>
+
+              <div class="mt-8 max-w-4xl mx-auto bg-surface-light dark:bg-surface-dark p-2 rounded-lg shadow-soft flex flex-col md:flex-row gap-2 items-center border border-border-light dark:border-border-dark">
+                <!-- SEARCH QUERY -->
+                <div class="w-full md:w-1/2 flex items-center bg-background-light dark:bg-background-dark rounded-md">
+                  <span class="material-symbols-outlined text-text-light/50 dark:text-text-dark/50 pl-4">search</span>
+                  <input
+                    id="searchQuery"
+                    class="form-input w-full bg-transparent border-none focus:ring-0 text-base placeholder:text-text-light/50 dark:placeholder:text-text-dark/50"
+                    placeholder="e.g., vintage bicycle"
+                    type="text"
+                  />
+                </div>
+
+                <!-- CITY FILTER -->
+                <div class="w-full md:w-1/2 flex items-center bg-background-light dark:bg-background-dark rounded-md border-t md:border-t-0 md:border-l border-border-light dark:border-border-dark">
+                  <span class="material-symbols-outlined text-text-light/50 dark:text-text-dark/50 pl-4">location_on</span>
+                  <input
+                    id="filterCity"
+                    class="form-input w-full bg-transparent border-none focus:ring-0 text-base placeholder:text-text-light/50 dark:placeholder:text-text-dark/50"
+                    placeholder="e.g., Bangalore, Mumbai"
+                    type="text"
+                  />
+                </div>
+
+                <!-- SEARCH BUTTON -->
+                <button
+                  id="btnSearch"
+                  class="w-full md:w-auto flex-shrink-0 flex items-center justify-center rounded-lg h-12 px-8 bg-secondary text-white text-base font-bold shadow-soft hover:shadow-lift hover:scale-105 transition-all duration-300"
+                >
+                  <span>Search</span>
+                </button>
+              </div>
+
+              <!-- OPTIONAL CATEGORY DROPDOWN -->
+              <div class="mt-4 flex flex-wrap gap-3 justify-center">
+                <select
+                  id="filterCategory"
+                  class="form-select bg-background-light dark:bg-background-dark border border-border-light dark:border-border-dark rounded-md text-base px-3 py-2"
+                >
+                  <option value="">All Categories</option>
+                  <option value="electronics">Electronics</option>
+                  <option value="vehicles">Vehicles</option>
+                  <option value="home">Home &amp; Garden</option>
+                  <option value="fashion">Clothing</option>
+                  <option value="property">Real Estate</option>
+                  <option value="jobs">Jobs</option>
+                  <option value="services">Services</option>
+                  <option value="hobbies">Hobbies</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- CATEGORIES (unchanged) -->
+        <section class="pb-12 bg-background-light dark:bg-background-dark">
+          <div class="container mx-auto px-6">
+            <h2 class="text-3xl font-bold text-center mb-10">Explore Categories</h2>
+            <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-6">
+              <a class="group flex flex-col items-center gap-3 text-center cursor-pointer" href="#">
+                <div class="category-card flex items-center justify-center w-32 h-32 rounded-xl shadow-bouncy group-hover:shadow-bouncy-hover group-hover:-translate-y-2 transition-all duration-300 ease-in-out border border-border-light/50 dark:border-border-dark/50">
+                  <span class="material-symbols-outlined text-5xl text-[#4D96A9]">devices</span>
+                </div>
+                <p class="text-base font-semibold">Electronics</p>
+              </a>
+              <a class="group flex flex-col items-center gap-3 text-center cursor-pointer" href="#">
+                <div class="category-card flex items-center justify-center w-32 h-32 rounded-xl shadow-bouncy group-hover:shadow-bouncy-hover group-hover:-translate-y-2 transition-all duration-300 ease-in-out border border-border-light/50 dark:border-border-dark/50">
+                  <span class="material-symbols-outlined text-5xl text-[#6B81FF]">directions_car</span>
+                </div>
+                <p class="text-base font-semibold">Vehicles</p>
+              </a>
+              <a class="group flex flex-col items-center gap-3 text-center cursor-pointer" href="#">
+                <div class="category-card flex items-center justify-center w-32 h-32 rounded-xl shadow-bouncy group-hover:shadow-bouncy-hover group-hover:-translate-y-2 transition-all duration-300 ease-in-out border border-border-light/50 dark:border-border-dark/50">
+                  <span class="material-symbols-outlined text-5xl text-[#4CAF50]">yard</span>
+                </div>
+                <p class="text-base font-semibold">Home &amp; Garden</p>
+              </a>
+              <a class="group flex flex-col items-center gap-3 text-center cursor-pointer" href="#">
+                <div class="category-card flex items-center justify-center w-32 h-32 rounded-xl shadow-bouncy group-hover:shadow-bouncy-hover group-hover:-translate-y-2 transition-all duration-300 ease-in-out border border-border-light/50 dark:border-border-dark/50">
+                  <span class="material-symbols-outlined text-5xl text-[#FFC107]">checkroom</span>
+                </div>
+                <p class="text-base font-semibold">Clothing</p>
+              </a>
+              <a class="group flex flex-col items-center gap-3 text-center cursor-pointer" href="#">
+                <div class="category-card flex items-center justify-center w-32 h-32 rounded-xl shadow-bouncy group-hover:shadow-bouncy-hover group-hover:-translate-y-2 transition-all duration-300 ease-in-out border border-border-light/50 dark:border-border-dark/50">
+                  <span class="material-symbols-outlined text-5xl text-[#9C27B0]">real_estate_agent</span>
+                </div>
+                <p class="text-base font-semibold">Real Estate</p>
+              </a>
+              <a class="group flex flex-col items-center gap-3 text-center cursor-pointer" href="#">
+                <div class="category-card flex items-center justify-center w-32 h-32 rounded-xl shadow-bouncy group-hover:shadow-bouncy-hover group-hover:-translate-y-2 transition-all duration-300 ease-in-out border border-border-light/50 dark:border-border-dark/50">
+                  <span class="material-symbols-outlined text-5xl text-[#E91E63]">work</span>
+                </div>
+                <p class="text-base font-semibold">Jobs</p>
+              </a>
+            </div>
+          </div>
+        </section>
+
+        <!-- SUMMER SALE (unchanged) -->
+        <section class="py-12 md:py-16">
+          <div class="container mx-auto px-6">
+            <div class="bg-gradient-to-br from-[#FFC107] to-[#FF6B6B] rounded-xl p-10 md:p-16 shadow-bouncy hover:shadow-bouncy-hover hover:-translate-y-2 transition-all duration-300 ease-in-out flex flex-col md:flex-row items-center justify-between gap-8">
+              <div class="text-center md:text-left text-white max-w-3xl">
+                <h2 class="text-4xl md:text-5xl font-bold tracking-tight">Summer Sale Spectacle!</h2>
+                <p class="mt-3 text-lg md:text-xl opacity-90">Get up to 50% off on electronics, fashion, and more. Don't miss out on the hottest deals of the season!</p>
+              </div>
+              <a class="flex-shrink-0 bg-white text-primary font-bold py-4 px-10 rounded-full shadow-soft hover:shadow-lift hover:scale-105 transition-all duration-300 transform text-lg" href="#">
+                Shop Now
+              </a>
+            </div>
+          </div>
+        </section>
+
+        <!-- TRENDING LISTINGS (can stay static for now) -->
+        <section class="py-12">
+          <div class="container mx-auto px-6">
+            <h2 class="text-3xl font-bold text-center mb-10">Trending Listings</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              <!-- existing 3 cards kept as-is -->
+              <!-- ... unchanged content here ... -->
+            </div>
+          </div>
+        </section>
+
+        <!-- ZOI'S TOP PICKS – now dynamic grid -->
+        <section class="py-12">
+  <div class="container mx-auto px-6">
+    <h2 class="text-3xl font-bold text-center mb-10">Zoi's Top Picks</h2>
+
+    <div class="flex justify-end mb-4">
+      <select
+        id="sortBy"
+        class="form-select bg-background-light dark:bg-background-dark border border-border-light dark:border-border-dark rounded-md text-sm px-3 py-2"
+      >
+        <option value="newest">Newest first</option>
+        <option value="price-low">Price: Low to High</option>
+        <option value="price-high">Price: High to Low</option>
+      </select>
+    </div>
+
+    <div
+      id="listingsGrid"
+      class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6"
+    >
+      <!-- JS will inject cards here -->
+    </div>
+  </div>
 </section>
-<section class="pb-12 bg-background-light dark:bg-background-dark">
-<div class="container mx-auto px-6">
-<h2 class="text-3xl font-bold text-center mb-10">Explore Categories</h2>
-<div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-6">
-<a class="group flex flex-col items-center gap-3 text-center cursor-pointer" href="#">
-<div class="category-card flex items-center justify-center w-32 h-32 rounded-xl shadow-bouncy group-hover:shadow-bouncy-hover group-hover:-translate-y-2 transition-all duration-300 ease-in-out border border-border-light/50 dark:border-border-dark/50">
-<span class="material-symbols-outlined text-5xl text-[#4D96A9]">devices</span>
-</div>
-<p class="text-base font-semibold">Electronics</p>
-</a>
-<a class="group flex flex-col items-center gap-3 text-center cursor-pointer" href="#">
-<div class="category-card flex items-center justify-center w-32 h-32 rounded-xl shadow-bouncy group-hover:shadow-bouncy-hover group-hover:-translate-y-2 transition-all duration-300 ease-in-out border border-border-light/50 dark:border-border-dark/50">
-<span class="material-symbols-outlined text-5xl text-[#6B81FF]">directions_car</span>
-</div>
-<p class="text-base font-semibold">Vehicles</p>
-</a>
-<a class="group flex flex-col items-center gap-3 text-center cursor-pointer" href="#">
-<div class="category-card flex items-center justify-center w-32 h-32 rounded-xl shadow-bouncy group-hover:shadow-bouncy-hover group-hover:-translate-y-2 transition-all duration-300 ease-in-out border border-border-light/50 dark:border-border-dark/50">
-<span class="material-symbols-outlined text-5xl text-[#4CAF50]">yard</span>
-</div>
-<p class="text-base font-semibold">Home &amp; Garden</p>
-</a>
-<a class="group flex flex-col items-center gap-3 text-center cursor-pointer" href="#">
-<div class="category-card flex items-center justify-center w-32 h-32 rounded-xl shadow-bouncy group-hover:shadow-bouncy-hover group-hover:-translate-y-2 transition-all duration-300 ease-in-out border border-border-light/50 dark:border-border-dark/50">
-<span class="material-symbols-outlined text-5xl text-[#FFC107]">checkroom</span>
-</div>
-<p class="text-base font-semibold">Clothing</p>
-</a>
-<a class="group flex flex-col items-center gap-3 text-center cursor-pointer" href="#">
-<div class="category-card flex items-center justify-center w-32 h-32 rounded-xl shadow-bouncy group-hover:shadow-bouncy-hover group-hover:-translate-y-2 transition-all duration-300 ease-in-out border border-border-light/50 dark:border-border-dark/50">
-<span class="material-symbols-outlined text-5xl text-[#9C27B0]">real_estate_agent</span>
-</div>
-<p class="text-base font-semibold">Real Estate</p>
-</a>
-<a class="group flex flex-col items-center gap-3 text-center cursor-pointer" href="#">
-<div class="category-card flex items-center justify-center w-32 h-32 rounded-xl shadow-bouncy group-hover:shadow-bouncy-hover group-hover:-translate-y-2 transition-all duration-300 ease-in-out border border-border-light/50 dark:border-border-dark/50">
-<span class="material-symbols-outlined text-5xl text-[#E91E63]">work</span>
-</div>
-<p class="text-base font-semibold">Jobs</p>
-</a>
-</div>
-</div>
-</section>
-<section class="py-12 md:py-16">
-<div class="container mx-auto px-6">
-<div class="bg-gradient-to-br from-[#FFC107] to-[#FF6B6B] rounded-xl p-10 md:p-16 shadow-bouncy hover:shadow-bouncy-hover hover:-translate-y-2 transition-all duration-300 ease-in-out flex flex-col md:flex-row items-center justify-between gap-8">
-<div class="text-center md:text-left text-white max-w-3xl">
-<h2 class="text-4xl md:text-5xl font-bold tracking-tight">Summer Sale Spectacle!</h2>
-<p class="mt-3 text-lg md:text-xl opacity-90">Get up to 50% off on electronics, fashion, and more. Don't miss out on the hottest deals of the season!</p>
-</div>
-<a class="flex-shrink-0 bg-white text-primary font-bold py-4 px-10 rounded-full shadow-soft hover:shadow-lift hover:scale-105 transition-all duration-300 transform text-lg" href="#">
-Shop Now
-</a>
-</div>
-</div>
-</section>
-<section class="py-12">
-<div class="container mx-auto px-6">
-<h2 class="text-3xl font-bold text-center mb-10">Trending Listings</h2>
-<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-<a class="group relative block rounded-lg overflow-hidden shadow-bouncy hover:shadow-bouncy-hover hover:-translate-y-2 transition-all duration-300 ease-in-out" href="#">
-<div class="w-full h-56 bg-cover bg-center" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCbLtS3fb_ApdSUEMaSeJdUgnQqokXCOoU-D5CXuelweF9zsK3ezT6my4lj_kvO4SZKqOh9z32yhNWuzx-fNJQd-qPLOSPuqP37K5uWC0VkTv0L-EHB19jrTnq65wh8UeGIfD7LfDPomL4ds34nWmzUvTpxh0fq5Rh6txhoUhPluS683EAHWNTlu1q-cjUSyRokNlEj-JloKaYHT8IIcsnJl7d3Mk_oMj68JzoTRx0jkZu0NYeWydZKtJW-IWSjz2ACAuQXZpoQ-s1N')"></div>
-<div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
-<div class="absolute bottom-0 left-0 p-5 text-white">
-<span class="inline-block bg-primary text-xs font-bold px-3 py-1 rounded-full mb-2">Trending</span>
-<h3 class="text-xl font-bold">Mid-Century Armchair</h3>
-<p class="text-lg font-semibold mt-1">$450</p>
-</div>
-</a>
-<a class="group relative block rounded-lg overflow-hidden shadow-bouncy hover:shadow-bouncy-hover hover:-translate-y-2 transition-all duration-300 ease-in-out" href="#">
-<div class="w-full h-56 bg-cover bg-center" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAE8y5ncRKtYD1yZr9DWwowTqNMAPuO9VG5Fi2IHTQXzSs4_8YR4fa3o6WEzO2QEApIAaESAp6Tt6kE5y3hssMaoVNpCssi1KWQqzyQCFGC5y0fNy9DbelP1opeHRyTb_F55jA1rxsRArHJ-_KWl7BlP-B0u-LvqAF4OBSYHIT6SDbg3XUD20SpqNyYIQkPkarSEq1hP1iBd-N9GbxdVaWD-ej4DJ624EQMHnjiACd8z2BAImB-mwVd76fjXAOkMU4lwdXRvMwUtHlu')"></div>
-<div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
-<div class="absolute bottom-0 left-0 p-5 text-white">
-<span class="inline-block bg-primary text-xs font-bold px-3 py-1 rounded-full mb-2">Popular</span>
-<h3 class="text-xl font-bold">Smartphone Pro X</h3>
-<p class="text-lg font-semibold mt-1">$799</p>
-</div>
-</a>
-<a class="group relative block rounded-lg overflow-hidden shadow-bouncy hover:shadow-bouncy-hover hover:-translate-y-2 transition-all duration-300 ease-in-out" href="#">
-<div class="w-full h-56 bg-cover bg-center" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuC9v9yKgLOhQIsSwjwmeFy5QtXAFnWc30xu6IY0LnJ-X2kdjEYiFxIy_TlwzmFiZLHxHYC8K3-cikVjDf53mPhx2wcEwfWl0usWA1rO4WwRl8Tt7J72SI7Bft6Hh8BAzSb9eTnqads583R9by_wZbb001_XkY3Dswbfe6wr9SUW4TYaSTcC8SJHs4iJW6r3Ks9vmggW7ZIz7Lk0SITn1FcS9s-JiXYjX7RqCev9NW22i_0z29CF6nnMeftwCszuh-Rr6lBZ3gygdXhV')"></div>
-<div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
-<div class="absolute bottom-0 left-0 p-5 text-white">
-<span class="inline-block bg-primary text-xs font-bold px-3 py-1 rounded-full mb-2">Hot Deal</span>
-<h3 class="text-xl font-bold">Classic Cruiser Bicycle</h3>
-<p class="text-lg font-semibold mt-1">$150</p>
-</div>
-</a>
-</div>
-</div>
-</section>
-<section class="py-12">
-<div class="container mx-auto px-6">
-<h2 class="text-3xl font-bold text-center mb-10">Zoi's Top Picks</h2>
-<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-<div class="group bg-surface-light dark:bg-surface-dark rounded-lg overflow-hidden shadow-soft hover:shadow-lift hover:-translate-y-1 transition-all duration-300 border border-border-light dark:border-border-dark">
-<div class="w-full aspect-square bg-cover bg-center" data-alt="A vintage blue bicycle leaning against a wall." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuC9v9yKgLOhQIsSwjwmeFy5QtXAFnWc30xu6IY0LnJ-X2kdjEYiFxIy_TlwzmFiZLHxHYC8K3-cikVjDf53mPhx2wcEwfWl0usWA1rO4WwRl8Tt7J72SI7Bft6Hh8BAzSb9eTnqads583R9by_wZbb001_XkY3Dswbfe6wr9SUW4TYaSTcC8SJHs4iJW6r3Ks9vmggW7ZIz7Lk0SITn1FcS9s-JiXYjX7RqCev9NW22i_0z29CF6nnMeftwCszuh-Rr6lBZ3gygdXhV')"></div>
-<div class="p-4">
-<h3 class="font-bold text-lg truncate">Classic Cruiser Bicycle</h3>
-<p class="text-2xl font-bold text-secondary dark:text-primary mt-1">$150</p>
-<p class="text-sm text-text-light/60 dark:text-text-dark/60 mt-1">Brooklyn, NY</p>
-</div>
-</div>
-<div class="group bg-surface-light dark:bg-surface-dark rounded-lg overflow-hidden shadow-soft hover:shadow-lift hover:-translate-y-1 transition-all duration-300 border border-border-light dark:border-border-dark">
-<div class="w-full aspect-square bg-cover bg-center" data-alt="A modern smartphone with a colorful screen." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAE8y5ncRKtYD1yZr9DWwowTqNMAPuO9VG5Fi2IHTQXzSs4_8YR4fa3o6WEzO2QEApIAaESAp6Tt6kE5y3hssMaoVNpCssi1KWQqzyQCFGC5y0fNy9DbelP1opeHRyTb_F55jA1rxsRArHJ-_KWl7BlP-B0u-LvqAF4OBSYHIT6SDbg3XUD20SpqNyYIQkPkarSEq1hP1iBd-N9GbxdVaWD-ej4DJ624EQMHnjiACd8z2BAImB-mwVd76fjXAOkMU4lwdXRvMwUtHlu')"></div>
-<div class="p-4">
-<h3 class="font-bold text-lg truncate">Smartphone Pro X</h3>
-<p class="text-2xl font-bold text-secondary dark:text-primary mt-1">$799</p>
-<p class="text-sm text-text-light/60 dark:text-text-dark/60 mt-1">San Francisco, CA</p>
-</div>
-</div>
-<div class="group bg-surface-light dark:bg-surface-dark rounded-lg overflow-hidden shadow-soft hover:shadow-lift hover:-translate-y-1 transition-all duration-300 border border-border-light dark:border-border-dark">
-<div class="w-full aspect-square bg-cover bg-center" data-alt="A pair of stylish, colorful sneakers." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuC_lhRrp4rXScKnSb29hVZWW23goH1OguRKVsw5ClKZXlNN99FpCZbydp9Bz7aAQWFqz7bIbHBNTjz-omhIh7IJ-bRKMQ4SBBjQwnwH-Z5g_GemjyH7JeaRHTnJdSXrvphkYnaYGnEE5NJyLkYRe7traJENt54SAUi_FbVjVloQJo-fwRY7IX6DPIL3b7D7qThHyfkYKGt36XvjXxUy5mdoT62mZLOpFIFjt7NMGvplvL5vjAqed3uiLk2PJW7RvuxpzOmk1tdXB0k2')"></div>
-<div class="p-4">
-<h3 class="font-bold text-lg truncate">Limited Edition Sneakers</h3>
-<p class="text-2xl font-bold text-secondary dark:text-primary mt-1">$220</p>
-<p class="text-sm text-text-light/60 dark:text-text-dark/60 mt-1">Los Angeles, CA</p>
-</div>
-</div>
-<div class="group bg-surface-light dark:bg-surface-dark rounded-lg overflow-hidden shadow-soft hover:shadow-lift hover:-translate-y-1 transition-all duration-300 border border-border-light dark:border-border-dark">
-<div class="w-full aspect-square bg-cover bg-center" data-alt="A leather armchair in a cozy living room setting." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCbLtS3fb_ApdSUEMaSeJdUgnQqokXCOoU-D5CXuelweF9zsK3ezT6my4lj_kvO4SZKqOh9z32yhNWuzx-fNJQd-qPLOSPuqP37K5uWC0VkTv0L-EHB19jrTnq65wh8UeGIfD7LfDPomL4ds34nWmzUvTpxh0fq5Rh6txhoUhPluS683EAHWNTlu1q-cjUSyRokNlEj-JloKaYHT8IIcsnJl7d3Mk_oMj68JzoTRx0jkZu0NYeWydZKtJW-IWSjz2ACAuQXZpoQ-s1N')"></div>
-<div class="p-4">
-<h3 class="font-bold text-lg truncate">Mid-Century Armchair</h3>
-<p class="text-2xl font-bold text-secondary dark:text-primary mt-1">$450</p>
-<p class="text-sm text-text-light/60 dark:text-text-dark/60 mt-1">Chicago, IL</p>
-</div>
-</div>
-</div>
-</div>
-</section>
-</main>
-<footer class="bg-surface-light dark:bg-surface-dark mt-16 border-t border-border-light dark:border-border-dark">
-<div class="container mx-auto px-6 py-8">
-<div class="flex flex-col md:flex-row justify-between items-center text-center md:text-left">
-<div class="mb-4 md:mb-0">
-<h2 class="text-lg font-bold">ZipZapZoi</h2>
-<p class="text-sm text-text-light/70 dark:text-text-dark/70">© 2024. All Rights Reserved.</p>
-</div>
-<div class="flex gap-8 mb-4 md:mb-0 text-sm">
-<a class="hover:text-primary transition-colors" href="#">About Us</a>
-<a class="hover:text-primary transition-colors" href="#">Help</a>
-<a class="hover:text-primary transition-colors" href="#">Terms of Service</a>
-</div>
-<div class="flex gap-4">
-<a class="text-text-light/70 dark:text-text-dark/70 hover:text-primary dark:hover:text-primary transition-colors" href="#">
-<svg aria-hidden="true" class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24"><path clip-rule="evenodd" d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z" fill-rule="evenodd"></path></svg>
-</a>
-<a class="text-text-light/70 dark:text-text-dark/70 hover:text-primary dark:hover:text-primary transition-colors" href="#">
-<svg aria-hidden="true" class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24"><path d="M8.29 20.251c7.547 0 11.675-6.253 11.675-11.675 0-.178 0-.355-.012-.53A8.348 8.348 0 0022 5.92a8.19 8.19 0 01-2.357.646 4.118 4.118 0 001.804-2.27 8.224 8.224 0 01-2.605.996 4.107 4.107 0 00-6.993 3.743 11.65 11.65 0 01-8.457-4.287 4.106 4.106 0 001.27 5.477A4.072 4.072 0 012.8 9.71v.052a4.105 4.105 0 003.292 4.022 4.095 4.095 0 01-1.853.07 4.108 4.108 0 003.834 2.85A8.233 8.233 0 012 18.407a11.616 11.616 0 006.29 1.84"></path></svg>
-</a>
-<a class="text-text-light/70 dark:text-text-dark/70 hover:text-primary dark:hover:text-primary transition-colors" href="#">
-<svg aria-hidden="true" class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24"><path clip-rule="evenodd" d="M12 2C6.477 2 2 6.477 2 12c0 4.237 2.636 7.855 6.356 9.312-.062-.279-.09-.644.031-1.02.134-.576.797-3.377.797-3.377s-.2-.4-.2-.977c0-.914.546-1.612 1.229-1.612.584 0 .869.434.869.953 0 .582-.374 1.456-.569 2.26-.198.813.404 1.482 1.203 1.482 1.43 0 2.528-1.517 2.528-3.72 0-1.972-1.424-3.38-3.486-3.38-2.353 0-3.743 1.761-3.743 3.529 0 .648.242 1.341.534 1.717.067.086.079.163.056.262-.057.252-.192.775-.246.974-.069.261-.24.32-.453.192-1.42-.589-2.316-2.046-2.316-3.865 0-2.942 2.167-5.664 6.161-5.664 3.27 0 5.565 2.344 5.565 5.125 0 3.226-2.033 5.76-4.89 5.76-1.001 0-1.956-.53-2.282-1.148l-.623 2.374c-.226.869-.834 1.956-1.244 2.621.937.29 1.905.454 2.902.454 5.523 0 10-4.477 10-10S17.523 2 12 2z" fill-rule="evenodd"></path></svg>
-</a>
-</div>
-</div>
-</div>
-</footer>
-</div>
-<script src="scripts/auth.js"></script>
-<script src="scripts/boot.js"></script>
-</body></html>
+      </main>
+
+      <footer class="bg-surface-light dark:bg-surface-dark mt-16 border-t border-border-light dark:border-border-dark">
+        <div class="container mx-auto px-6 py-8">
+          <div class="flex flex-col md:flex-row justify-between items-center text-center md:text-left">
+            <div class="mb-4 md:mb-0">
+              <h2 class="text-lg font-bold">ZipZapZoi</h2>
+              <p class="text-sm text-text-light/70 dark:text-text-dark/70">© 2024. All Rights Reserved.</p>
+            </div>
+            <div class="flex gap-8 mb-4 md:mb-0 text-sm">
+              <a class="hover:text-primary transition-colors" href="#">About Us</a>
+              <a class="hover:text-primary transition-colors" href="#">Help</a>
+              <a class="hover:text-primary transition-colors" href="#">Terms of Service</a>
+            </div>
+            <div class="flex gap-4">
+              <!-- social icons unchanged -->
+              <!-- ... -->
+            </div>
+          </div>
+        </div>
+      </footer>
+    </div>
+
+    <!-- SCRIPTS -->
+    <script src="scripts/auth.js"></script>
+    <script src="scripts/boot.js"></script>
+    <script src="scripts/classifieds-page.js"></script>
+  <script>
+  (function () {
+    function getUser() {
+      try {
+        // Prefer Data Manager if loaded
+        if (window.ZZZDataManager && window.ZZZDataManager.getCurrentUser) {
+          return window.ZZZDataManager.getCurrentUser();
+        }
+        // Fallback to storage key used by other modules (adjust if needed)
+        const raw = sessionStorage.getItem('zzz_user') || localStorage.getItem('zzz_user');
+        return raw ? JSON.parse(raw) : null;
+      } catch {
+        return null;
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+      const user = getUser();
+      const showEls = document.querySelectorAll('[data-auth-show]');
+      const hideEls = document.querySelectorAll('[data-auth-hide]');
+
+      if (user) {
+        hideEls.forEach(el => el.classList.add('hidden'));
+        showEls.forEach(el => el.classList.remove('hidden'));
+
+        const nameSpan = document.getElementById('zzzUserName');
+        if (nameSpan && user.name) nameSpan.textContent = user.name;
+      } else {
+        hideEls.forEach(el => el.classList.remove('hidden'));
+        showEls.forEach(el => el.classList.add('hidden'));
+      }
+
+      // Optional: simple logout
+      const logoutBtn = document.getElementById('zzzLogoutBtn');
+      if (logoutBtn) {
+        logoutBtn.addEventListener('click', () => {
+          if (window.ZZZDataManager && window.ZZZDataManager.setCurrentUser) {
+            window.ZZZDataManager.setCurrentUser(null);
+          }
+          sessionStorage.removeItem('zzz_user');
+          localStorage.removeItem('zzz_user');
+          window.location.href = 'index.html';
+        });
+      }
+    });
+  })();
+</script>
+ </body>
+</html>

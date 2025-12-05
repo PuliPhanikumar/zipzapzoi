@@ -1,431 +1,616 @@
-<!DOCTYPE html>
+  <!DOCTYPE html>
 
-<html class="light" lang="en"><head>
-<meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>ZipZapZoi - High-Performance Laptop for Creatives</title>
-<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-<link href="https://fonts.googleapis.com" rel="preconnect"/>
-<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
-<link href="https://fonts.googleapis.com/css2?family=Spline+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet"/>
-<script>
-    tailwind.config = {
-      darkMode: "class",
-      theme: {
-        extend: {
-          colors: {
-            "primary": "#FF6B6B", // Energetic Coral
-            "secondary": "#48C9B0", // Bright Teal
-            "accent": "#FFD166", // Sunny Yellow
-            "background-light": "#F7F9FC",
-            "background-dark": "#1A202C", // A suitable dark gray
-            "text-light": "#2F4F4F", // Dark Slate Gray
-            "text-dark": "#E2E8F0",
-          },
-          fontFamily: {
-            "display": ["Spline Sans", "sans-serif"]
-          },
-          borderRadius: {
-            "DEFAULT": "12px",
-            "lg": "16px",
-            "xl": "24px",
-            "full": "9999px"
-          },
-          boxShadow: {
-            'soft': '0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -2px rgba(0, 0, 0, 0.05)',
-            'bouncy': '0 10px 15px -3px rgba(0, 0, 0, 0.07), 0 4px 6px -4px rgba(0, 0, 0, 0.07)',
-          }
-        },
-      },
+  <html class="light" lang="en"><head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+  <title>ZipZapZoi - High-Performance Laptop for Creatives</title>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <link href="https://fonts.googleapis.com" rel="preconnect"/>
+  <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+  <link href="https://fonts.googleapis.com/css2?family=Spline+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet"/>
+  <script>
+    // Set current user (do this FIRST, before anything else)
+    if (!localStorage.getItem('currentUser')) {
+      localStorage.setItem('currentUser', JSON.stringify({ id: 'user2', name: 'You' }));
     }
   </script>
-<style>
-    .material-symbols-outlined {
-      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
-      font-size: 20px;
-    }
-  </style>
-</head>
-<body class="font-display bg-background-light dark:bg-background-dark text-text-light dark:text-text-dark">
-<div class="relative flex h-auto min-h-screen w-full flex-col group/design-root overflow-x-hidden">
-<!-- TopNavBar -->
-<header class="w-full bg-white dark:bg-gray-800 shadow-soft sticky top-0 z-50">
-<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-<div class="flex items-center justify-between h-16">
-<div class="flex items-center gap-8">
-<div class="flex items-center gap-2 text-text-light dark:text-text-dark">
-<div class="text-primary w-8 h-8">
-<svg fill="none" viewbox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
-<path d="M36.7273 44C33.9891 44 31.6043 39.8386 30.3636 33.69C29.123 39.8386 26.7382 44 24 44C21.2618 44 18.877 39.8386 17.6364 33.69C16.3957 39.8386 14.0109 44 11.2727 44C7.25611 44 4 35.0457 4 24C4 12.9543 7.25611 4 11.2727 4C14.0109 4 16.3957 8.16144 17.6364 14.31C18.877 8.16144 21.2618 4 24 4C26.7382 4 29.123 8.16144 30.3636 14.31C31.6043 8.16144 33.9891 4 36.7273 4C40.7439 4 44 12.9543 44 24C44 35.0457 40.7439 44 36.7273 44Z" fill="currentColor"></path>
-</svg>
-</div>
-<h2 class="text-xl font-bold">ZipZapZoi</h2>
-</div>
-<label class="hidden md:flex flex-col min-w-40 !h-10 max-w-64">
-<div class="flex w-full flex-1 items-stretch rounded-full h-full">
-<div class="text-gray-500 dark:text-gray-400 flex bg-background-light dark:bg-gray-700 items-center justify-center pl-4 rounded-l-full">
-<span class="material-symbols-outlined">search</span>
-</div>
-<input class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-r-full text-text-light dark:text-text-dark focus:outline-0 focus:ring-0 border-none bg-background-light dark:bg-gray-700 h-full placeholder:text-gray-500 dark:placeholder-gray-400 pl-2 text-base font-normal" placeholder="Search items..." value=""/>
-</div>
-</label>
-</div>
-<div class="flex flex-1 justify-end items-center gap-4">
-<div class="hidden lg:flex items-center gap-6">
-<a class="text-sm font-medium hover:text-primary dark:hover:text-primary transition-colors" href="#">Categories</a>
-<a class="text-sm font-medium hover:text-primary dark:hover:text-primary transition-colors" href="#">Sell</a>
-<a class="text-sm font-medium hover:text-primary dark:hover:text-primary transition-colors" href="#">Messages</a>
-<a class="text-sm font-medium hover:text-primary dark:hover:text-primary transition-colors" href="#">Favorites</a>
-</div>
-<div class="flex items-center gap-2">
-<button class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-full h-10 px-4 bg-primary text-white text-sm font-bold shadow-soft hover:shadow-bouncy transition-shadow transform hover:-translate-y-0.5">
-<span class="truncate"></span>
-<a href="Post Listing.html" class="...">Post Listing</a>
-</button>
-<button class="flex max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-full h-10 w-10 bg-background-light dark:bg-gray-700 text-text-light dark:text-text-dark hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors">
-<span class="material-symbols-outlined">notifications</span>
-</button>
-<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10" data-alt="User avatar image" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBPJZ2XJsGoFnCeu2aFIca6FLt1RYG_ezD3Epk3u7MipVmlXQ3qjG_qepLSsce_m_DQ0lIaeaxSGtIWwTKZNs5j5jHvTtHtrOFxaJ0Lwkd88zZ_Bku8yWQGqhbY79TZkK_xNTMz7Y3r2rlM53wZrUQkg0HEeoaJVE1DQAnVH5dBCdHBJ4PeuwONPblHk_tGY4czoAgCMDxErn4J1ZbK2eViBXF6IVA1ABzOf5VP1gGWaS7lxnDNhmOn4pHt-rHQiClZa_0_X-y2xUIa");'></div>
-</div>
-</div>
-</div>
-</div>
-</header>
-<main class="layout-container flex h-full grow flex-col">
-<div class="w-full max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
-<div class="layout-content-container flex flex-col flex-1">
-<!-- Breadcrumbs -->
-<div class="flex flex-wrap gap-2 px-4 pb-4">
-<a class="text-gray-500 dark:text-gray-400 text-sm font-medium hover:text-primary" href="#">Home</a>
-<span class="text-gray-500 dark:text-gray-400 text-sm font-medium">/</span>
-<a class="text-gray-500 dark:text-gray-400 text-sm font-medium hover:text-primary" href="#">Electronics</a>
-<span class="text-gray-500 dark:text-gray-400 text-sm font-medium">/</span>
-<span class="text-text-light dark:text-text-dark text-sm font-medium">Laptops</span>
-</div>
-<!-- Main Content Grid -->
-<div class="grid grid-cols-1 lg:grid-cols-5 gap-8">
-<!-- Left Column: Image Carousel -->
-<div class="lg:col-span-3">
-<!-- Image Carousel -->
-<div id="gallery" class="relative rounded-xl shadow-bouncy overflow-hidden group">
-  <div id="galleryMain" class="w-full bg-center bg-no-repeat aspect-video bg-cover rounded-xl" 
-       style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCLVTuH1jg5Jgo7E6ddXmrz_-85NpFYKMi4IIstwylSwbGCpNJanl8zTEA3iGI_hZ58WeTN9neQ2mij6jqza1LkkVmJHkeTQm9-yblpiHQjw2_9PGwUuH14K6tEniAy2dBtpfFN7Hb9KXiBKDO_oYujZVtJ0PkIDuKt9loR0rKbIdQ_NUt0hrBj2ZBP9KhduARuAS7Mt76dXqn_m_RHuysh02cDT_QNxuCuPEU0nUmXgJEl4oD8U5t58aXYjR-JVCVZ4IxmEYYgeVRV');'></div>
-
-  <button id="galleryPrev" class="absolute top-1/2 left-4 -translate-y-1/2 bg-white/70 dark:bg-black/50 p-2 rounded-full text-text-light dark:text-text-dark opacity-0 group-hover:opacity-100 transition-opacity transform hover:scale-110">
-    <span class="material-symbols-outlined">arrow_back_ios_new</span>
+  <script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "primary": "#FF6B6B", // Energetic Coral
+              "secondary": "#48C9B0", // Bright Teal
+              "accent": "#FFD166", // Sunny Yellow
+              "background-light": "#F7F9FC",
+              "background-dark": "#1A202C", // A suitable dark gray
+              "text-light": "#2F4F4F", // Dark Slate Gray
+              "text-dark": "#E2E8F0",
+            },
+            fontFamily: {
+              "display": ["Spline Sans", "sans-serif"]
+            },
+            borderRadius: {
+              "DEFAULT": "12px",
+              "lg": "16px",
+              "xl": "24px",
+              "full": "9999px"
+            },
+            boxShadow: {
+              'soft': '0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -2px rgba(0, 0, 0, 0.05)',
+              'bouncy': '0 10px 15px -3px rgba(0, 0, 0, 0.07), 0 4px 6px -4px rgba(0, 0, 0, 0.07)',
+            }
+          },
+        },
+      }
+    </script>
+  <style>
+      .material-symbols-outlined {
+        font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        font-size: 20px;
+      }
+    </style>
+    <script src="js/data-manager.js"></script>
+  </head>
+  <body class="font-display bg-background-light dark:bg-background-dark text-text-light dark:text-text-dark">
+  <div class="relative flex h-auto min-h-screen w-full flex-col group/design-root overflow-x-hidden">
+  <!-- TopNavBar -->
+  <header class="w-full bg-white dark:bg-gray-800 shadow-soft sticky top-0 z-50">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+  <div class="flex items-center justify-between h-16">
+  <div class="flex items-center gap-8">
+  <div class="flex items-center gap-2 text-text-light dark:text-text-dark">
+  <div class="text-primary w-8 h-8">
+  <svg fill="none" viewbox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+  <path d="M36.7273 44C33.9891 44 31.6043 39.8386 30.3636 33.69C29.123 39.8386 26.7382 44 24 44C21.2618 44 18.877 39.8386 17.6364 33.69C16.3957 39.8386 14.0109 44 11.2727 44C7.25611 44 4 35.0457 4 24C4 12.9543 7.25611 4 11.2727 4C14.0109 4 16.3957 8.16144 17.6364 14.31C18.877 8.16144 21.2618 4 24 4C26.7382 4 29.123 8.16144 30.3636 14.31C31.6043 8.16144 33.9891 4 36.7273 4C40.7439 4 44 12.9543 44 24C44 35.0457 40.7439 44 36.7273 44Z" fill="currentColor"></path>
+  </svg>
+  </div>
+  <h2 class="text-xl font-bold">ZipZapZoi</h2>
+  </div>
+  <label class="hidden md:flex flex-col min-w-40 !h-10 max-w-64">
+  <div class="flex w-full flex-1 items-stretch rounded-full h-full">
+  <div class="text-gray-500 dark:text-gray-400 flex bg-background-light dark:bg-gray-700 items-center justify-center pl-4 rounded-l-full">
+  <span class="material-symbols-outlined">search</span>
+  </div>
+  <input class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-r-full text-text-light dark:text-text-dark focus:outline-0 focus:ring-0 border-none bg-background-light dark:bg-gray-700 h-full placeholder:text-gray-500 dark:placeholder-gray-400 pl-2 text-base font-normal" placeholder="Search items..." value=""/>
+  </div>
+  </label>
+  </div>
+  <div class="flex flex-1 justify-end items-center gap-4">
+  <div class="hidden lg:flex items-center gap-6">
+  <a class="text-sm font-medium hover:text-primary dark:hover:text-primary transition-colors" href="#">Categories</a>
+  <a class="text-sm font-medium hover:text-primary dark:hover:text-primary transition-colors" href="#">Sell</a>
+  <a class="text-sm font-medium hover:text-primary dark:hover:text-primary transition-colors" href="#">Messages</a>
+  <a class="text-sm font-medium hover:text-primary dark:hover:text-primary transition-colors" href="#">Favorites</a>
+  </div>
+  <div class="flex items-center gap-2">
+  <button class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-full h-10 px-4 bg-primary text-white text-sm font-bold shadow-soft hover:shadow-bouncy transition-shadow transform hover:-translate-y-0.5">
+  <span class="truncate"></span>
+  <a href="Post Listing.html" class="...">Post Listing</a>
   </button>
-  <button id="galleryNext" class="absolute top-1/2 right-4 -translate-y-1/2 bg-white/70 dark:bg-black/50 p-2 rounded-full text-text-light dark:text-text-dark opacity-0 group-hover:opacity-100 transition-opacity transform hover:scale-110">
-    <span class="material-symbols-outlined">arrow_forward_ios</span>
+  <button class="flex max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-full h-10 w-10 bg-background-light dark:bg-gray-700 text-text-light dark:text-text-dark hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors">
+  <span class="material-symbols-outlined">notifications</span>
   </button>
+  <div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10" data-alt="User avatar image" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBPJZ2XJsGoFnCeu2aFIca6FLt1RYG_ezD3Epk3u7MipVmlXQ3qjG_qepLSsce_m_DQ0lIaeaxSGtIWwTKZNs5j5jHvTtHtrOFxaJ0Lwkd88zZ_Bku8yWQGqhbY79TZkK_xNTMz7Y3r2rlM53wZrUQkg0HEeoaJVE1DQAnVH5dBCdHBJ4PeuwONPblHk_tGY4czoAgCMDxErn4J1ZbK2eViBXF6IVA1ABzOf5VP1gGWaS7lxnDNhmOn4pHt-rHQiClZa_0_X-y2xUIa");'></div>
+  </div>
+  </div>
+  </div>
+  </div>
+  </header>
+  <main class="layout-container flex h-full grow flex-col">
+  <div class="w-full max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
+  <div class="layout-content-container flex flex-col flex-1">
+  <!-- Breadcrumbs -->
+  <div class="flex flex-wrap gap-2 px-4 pb-4">
+  <a class="text-gray-500 dark:text-gray-400 text-sm font-medium hover:text-primary" href="#">Home</a>
+  <span class="text-gray-500 dark:text-gray-400 text-sm font-medium">/</span>
+  <a class="text-gray-500 dark:text-gray-400 text-sm font-medium hover:text-primary" href="#">Electronics</a>
+  <span class="text-gray-500 dark:text-gray-400 text-sm font-medium">/</span>
+  <span class="text-text-light dark:text-text-dark text-sm font-medium">Laptops</span>
+  </div>
+  <!-- Main Content Grid -->
+  <div class="grid grid-cols-1 lg:grid-cols-5 gap-8">
+  <!-- Left Column: Image Carousel -->
+  <div class="lg:col-span-3">
+  <!-- Image Carousel -->
+  <div id="gallery" class="relative rounded-xl shadow-bouncy overflow-hidden group">
+    <div id="galleryMain" class="w-full bg-center bg-no-repeat aspect-video bg-cover rounded-xl" 
+        style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCLVTuH1jg5Jgo7E6ddXmrz_-85NpFYKMi4IIstwylSwbGCpNJanl8zTEA3iGI_hZ58WeTN9neQ2mij6jqza1LkkVmJHkeTQm9-yblpiHQjw2_9PGwUuH14K6tEniAy2dBtpfFN7Hb9KXiBKDO_oYujZVtJ0PkIDuKt9loR0rKbIdQ_NUt0hrBj2ZBP9KhduARuAS7Mt76dXqn_m_RHuysh02cDT_QNxuCuPEU0nUmXgJEl4oD8U5t58aXYjR-JVCVZ4IxmEYYgeVRV');'></div>
 
-  <div id="galleryDots" class="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2"></div>
-</div>
-</div>
-<!-- Right Column: Listing Details -->
-<div class="lg:col-span-2 flex flex-col gap-6">
-<!-- Listing Info Card -->
-<div class="p-6 bg-white dark:bg-gray-800 rounded-xl shadow-bouncy flex flex-col gap-4">
-<!-- Listing Info Card (replace title & price lines) -->
-<p id="listingTitle" class="text-3xl font-bold tracking-tight">High-Performance Laptop for Creatives</p>
-<h1 id="listingPrice" class="text-primary tracking-light text-5xl font-bold">$1250</h1>
-<div class="flex flex-wrap gap-x-6 gap-y-3 pt-2 text-sm text-gray-600 dark:text-gray-300">
-<div class="flex items-center gap-2">
-<span class="material-symbols-outlined text-accent">category</span>
-<span>Category: <strong>Laptops</strong></span>
-</div>
-<div class="flex items-center gap-2">
-<span class="material-symbols-outlined text-accent">new_releases</span>
-<span>Condition: <strong>Like New</strong></span>
-</div>
-<div class="flex items-center gap-2">
-<span class="material-symbols-outlined text-accent">apartment</span>
-<span>Brand: <strong>Acme</strong></span>
-</div>
-</div>
-<div class="flex flex-col sm:flex-row gap-3 pt-4">
-<button class="flex flex-1 min-w-[84px] cursor-pointer items-center justify-center gap-2 overflow-hidden rounded-full h-12 px-6 bg-primary text-white text-base font-bold shadow-soft hover:shadow-bouncy transition-all transform hover:-translate-y-0.5">
-<span class="material-symbols-outlined">chat</span>
-<span class="truncate">Message Seller</span>
-</button>
-<button class="flex flex-1 min-w-[84px] cursor-pointer items-center justify-center gap-2 overflow-hidden rounded-full h-12 px-6 bg-secondary text-white text-base font-bold shadow-soft hover:shadow-bouncy transition-all transform hover:-translate-y-0.5">
-<span class="material-symbols-outlined">call</span>
-<span class="truncate">Call Seller</span>
-</button>
-</div>
-</div>
-<!-- Seller Profile Card -->
-<div class="p-6 bg-white dark:bg-gray-800 rounded-xl shadow-bouncy flex items-center gap-4">
-<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-16" data-alt="Seller avatar image" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDljGrdrpBLtARkrWGkOKsCpcSew8hZonadVX9nf94icllgjSZqkNLBoOZPCvKCN2ujofFDm-qwrif2gAm3xZj3uhcGRkXmXSwvnl-qitQn3Cn71R8QlJPxjHoNy8x2op2WsNtpTG7OLYXl7kJSMxhfuFWoWf8YwDPMPMNZ4fP52Uj5UHYEfxheHZZwWiRxZunwbml9t40xdPKqziwIaF7r-PTvaRbck9RFeA5kj0mg0A6Jb-8Xq_IPdwBJ6kkCvp1AXl4G67XEyXwB");'></div>
-<div class="flex-1">
-<p class="font-bold text-lg">Alex Doe</p>
-<div class="flex items-center gap-1 text-sm text-gray-500 dark:text-gray-400">
-<span class="material-symbols-outlined !text-[18px] text-accent">star</span>
-<span>4.9 (125 reviews)</span>
-</div>
-<p class="text-xs text-gray-500 dark:text-gray-400 mt-1">Member since 2021</p>
-</div>
-<a class="text-primary font-bold text-sm hover:underline" href="#">View Profile</a>
-</div>
-</div>
-</div>
-<!-- Full Width Details: Description & Map -->
-<div class="grid grid-cols-1 lg:grid-cols-5 gap-8 mt-8">
-<div class="lg:col-span-3 flex flex-col gap-6">
-<!-- Description Section -->
-<div class="p-6 bg-white dark:bg-gray-800 rounded-xl shadow-bouncy">
-<h3 class="text-xl font-bold mb-4">Description</h3>
-<p class="text-gray-600 dark:text-gray-300 leading-relaxed">
-                  Unleash your creative potential with this top-of-the-line Acme laptop. Barely used and in mint condition, this machine is perfect for video editing, graphic design, and demanding software. Features a stunning 16-inch Retina display, the powerful M1 Pro chip, 16GB of RAM, and a 1TB SSD. Comes with the original charger and box. Selling because I upgraded to a desktop setup. No scratches, dents, or issues whatsoever.
-                </p>
-</div>
-</div>
-<div class="lg:col-span-2 flex flex-col gap-6">
-<!-- Location Map -->
-<div class="p-6 bg-white dark:bg-gray-800 rounded-xl shadow-bouncy">
-<h3 class="text-xl font-bold mb-4">Location</h3>
-<div class="aspect-video bg-cover bg-center rounded-lg overflow-hidden" data-location="San Francisco, USA" style="https://lh3.googleusercontent.com/aida-public/AB6AXuBczRc2WPwlYHjc0rwPTQvSt5mtaL-OCDiy3D_3wQgTxS29Pu9fU1W0TfpchzPP7Z-C3pIo3qdOIdnMFAl_hTby849hlYu1HpXjueuxTx7CRU2UyrR075EH253_7yRWdGOFGM8kew_X0CrTbdO3UDuxvXqAds62TQI47zqyyvi8EDsLh9pXswYaQLsK3pykEbNl4pjNB_PMghiFSJojJ7S2kA1bMQbzlARhsRN-dEwBD-2bKqukcp86N3zjChXaHZFkhJ5CxXC0pEAW">
-<img alt="Map showing a pin in a city location" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDg1GkwHsAe1yIqynIYWaZ9mQj2-Ny6xOELxOvwuiXRztVcQLEU6vVWNUL-8h68289P4yGu857yDcssPIcgwvj0zHJyvMx6EcgYfT5WCJGykoB5K-CNacLJMhz0xu-iBeJlW8RBDlnOFxyQAttu-Pk4qnC5yCGMYsP8raEhbgdHPUQE-0fTAEXaMDg8cTP3_iFkisNvi41Qi4doKSv4ZbbSOJcnLrLQ6Cqzho3o4AJlFFTU94Ke2Bo9YQkNArCk_MlMi06y4a1NwVmP"/>
-</div>
-</div>
-</div>
-</div>
-<!-- Similar Listings Section -->
-<div class="mt-12">
-<h2 class="text-2xl font-bold px-4 mb-4">Similar Listings</h2>
-<div class="flex overflow-x-auto pb-4 [-ms-scrollbar-style:none] [scrollbar-width:none] [&amp;::-webkit-scrollbar]:hidden">
-<div class="flex items-stretch px-4 gap-6">
-<!-- Similar Item Card 1 -->
-<div class="flex flex-col gap-4 rounded-xl bg-white dark:bg-gray-800 shadow-bouncy min-w-64 transform hover:-translate-y-1 transition-transform duration-300">
-<div class="w-full bg-center bg-no-repeat aspect-video bg-cover rounded-t-xl" data-alt="A different laptop model on a wooden table" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAN4_vUbGc7SrB310mUfn5xxl9nRT4MT4-4XueLvtuYGSI-NfpUZelZmybuDQGsdbM8djnADjhUfYiYwUgIdHAi7z3DSUSJOVHpLdumTO10dMSToyo19UCdeeDGLOI8duvifdor2n035UII3IujaHckeA2LciPOxs9Bn5iK-5CEpE8qdZLCZb-FKRFQClJU_QSpDUFvy8i72A1LDFiDnwVGzRpGEmC4IhV1e7ezP0oE5I8KNmUTM5Af-hD-q7AosmKj-LaqhZEGkfk8");'></div>
-<div class="flex flex-col flex-1 justify-between p-4 pt-0 gap-3">
-<div>
-<h4 class="font-bold truncate">Gaming Laptop XYZ</h4>
-<p class="text-primary font-bold text-lg">$1100</p>
-</div>
-<button class="flex w-full cursor-pointer items-center justify-center overflow-hidden rounded-full h-10 px-4 bg-background-light dark:bg-gray-700 text-text-light dark:text-text-dark text-sm font-bold hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors">
-<span class="truncate">View</span>
-</button>
-</div>
-</div>
-<!-- Similar Item Card 2 -->
-<div class="flex flex-col gap-4 rounded-xl bg-white dark:bg-gray-800 shadow-bouncy min-w-64 transform hover:-translate-y-1 transition-transform duration-300">
-<div class="w-full bg-center bg-no-repeat aspect-video bg-cover rounded-t-xl" data-alt="A silver ultrabook on a white surface" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuC6UW1q4RR7ATZaV4tqHjLTRM5e1yKpYS0wtvNrMiL3wxSib4fhM3msGkKNonugEoO_Lpmj77XYdFZWR9mu1QCVqi3lyaygVXc71vnITvvQRa39hawvAPDcACieq_RMqLNNJBAlQ4nJK0WqH_F72UySgSJXnobeUOslSGhCFs_NWuP2p31amSSOIUlFJmvnTggLWbllE-8f1rqXssLvUH4K7T3Du_8kRvHXYzBviP8sm_N0kVgXlUI54MB5xllwWYiAnz-WQwuiO4GZ");'></div>
-<div class="flex flex-col flex-1 justify-between p-4 pt-0 gap-3">
-<div>
-<h4 class="font-bold truncate">Ultrabook Pro</h4>
-<p class="text-primary font-bold text-lg">$950</p>
-</div>
-<button class="flex w-full cursor-pointer items-center justify-center overflow-hidden rounded-full h-10 px-4 bg-background-light dark:bg-gray-700 text-text-light dark:text-text-dark text-sm font-bold hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors">
-<span class="truncate">View</span>
-</button>
-</div>
-</div>
-<!-- Similar Item Card 3 -->
-<div class="flex flex-col gap-4 rounded-xl bg-white dark:bg-gray-800 shadow-bouncy min-w-64 transform hover:-translate-y-1 transition-transform duration-300">
-<div class="w-full bg-center bg-no-repeat aspect-video bg-cover rounded-t-xl" data-alt="A business laptop in an office setting" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDG_zUICOhk83ZeKCiwT52QfdxQ4iuRbVRPSKsHwTsnWo59WJfYnuJvQqhzxukSMSGyp0zdBRnSmFSFga-f61cXchtgn6pcqf7t8XqvPhLzAhtUHShZ3mZDIW63oOboGDlCPkRdAKZnFzONVuX78BJ8v5VdilmgUOlfHjmvQwRdGRTdXZF2MSLH5hipANSDBs82nlBWZB5DI9_007BXINUGAfIhfmWOiMfNoSEMPT7T52iG4KP0EoGZVKw0HmSL3JmyY-qNe0BxMMwP");'></div>
-<div class="flex flex-col flex-1 justify-between p-4 pt-0 gap-3">
-<div>
-<h4 class="font-bold truncate">WorkStation Laptop</h4>
-<p class="text-primary font-bold text-lg">$1400</p>
-</div>
-<button class="flex w-full cursor-pointer items-center justify-center overflow-hidden rounded-full h-10 px-4 bg-background-light dark:bg-gray-700 text-text-light dark:text-text-dark text-sm font-bold hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors">
-<span class="truncate">View</span>
-</button>
-</div>
-</div>
-<!-- Similar Item Card 4 -->
-<div class="flex flex-col gap-4 rounded-xl bg-white dark:bg-gray-800 shadow-bouncy min-w-64 transform hover:-translate-y-1 transition-transform duration-300">
-<div class="w-full bg-center bg-no-repeat aspect-video bg-cover rounded-t-xl" data-alt="A compact and portable laptop" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDDyn5rz7OCEcSFdUarm2_iZ9QRVMoFkegHgZ2dWfOudDZzFcV_XhxdZUp-O3V872QQyQKxuNQMGSUAhLb32aH4VZOitz_A_4dIxWKbtuvkHoLiwGOQGv2qPGcFrYODZJuOC9l4I1LX-Hq78On7bqXQBbZKNPHcxvQwtCLFsppX_eIzkfTA81PnvrxGibwhMiNYsmJL38zBKsW5oPX8dvMQ2sK6k8uVuRzHez3gZuYx5X9UovBzhGK-CO010k7tpAeq_YlMvh6lCc9z");'></div>
-<div class="flex flex-col flex-1 justify-between p-4 pt-0 gap-3">
-<div>
-<h4 class="font-bold truncate">Compact Travel Laptop</h4>
-<p class="text-primary font-bold text-lg">$800</p>
-</div>
-<button class="flex w-full cursor-pointer items-center justify-center overflow-hidden rounded-full h-10 px-4 bg-background-light dark:bg-gray-700 text-text-light dark:text-text-dark text-sm font-bold hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors">
-<span class="truncate">View</span>
-</button>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-</main>
-</div>
-<script>
-/*
-  Listing Detail page dynamic binding script
-  - Put this before </body>
-  - Reads ?id=... or ?slug=...
-  - Tries to fetch listing from API endpoints:
-      GET /api/listings/:id
-      GET /api/listings?slug=XYZ
-    (change endpoints if your backend differs)
-  - Fallback: uses existing static DOM content (so page still works)
-  - Populates gallery, title, price, description, seller, and similar listings.
-*/
+    <button id="galleryPrev" class="absolute top-1/2 left-4 -translate-y-1/2 bg-white/70 dark:bg-black/50 p-2 rounded-full text-text-light dark:text-text-dark opacity-0 group-hover:opacity-100 transition-opacity transform hover:scale-110">
+      <span class="material-symbols-outlined">arrow_back_ios_new</span>
+    </button>
+    <button id="galleryNext" class="absolute top-1/2 right-4 -translate-y-1/2 bg-white/70 dark:bg-black/50 p-2 rounded-full text-text-light dark:text-text-dark opacity-0 group-hover:opacity-100 transition-opacity transform hover:scale-110">
+      <span class="material-symbols-outlined">arrow_forward_ios</span>
+    </button>
 
-// Utility
-function qs(name) { return new URLSearchParams(location.search).get(name); }
-function el(sel) { return document.querySelector(sel); }
-function elAll(sel) { return Array.from(document.querySelectorAll(sel)); }
-
-// Simple HTML escape
-function escapeHtml(s){ return String(s || '').replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m])); }
-
-// Get DOM targets (must exist thanks to HTML replacements above)
-const titleEl = document.getElementById('listingTitle');
-const priceEl = document.getElementById('listingPrice');
-const galleryMain = document.getElementById('galleryMain');
-const galleryDots = document.getElementById('galleryDots');
-const galleryPrev = document.getElementById('galleryPrev');
-const galleryNext = document.getElementById('galleryNext');
-const descEl = document.getElementById('listingDescription');
-const sellerNameEl = document.getElementById('sellerName');
-const sellerRatingEl = document.getElementById('sellerRating');
-const sellerAvatarEl = document.getElementById('sellerAvatar');
-const sellerSinceEl = document.getElementById('sellerSince');
-const sellerProfileLink = document.getElementById('sellerProfileLink');
-const similarInner = document.getElementById('similarInner');
-
-let galleryIndex = 0;
-let galleryImgs = [];
-
-// Render gallery helper
-function renderGallery(images){
-  galleryImgs = images && images.length ? images : ['https://via.placeholder.com/1280x720?text=No+Image'];
-  function setMain(i){
-    galleryIndex = i % galleryImgs.length;
-    galleryMain.style.backgroundImage = `url("${galleryImgs[galleryIndex]}")`;
-    // update dots active
-    galleryDots.innerHTML = galleryImgs.map((_,idx)=>`<div class="w-2.5 h-2.5 rounded-full ${idx===galleryIndex ? 'bg-white' : 'bg-white/50'}"></div>`).join('');
-  }
-  renderGallery.setMain = setMain;
-  setMain(0);
-}
-
-// Wire gallery prev/next
-galleryPrev?.addEventListener('click', ()=> {
-  renderGallery.setMain((galleryIndex - 1 + galleryImgs.length) % galleryImgs.length);
-});
-galleryNext?.addEventListener('click', ()=> {
-  renderGallery.setMain((galleryIndex + 1) % galleryImgs.length);
-});
-galleryDots?.addEventListener('click', (e) => {
-  const idx = Array.from(galleryDots.children).indexOf(e.target);
-  if(idx >= 0) renderGallery.setMain(idx);
-});
-
-// Render similar card (same style as your existing similar items)
-function makeSimilarCard(item){
-  const wrapper = document.createElement('div');
-  wrapper.className = 'flex flex-col gap-4 rounded-xl bg-white dark:bg-gray-800 shadow-bouncy min-w-64 transform hover:-translate-y-1 transition-transform duration-300';
-  const img = item.images && item.images[0] ? item.images[0] : 'https://via.placeholder.com/680x480?text=No+Image';
-  wrapper.innerHTML = `
-    <div class="w-full bg-center bg-no-repeat aspect-video bg-cover rounded-t-xl" style='background-image: url("${escapeHtml(img)}");'></div>
-    <div class="flex flex-col flex-1 justify-between p-4 pt-0 gap-3">
-      <div>
-        <h4 class="font-bold truncate">${escapeHtml(item.title)}</h4>
-        <p class="text-primary font-bold text-lg">${escapeHtml(item.currency ? item.currency + ' ' + item.price : item.price)}</p>
+    <div id="galleryDots" class="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2"></div>
+  </div>
+  </div>
+  <!-- Right Column: Listing Details -->
+  <div class="lg:col-span-2 flex flex-col gap-6">
+  <!-- Listing Info Card -->
+  <div class="p-6 bg-white dark:bg-gray-800 rounded-xl shadow-bouncy flex flex-col gap-4">
+  <!-- Listing Info Card (replace title & price lines) -->
+  <p id="listingTitle" class="text-3xl font-bold tracking-tight">High-Performance Laptop for Creatives</p>
+  <h1 id="listingPrice" class="text-primary tracking-light text-5xl font-bold">$1250</h1>
+  <div class="flex flex-wrap gap-x-6 gap-y-3 pt-2 text-sm text-gray-600 dark:text-gray-300">
+  <div class="flex items-center gap-2">
+  <span class="material-symbols-outlined text-accent">category</span>
+  <span>Category: <strong>Laptops</strong></span>
+  </div>
+  <div class="flex items-center gap-2">
+  <span class="material-symbols-outlined text-accent">new_releases</span>
+  <span>Condition: <strong>Like New</strong></span>
+  </div>
+  <div class="flex items-center gap-2">
+  <span class="material-symbols-outlined text-accent">apartment</span>
+  <span>Brand: <strong>Acme</strong></span>
+  </div>
+  </div>
+  <div class="flex flex-col sm:flex-row gap-3 pt-4">
+  <button 
+    class="flex flex-1 min-w-[84px] cursor-pointer items-center justify-center gap-2 overflow-hidden rounded-full h-12 px-6 bg-primary text-white text-base font-bold shadow-soft hover:shadow-bouncy transition-all transform hover:-translate-y-0.5"
+    onclick="openMessageModal()">
+    <span class="material-symbols-outlined">chat</span>
+    <span class="truncate">Message Seller</span>
+  </button>
+  <!-- Message Modal - Add this after the buttons section -->
+  <div id="messageModal" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+    <div class="bg-white dark:bg-gray-800 rounded-xl shadow-bouncy p-6 w-full max-w-md mx-4">
+      
+      <!-- Modal Header -->
+      <div class="flex items-center justify-between mb-4">
+        <h2 class="text-xl font-bold">Send Message to Seller</h2>
+        <button onclick="closeMessageModal()" class="text-gray-500 hover:text-gray-700">
+          <span class="material-symbols-outlined">close</span>
+        </button>
       </div>
-      <button class="flex w-full cursor-pointer items-center justify-center overflow-hidden rounded-full h-10 px-4 bg-background-light dark:bg-gray-700 text-text-light dark:text-text-dark text-sm font-bold hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors view-similar">
-        <span class="truncate">View</span>
-      </button>
+      
+      <!-- Form -->
+      <div class="space-y-4">
+        <div>
+          <label class="block text-sm font-medium mb-2">Your Name</label>
+          <input 
+            id="msgSenderName" 
+            type="text" 
+            placeholder="Your name" 
+            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+          />
+        </div>
+        
+        <div>
+          <label class="block text-sm font-medium mb-2">Message</label>
+          <textarea 
+            id="msgText" 
+            placeholder="Is this still available?" 
+            rows="4"
+            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+          ></textarea>
+        </div>
+      </div>
+      
+      <!-- Buttons -->
+      <div class="flex gap-3 mt-6">
+        <button 
+          onclick="closeMessageModal()" 
+          class="flex-1 px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50">
+          Cancel
+        </button>
+        <button 
+          onclick="sendMessage()" 
+          class="flex-1 px-4 py-2 bg-primary text-white rounded-lg hover:opacity-90">
+          Send Message
+        </button>
+      </div>
     </div>
-  `;
-  wrapper.querySelector('.view-similar')?.addEventListener('click', () => {
-    const slug = item.slug || item.id;
-    window.location.href = `Listing Detail.html?slug=${encodeURIComponent(slug)}`;
+  </div>
+  <button 
+  class="flex flex-1 min-w-[84px] cursor-pointer items-center justify-center gap-2 overflow-hidden rounded-full h-12 px-6 bg-secondary text-white text-base font-bold shadow-soft hover:shadow-bouncy transition-all transform hover:-translate-y-0.5"
+  onclick="callSeller()">
+  <span class="material-symbols-outlined">call</span>
+  <span class="truncate">Call Seller</span>
+</button>
+  </div>
+  </div>
+  <!-- Seller Profile Card -->
+  <div class="p-6 bg-white dark:bg-gray-800 rounded-xl shadow-bouncy flex items-center gap-4">
+  <img id="sellerAvatar" alt="Seller avatar" class="rounded-full w-16 h-16 object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDljGrdrpBLtARkrWGkOKsCpcSew8hZonadVX9nf94icllgjSZqkNLBoOZPCvKCN2ujofFDm-qwrif2gAm3xZj3uhcGRkXmXSwvnl-qitQn3Cn71R8QlJPxjHoNy8x2op2WsNtpTG7OLYXl7kJSMxhfuFWoWf8YwDPMPMNZ4fP52Uj5UHYEfxheHZZwWiRxZunwbml9t40xdPKqziwIaF7r-PTvaRbck9RFeA5kj0mg0A6Jb-8Xq_IPdwBJ6kkCvp1AXl4G67XEyXwB" />
+  <div class="flex-1">
+  <p id="sellerName" class="font-bold text-lg">Alex Doe</p>
+  <div class="flex items-center gap-1 text-sm text-gray-500 dark:text-gray-400">
+  <span class="material-symbols-outlined !text-[18px] text-accent">star</span>
+  <span id="sellerRating">4.9 (125 reviews)</span>
+  </div>
+  <p id="sellerSince" class="text-xs text-gray-500 dark:text-gray-400 mt-1">Member since 2021</p>
+  </div>
+  <a id="sellerProfileLink" class="text-primary font-bold text-sm hover:underline" href="#">View Profile</a>
+  </div>
+  </div>
+  </div>
+  <!-- Full Width Details: Description & Map -->
+  <div class="grid grid-cols-1 lg:grid-cols-5 gap-8 mt-8">
+  <div class="lg:col-span-3 flex flex-col gap-6">
+  <!-- Description Section -->
+  <div class="p-6 bg-white dark:bg-gray-800 rounded-xl shadow-bouncy">
+  <h3 class="text-xl font-bold mb-4">Description</h3>
+  <p id="listingDescription" class="text-gray-600 dark:text-gray-300 leading-relaxed">
+                    Unleash your creative potential with this top-of-the-line Acme laptop. Barely used and in mint condition, this machine is perfect for video editing, graphic design, and demanding software. Features a stunning 16-inch Retina display, the powerful M1 Pro chip, 16GB of RAM, and a 1TB SSD. Comes with the original charger and box. Selling because I upgraded to a desktop setup. No scratches, dents, or issues whatsoever.
+                  </p>
+  </div>
+  </div>
+  <div class="lg:col-span-2 flex flex-col gap-6">
+  <!-- Location Map -->
+  <div class="p-6 bg-white dark:bg-gray-800 rounded-xl shadow-bouncy">
+  <h3 class="text-xl font-bold mb-4">Location</h3>
+  <div class="aspect-video bg-cover bg-center rounded-lg overflow-hidden" data-location="San Francisco, USA" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBczRc2WPwlYHjc0rwPTQvSt5mtaL-OCDiy3D_3wQgTxS29Pu9fU1W0TfpchzPP7Z-C3pIo3qdOIdnMFAl_hTby849hlYu1HpXjueuxTx7CRU2UyrR075EH253_7yRWdGOFGM8kew_X0CrTbdO3UDuxvXqAds62TQI47zqyyvi8EDsLh9pXswYaQLsK3pykEbNl4pjNB_PMghiFSJojJ7S2kA1bMQbzlARhsRN-dEwBD-2bKqukcp86N3zjChXaHZFkhJ5CxXC0pEAW');">
+  <img alt="Map showing a pin in a city location" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDg1GkwHsAe1yIqynIYWaZ9mQj2-Ny6xOELxOvwuiXRztVcQLEU6vVWNUL-8h68289P4yGu857yDcssPIcgwvj0zHJyvMx6EcgYfT5WCJGykoB5K-CNacLJMhz0xu-iBeJlW8RBDlnOFxyQAttu-Pk4qnC5yCGMYsP8raEhbgdHPUQE-0fTAEXaMDg8cTP3_iFkisNvi41Qi4doKSv4ZbbSOJcnLrLQ6Cqzho3o4AJlFFTU94Ke2Bo9YQkNArCk_MlMi06y4a1NwVmP"/>
+  </div>
+  </div>
+  </div>
+  </div>
+  <!-- Similar Listings Section -->
+  <div class="mt-12">
+  <h2 class="text-2xl font-bold px-4 mb-4">Similar Listings</h2>
+  <div class="flex overflow-x-auto pb-4 [-ms-scrollbar-style:none] [scrollbar-width:none] [&amp;::-webkit-scrollbar]:hidden">
+  <div id="similarInner" class="flex items-stretch px-4 gap-6">
+  <!-- Similar Item Card 1 -->
+  <div class="flex flex-col gap-4 rounded-xl bg-white dark:bg-gray-800 shadow-bouncy min-w-64 transform hover:-translate-y-1 transition-transform duration-300">
+  <div class="w-full bg-center bg-no-repeat aspect-video bg-cover rounded-t-xl" data-alt="A different laptop model on a wooden table" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAN4_vUbGc7SrB310mUfn5xxl9nRT4MT4-4XueLvtuYGSI-NfpUZelZmybuDQGsdbM8djnADjhUfYiYwUgIdHAi7z3DSUSJOVHpLdumTO10dMSToyo19UCdeeDGLOI8duvifdor2n035UII3IujaHckeA2LciPOxs9Bn5iK-5CEpE8qdZLCZb-FKRFQClJU_QSpDUFvy8i72A1LDFiDnwVGzRpGEmC4IhV1e7ezP0oE5I8KNmUTM5Af-hD-q7AosmKj-LaqhZEGkfk8");'></div>
+  <div class="flex flex-col flex-1 justify-between p-4 pt-0 gap-3">
+  <div>
+  <h4 class="font-bold truncate">Gaming Laptop XYZ</h4>
+  <p class="text-primary font-bold text-lg">$1100</p>
+  </div>
+  <button class="flex w-full cursor-pointer items-center justify-center overflow-hidden rounded-full h-10 px-4 bg-background-light dark:bg-gray-700 text-text-light dark:text-text-dark text-sm font-bold hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors">
+  <span class="truncate">View</span>
+  </button>
+  </div>
+  </div>
+  <!-- Similar Item Card 2 -->
+  <div class="flex flex-col gap-4 rounded-xl bg-white dark:bg-gray-800 shadow-bouncy min-w-64 transform hover:-translate-y-1 transition-transform duration-300">
+  <div class="w-full bg-center bg-no-repeat aspect-video bg-cover rounded-t-xl" data-alt="A silver ultrabook on a white surface" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuC6UW1q4RR7ATZaV4tqHjLTRM5e1yKpYS0wtvNrMiL3wxSib4fhM3msGkKNonugEoO_Lpmj77XYdFZWR9mu1QCVqi3lyaygVXc71vnITvvQRa39hawvAPDcACieq_RMqLNNJBAlQ4nJK0WqH_F72UySgSJXnobeUOslSGhCFs_NWuP2p31amSSOIUlFJmvnTggLWbllE-8f1rqXssLvUH4K7T3Du_8kRvHXYzBviP8sm_N0kVgXlUI54MB5xllwWYiAnz-WQwuiO4GZ");'></div>
+  <div class="flex flex-col flex-1 justify-between p-4 pt-0 gap-3">
+  <div>
+  <h4 class="font-bold truncate">Ultrabook Pro</h4>
+  <p class="text-primary font-bold text-lg">$950</p>
+  </div>
+  <button class="flex w-full cursor-pointer items-center justify-center overflow-hidden rounded-full h-10 px-4 bg-background-light dark:bg-gray-700 text-text-light dark:text-text-dark text-sm font-bold hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors">
+  <span class="truncate">View</span>
+  </button>
+  </div>
+  </div>
+  <!-- Similar Item Card 3 -->
+  <div class="flex flex-col gap-4 rounded-xl bg-white dark:bg-gray-800 shadow-bouncy min-w-64 transform hover:-translate-y-1 transition-transform duration-300">
+  <div class="w-full bg-center bg-no-repeat aspect-video bg-cover rounded-t-xl" data-alt="A business laptop in an office setting" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDG_zUICOhk83ZeKCiwT52QfdxQ4iuRbVRPSKsHwTsnWo59WJfYnuJvQqhzxukSMSGyp0zdBRnSmFSFga-f61cXchtgn6pcqf7t8XqvPhLzAhtUHShZ3mZDIW63oOboGDlCPkRdAKZnFzONVuX78BJ8v5VdilmgUOlfHjmvQwRdGRTdXZF2MSLH5hipANSDBs82nlBWZB5DI9_007BXINUGAfIhfmWOiMfNoSEMPT7T52iG4KP0EoGZVKw0HmSL3JmyY-qNe0BxMMwP");'></div>
+  <div class="flex flex-col flex-1 justify-between p-4 pt-0 gap-3">
+  <div>
+  <h4 class="font-bold truncate">WorkStation Laptop</h4>
+  <p class="text-primary font-bold text-lg">$1400</p>
+  </div>
+  <button class="flex w-full cursor-pointer items-center justify-center overflow-hidden rounded-full h-10 px-4 bg-background-light dark:bg-gray-700 text-text-light dark:text-text-dark text-sm font-bold hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors">
+  <span class="truncate">View</span>
+  </button>
+  </div>
+  </div>
+  <!-- Similar Item Card 4 -->
+  <div class="flex flex-col gap-4 rounded-xl bg-white dark:bg-gray-800 shadow-bouncy min-w-64 transform hover:-translate-y-1 transition-transform duration-300">
+  <div class="w-full bg-center bg-no-repeat aspect-video bg-cover rounded-t-xl" data-alt="A compact and portable laptop" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDDyn5rz7OCEcSFdUarm2_iZ9QRVMoFkegHgZ2dWfOudDZzFcV_XhxdZUp-O3V872QQyQKxuNQMGSUAhLb32aH4VZOitz_A_4dIxWKbtuvkHoLiwGOQGv2qPGcFrYODZJuOC9l4I1LX-Hq78On7bqXQBbZKNPHcxvQwtCLFsppX_eIzkfTA81PnvrxGibwhMiNYsmJL38zBKsW5oPX8dvMQ2sK6k8uVuRzHez3gZuYx5X9UovBzhGK-CO010k7tpAeq_YlMvh6lCc9z");'></div>
+  <div class="flex flex-col flex-1 justify-between p-4 pt-0 gap-3">
+  <div>
+  <h4 class="font-bold truncate">Compact Travel Laptop</h4>
+  <p class="text-primary font-bold text-lg">$800</p>
+  </div>
+  <button class="flex w-full cursor-pointer items-center justify-center overflow-hidden rounded-full h-10 px-4 bg-background-light dark:bg-gray-700 text-text-light dark:text-text-dark text-sm font-bold hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors">
+  <span class="truncate">View</span>
+  </button>
+  </div>
+  </div>
+  </div>
+  </div>
+  </div>
+  </div>
+  </div>
+  </main>
+  </div>
+  <script>
+  /*
+    Listing Detail page dynamic binding script
+    - Put this before </body>
+    - Reads ?id=... or ?slug=...
+    - Tries to fetch listing from API endpoints:
+        GET /api/listings/:id
+        GET /api/listings?slug=XYZ
+      (change endpoints if your backend differs)
+    - Fallback: uses existing static DOM content (so page still works)
+    - Populates gallery, title, price, description, seller, and similar listings.
+  */
+
+  // Utility
+  function qs(name) { return new URLSearchParams(location.search).get(name); }
+  function el(sel) { return document.querySelector(sel); }
+  function elAll(sel) { return Array.from(document.querySelectorAll(sel)); }
+
+  // Simple HTML escape
+  function escapeHtml(s){ return String(s || '').replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m])); }
+
+  // Get DOM targets (must exist thanks to HTML replacements above)
+  const titleEl = document.getElementById('listingTitle');
+  const priceEl = document.getElementById('listingPrice');
+  const galleryMain = document.getElementById('galleryMain');
+  const galleryDots = document.getElementById('galleryDots');
+  const galleryPrev = document.getElementById('galleryPrev');
+  const galleryNext = document.getElementById('galleryNext');
+  const descEl = document.getElementById('listingDescription');
+  const sellerNameEl = document.getElementById('sellerName');
+  const sellerRatingEl = document.getElementById('sellerRating');
+  const sellerAvatarEl = document.getElementById('sellerAvatar');
+  const sellerSinceEl = document.getElementById('sellerSince');
+  const sellerProfileLink = document.getElementById('sellerProfileLink');
+  const similarInner = document.getElementById('similarInner');
+
+  let galleryIndex = 0;
+  let galleryImgs = [];
+
+  // Render gallery helper
+  function renderGallery(images){
+    galleryImgs = images && images.length ? images : ['https://via.placeholder.com/1280x720?text=No+Image'];
+    function setMain(i){
+      galleryIndex = i % galleryImgs.length;
+      galleryMain.style.backgroundImage = `url("${galleryImgs[galleryIndex]}")`;
+      // update dots active
+      galleryDots.innerHTML = galleryImgs.map((_,idx)=>`<div class="w-2.5 h-2.5 rounded-full ${idx===galleryIndex ? 'bg-white' : 'bg-white/50'}"></div>`).join('');
+    }
+    renderGallery.setMain = setMain;
+    setMain(0);
+  }
+
+  // Wire gallery prev/next
+  galleryPrev?.addEventListener('click', ()=> {
+    renderGallery.setMain((galleryIndex - 1 + galleryImgs.length) % galleryImgs.length);
   });
-  return wrapper;
-}
+  galleryNext?.addEventListener('click', ()=> {
+    renderGallery.setMain((galleryIndex + 1) % galleryImgs.length);
+  });
+  galleryDots?.addEventListener('click', (e) => {
+    const idx = Array.from(galleryDots.children).indexOf(e.target);
+    if(idx >= 0) renderGallery.setMain(idx);
+  });
 
-// Populate DOM from listing object
-function populate(listing){
-  if(!listing) return;
-  titleEl && (titleEl.textContent = listing.title || 'Untitled');
-  priceEl && (priceEl.textContent = (listing.currency ? listing.currency + ' ' : '') + (listing.price || '0'));
-  descEl && (descEl.innerHTML = escapeHtml(listing.description || ''));
-  renderGallery(listing.images || []);
-  // seller
-  const seller = listing.seller || {};
-  sellerNameEl && (sellerNameEl.textContent = seller.name || 'Seller');
-  sellerRatingEl && (sellerRatingEl.textContent = (seller.rating ? seller.rating + ' (' + (seller.reviews||0) + ' reviews)' : 'No rating'));
-  sellerAvatarEl && (sellerAvatarEl.style.backgroundImage = `url("${seller.avatar || 'https://via.placeholder.com/160'}")`);
-  sellerSinceEl && (sellerSinceEl.textContent = 'Member since ' + (seller.since || 'N/A'));
-  sellerProfileLink && sellerProfileLink.setAttribute('href', seller.profileUrl || '#');
-
-  // similar
-  if(Array.isArray(listing.similar) && listing.similar.length){
-    similarInner.innerHTML = '';
-    listing.similar.forEach(s => similarInner.appendChild(makeSimilarCard(s)));
-  }
-}
-
-// Try fetching listing by id or slug
-async function loadListing(){
-  const id = qs('id');
-  const slug = qs('slug');
-  // Try API by id
-  if(id){
-    try{
-      const res = await fetch(`/api/listings/${encodeURIComponent(id)}`);
-      if(res.ok){
-        const data = await res.json();
-        populate(data);
-        return;
-      }
-    }catch(e){}
-  }
-  // Try API by slug
-  if(slug){
-    try{
-      const res = await fetch(`/api/listings?slug=${encodeURIComponent(slug)}`);
-      if(res.ok){
-        const json = await res.json();
-        // if endpoint returns {results: [...]}
-        const data = Array.isArray(json) ? json[0] : (json.results && json.results[0]) || json;
-        if(data) { populate(data); return; }
-      }
-    }catch(e){}
-  }
-
-  // Fallback: do nothing, keep static content already in DOM
-}
-
-// Setup message/call button behavior
-(function wireActions(){
-  const msgBtn = Array.from(document.querySelectorAll('button')).find(b=>b.textContent && b.textContent.trim().includes('Message Seller'));
-  const callBtn = Array.from(document.querySelectorAll('button')).find(b=>b.textContent && b.textContent.trim().includes('Call Seller'));
-
-  if(msgBtn){
-    msgBtn.addEventListener('click', ()=>{
-      // Simple message modal — replace with your message flow
-      const seller = (window._listing && window._listing.seller) || {};
-      const to = seller.phone || seller.name || 'seller';
-      const body = prompt(`Send message to ${to} — (prototype):`, 'Hi, is this still available?');
-      if(body) alert('Message sent (prototype). Integrate with /api/listings/:id/message to persist.');
+  // Render similar card (same style as your existing similar items)
+  function makeSimilarCard(item){
+    const wrapper = document.createElement('div');
+    wrapper.className = 'flex flex-col gap-4 rounded-xl bg-white dark:bg-gray-800 shadow-bouncy min-w-64 transform hover:-translate-y-1 transition-transform duration-300';
+    const img = item.images && item.images[0] ? item.images[0] : 'https://via.placeholder.com/680x480?text=No+Image';
+    wrapper.innerHTML = `
+      <div class="w-full bg-center bg-no-repeat aspect-video bg-cover rounded-t-xl" style='background-image: url("${escapeHtml(img)}");'></div>
+      <div class="flex flex-col flex-1 justify-between p-4 pt-0 gap-3">
+        <div>
+          <h4 class="font-bold truncate">${escapeHtml(item.title)}</h4>
+          <p class="text-primary font-bold text-lg">${escapeHtml(item.currency ? item.currency + ' ' + item.price : item.price)}</p>
+        </div>
+        <button class="flex w-full cursor-pointer items-center justify-center overflow-hidden rounded-full h-10 px-4 bg-background-light dark:bg-gray-700 text-text-light dark:text-text-dark text-sm font-bold hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors view-similar">
+          <span class="truncate">View</span>
+        </button>
+      </div>
+    `;
+    wrapper.querySelector('.view-similar')?.addEventListener('click', () => {
+      const slug = item.slug || item.id;
+      window.location.href = `Listing Detail.html?slug=${encodeURIComponent(slug)}`;
     });
+    return wrapper;
   }
 
-  if(callBtn){
-    callBtn.addEventListener('click', ()=>{
-      const seller = (window._listing && window._listing.seller) || {};
-      const phone = seller.phone || '';
-      if(phone) location.href = `tel:${phone}`;
-      else alert('Seller phone not available (prototype).');
+  // Populate DOM from listing object
+  function populate(listing){
+    if(!listing) return;
+    titleEl && (titleEl.textContent = listing.title || 'Untitled');
+    priceEl && (priceEl.textContent = (listing.currency ? listing.currency + ' ' : '') + (listing.price || '0'));
+    descEl && (descEl.innerHTML = escapeHtml(listing.description || ''));
+    renderGallery(listing.images || []);
+    // seller
+    const seller = listing.seller || {};
+    sellerNameEl && (sellerNameEl.textContent = seller.name || 'Seller');
+    sellerRatingEl && (sellerRatingEl.textContent = (seller.rating ? seller.rating + ' (' + (seller.reviews||0) + ' reviews)' : 'No rating'));
+    sellerAvatarEl && (sellerAvatarEl.style.backgroundImage = `url("${seller.avatar || 'https://via.placeholder.com/160'}")`);
+    sellerSinceEl && (sellerSinceEl.textContent = 'Member since ' + (seller.since || 'N/A'));
+    sellerProfileLink && sellerProfileLink.setAttribute('href', seller.profileUrl || '#');
+
+    // similar
+    if(Array.isArray(listing.similar) && listing.similar.length){
+      similarInner.innerHTML = '';
+      listing.similar.forEach(s => similarInner.appendChild(makeSimilarCard(s)));
+    }
+  }
+
+  // Try fetching listing by id or slug
+  async function loadListing(){
+    const id = qs('id');
+    const slug = qs('slug');
+    // Try API by id
+    if(id){
+      try{
+        const res = await fetch(`/api/listings/${encodeURIComponent(id)}`);
+        if(res.ok){
+          const data = await res.json();
+          populate(data);
+          return;
+        }
+      }catch(e){}
+    }
+    // Try API by slug
+    if(slug){
+      try{
+        const res = await fetch(`/api/listings?slug=${encodeURIComponent(slug)}`);
+        if(res.ok){
+          const json = await res.json();
+          // if endpoint returns {results: [...]}
+          const data = Array.isArray(json) ? json[0] : (json.results && json.results[0]) || json;
+          if(data) { populate(data); return; }
+        }
+      }catch(e){}
+    }
+
+    // Fallback: do nothing, keep static content already in DOM
+  }
+
+  // Setup message/call button behavior
+  (function wireActions(){
+    const msgBtn = Array.from(document.querySelectorAll('button')).find(b=>b.textContent && b.textContent.trim().includes('Message Seller'));
+    const callBtn = Array.from(document.querySelectorAll('button')).find(b=>b.textContent && b.textContent.trim().includes('Call Seller'));
+
+    
+    if(callBtn){
+      callBtn.addEventListener('click', ()=>{
+        const seller = (window._listing && window._listing.seller) || {};
+        const phone = seller.phone || '';
+        if(phone) location.href = `tel:${phone}`;
+        else alert('Seller phone not available (prototype).');
+      });
+    }
+  })();
+
+  // Run
+  loadListing().then(()=> {
+    // optional: expose listing object for debugging
+    // window._listing = listing;
+  }).catch(err => console.warn('loadListing error', err));
+  // ============================================
+  // MESSAGE MODAL FUNCTIONS
+  // ============================================
+  // Open message modal
+  function openMessageModal() {
+    document.getElementById('messageModal').classList.remove('hidden');
+  }
+
+  // Close message modal
+  function closeMessageModal() {
+    document.getElementById('messageModal').classList.add('hidden');
+    // Clear form
+    document.getElementById('msgSenderName').value = '';
+    document.getElementById('msgText').value = '';
+  }
+
+  // Send message
+  function sendMessage() {
+    const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
+    const senderName = document.getElementById('msgSenderName').value.trim();
+    const messageText = document.getElementById('msgText').value.trim();
+    
+    // Get seller info from page
+  const sellerName = document.querySelector('[id="sellerName"]')?.textContent || 'Seller';
+  const listingTitle = document.getElementById('listingTitle')?.textContent || 'Listing';
+
+  if (!senderName) {
+    alert('⚠️ Please enter your name');
+    return;
+  }
+
+  if (!messageText) {
+    alert('⚠️ Please type a message');
+    return;
+  }
+
+  // Create message object
+  const newMessage = {
+    id: 'msg_' + Date.now(),
+    fromUserId: currentUser.id || 'anonymous',
+    toUserId: 'seller_user',  // ADD THIS LINE
+    fromName: senderName,
+    toName: sellerName,
+    listingId: 'listing1',     // ADD THIS LINE
+    listingTitle: listingTitle,
+    text: messageText,
+    timestamp: new Date().toISOString(),
+    read: false
+  };
+
+    // Load existing messages
+    const existingMessages = JSON.parse(localStorage.getItem('zzz_messages') || '[]');
+    existingMessages.push(newMessage);
+    
+    // Save to localStorage
+    localStorage.setItem('zzz_messages', JSON.stringify(existingMessages));
+    
+    // Show success
+    alert('✅ Message sent! Check your Inbox');
+    
+    // Close modal
+    closeMessageModal();
+    
+    // Redirect to Inbox
+  window.location.href = 'Inbox.html';
+  }
+
+  // Close modal when clicking outside
+  document.getElementById('messageModal')?.addEventListener('click', function(e) {
+    if (e.target === this) {
+      closeMessageModal();
+    }
+  });
+// ============================================
+// CALL SELLER FUNCTION
+// ============================================
+
+function callSeller() {
+  // Get seller info from page
+  const sellerName = document.querySelector('[id="sellerName"]')?.textContent || 'Seller';
+  const sellerPhone = '9876543210'; // Replace with actual seller phone from listing data
+  
+  // On mobile: open phone dialer
+  if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+    // Mobile device - open tel: link
+    window.location.href = `tel:${sellerPhone}`;
+  } else {
+    // Desktop - show phone number in alert
+    const userChoice = confirm(`Call ${sellerName}?\n\nPhone: ${sellerPhone}\n\nClick OK to copy number to clipboard`);
+    if (userChoice) {
+      // Copy to clipboard
+      navigator.clipboard.writeText(sellerPhone).then(() => {
+        alert('✅ Phone number copied to clipboard:\n' + sellerPhone);
+      }).catch(() => {
+        alert('Phone number: ' + sellerPhone);
+      });
+    }
+  }
+}
+  </script>
+  <script src="scripts/auth.js"></script>
+  <script src="scripts/boot.js"></script>
+<script>
+  (function () {
+    function getQueryId() {
+      const params = new URLSearchParams(window.location.search);
+      return parseInt(params.get('id'), 10) || null;
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+      const id = getQueryId();
+      if (!id) return;
+
+      // Simple mock lookup matching classifieds-page.js IDs
+      const mockListings = {
+        1: { title: 'Classic Cruiser Bicycle', price: 150, city: 'Brooklyn, NY' },
+        2: { title: 'Smartphone Pro X', price: 799, city: 'San Francisco, CA' },
+        3: { title: 'Limited Edition Sneakers', price: 220, city: 'Los Angeles, CA' },
+        4: { title: 'Mid-Century Armchair', price: 450, city: 'Chicago, IL' }
+      };
+
+      const listing = mockListings[id];
+      if (!listing) return;
+
+      // Example: update title and price elements
+      const titleEl = document.getElementById('detailTitle');
+      const priceEl = document.getElementById('detailPrice');
+      const cityEl = document.getElementById('detailCity');
+
+      if (titleEl) titleEl.textContent = listing.title;
+      if (priceEl) priceEl.textContent = `$${listing.price}`;
+      if (cityEl) cityEl.textContent = listing.city;
     });
-  }
-})();
-
-// Run
-loadListing().then(()=> {
-  // optional: expose listing object for debugging
-  // window._listing = listing;
-}).catch(err => console.warn('loadListing error', err));
+  })();
 </script>
-<script src="scripts/auth.js"></script>
-<script src="scripts/boot.js"></script>
-</body></html>
+
+  </body></html>

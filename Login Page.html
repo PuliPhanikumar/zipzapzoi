@@ -1,15 +1,14 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8"/>
-<meta name="viewport" content="width=device-width,initial-scale=1"/>
-<title>Log in to ZipZapZoi</title>
-<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-<link href="https://fonts.googleapis.com/css2?family=Spline+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Log in to ZipZapZoi</title>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Spline+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+  <script src="js/data-manager.js"></script>
 </head>
-<body class="font-display bg-gray-50" >
-  <!-- nav include placeholder (optional) -->
-  <div data-include="scripts/components/nav.html"></div>
+<body class="font-display bg-gray-50">
 
   <main class="min-h-screen flex items-center justify-center p-6">
     <div class="w-full max-w-md bg-white p-8 rounded-2xl shadow-lg">
@@ -24,55 +23,83 @@
         <span class="text-sm">Password</span>
         <div class="flex">
           <input id="loginPassword" type="password" class="w-full mt-1 p-3 border rounded-l" placeholder="password"/>
-          <button id="togglePassword" class="mt-1 px-3 border rounded-r">👁</button>
+          <button type="button" id="togglePassword" class="mt-1 px-3 border rounded-r">👁</button>
         </div>
       </label>
 
-      <button id="loginBtn" class="w-full py-3 bg-blue-600 text-white rounded font-semibold">Log In</button>
+      <button type="button" id="loginBtn" class="w-full py-3 bg-blue-600 text-white rounded font-semibold">
+        Log In
+      </button>
 
-      <p class="mt-4 text-sm text-center">Don't have an account? <a href="User Registration.html" class="text-blue-600">Sign Up</a></p>
+      <p class="mt-4 text-sm text-center">
+        Don't have an account?
+        <a href="User-Registration.html" class="text-blue-600">Sign Up</a>
+      </p>
     </div>
   </main>
 
   <!-- Boot loader injects nav/auth/logout -->
   <script src="scripts/boot.js"></script>
 
-  <!-- Page-specific JS: session cleanup + login logic -->
   <script>
-  // Clear any stale session at load so login page is clean
-  (function(){
-    try { sessionStorage.removeItem('zzz_user'); } catch(e){}
-    // keep localStorage if you have "remember me", but if you want full clean uncomment:
-    // try { localStorage.removeItem('zzz_user'); } catch(e){}
-  })();
+    document.addEventListener('DOMContentLoaded', function () {
+      // Toggle password visibility
+      const toggle = document.getElementById('togglePassword');
+      const pwd = document.getElementById('loginPassword');
+      if (toggle && pwd) {
+        toggle.addEventListener('click', function () {
+          pwd.type = pwd.type === 'password' ? 'text' : 'password';
+        });
+      }
 
-  // Toggle password visibility
-  document.getElementById('togglePassword').addEventListener('click', ()=>{
-    const p = document.getElementById('loginPassword');
-    p.type = p.type === 'password' ? 'text' : 'password';
-  });
+      const btn = document.getElementById('loginBtn');
+      if (!btn) return;
 
-  // Simple mock login - replace with real API fetch later
-  document.getElementById('loginBtn').addEventListener('click', ()=>{
-    const email = (document.getElementById('loginEmail').value || '').trim();
-    const password = (document.getElementById('loginPassword').value || '').trim();
-    if(!email || !password){ alert('Enter email and password'); return; }
+      btn.addEventListener('click', function () {
+        const emailEl = document.getElementById('loginEmail');
+        const passEl = document.getElementById('loginPassword');
+        const email = (emailEl.value || '').trim();
+        const password = (passEl.value || '').trim();
 
-    // Mock check: password = 1234 (you had earlier)
-    if(password !== '1234'){ alert('Invalid credentials (mock). Try 1234'); return; }
+        if (!email || !password) {
+          alert('Enter email and password');
+          return;
+        }
 
-    const user = { email, name: email.split('@')[0], role: email.includes('admin') ? 'admin' : 'seller' };
-    // Save to storages
-    try { sessionStorage.setItem('zzz_user', JSON.stringify(user)); localStorage.setItem('zzz_user', JSON.stringify(user)); } catch(e){}
+        if (password !== '1234') {
+          alert('Invalid credentials (mock). Try 1234');
+          return;
+        }
 
-    // Redirect to Admin or Seller Dashboard depending on role
-    if(user.role && user.role.toLowerCase().includes('admin')) {
-      window.location.replace('Admin Console.html');
-    } else {
-      window.location.replace('Seller Dashboard.html');
-    }
-  });
+        const user = {
+          email,
+          name: email.split('@')[0],
+          role: email.includes('admin') ? 'admin' : 'seller'
+        };
+
+        try {
+          // legacy keys
+          sessionStorage.setItem('zzzuser', JSON.stringify(user));
+          localStorage.setItem('zzzuser', JSON.stringify(user));
+          // new keys used by auth + classifieds
+          sessionStorage.setItem('zzz_user', JSON.stringify(user));
+          localStorage.setItem('zzz_user', JSON.stringify(user));
+          // data manager user
+          if (window.ZZZDataManager && window.ZZZDataManager.setCurrentUser) {
+            window.ZZZDataManager.setCurrentUser(user);
+          }
+        } catch (e) {
+          console.warn('Could not save user', e);
+        }
+
+        // correct filenames
+        if (user.role.toLowerCase().includes('admin')) {
+          window.location.replace('Admin-Console.html');
+        } else {
+          window.location.replace('Seller-Dashboard.html');
+        }
+      });
+    });
   </script>
-  <script src="scripts/boot.js"></script>
 </body>
 </html>

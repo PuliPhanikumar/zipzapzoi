@@ -1,0 +1,736 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>ZipZapZoi - Category & Field Manager</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com" rel="preconnect"/>
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+    <link href="https://fonts.googleapis.com/css2?family=Spline+Sans:wght@300..700&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet"/>
+    <style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .dragging {
+            opacity: 0.5;
+        }
+        .drag-over {
+            border: 2px dashed #4A90E2;
+        }
+    </style>
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#0df2a2",
+                        "background-light": "#f5f8f7",
+                        "background-dark": "#10221c",
+                        "energetic-blue": "#4A90E2",
+                        "vibrant-magenta": "#D00281",
+                        "sunny-yellow": "#F8E71C",
+                        "light-gray": "#F4F7F9",
+                        "medium-gray": "#E0E6EB",
+                        "dark-charcoal": "#333B49"
+                    },
+                    fontFamily: {
+                        "display": ["Spline Sans", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "1rem", "lg": "2rem", "xl": "3rem", "full": "9999px"},
+                    boxShadow: {
+                        'soft': '0 4px 12px 0 rgba(0, 0, 0, 0.07)',
+                        'soft-lg': '0 10px 25px 0 rgba(0, 0, 0, 0.08)',
+                        'bouncy-sm': '0 2px 4px rgba(74, 144, 226, 0.2), 0 4px 8px rgba(74, 144, 226, 0.2)',
+                        'bouncy-md': '0 4px 8px rgba(74, 144, 226, 0.3), 0 8px 16px rgba(74, 144, 226, 0.3)'
+                    }
+                },
+            },
+        }
+    </script>
+</head>
+<body class="font-display bg-background-light dark:bg-background-dark text-dark-charcoal dark:text-light-gray">
+    <div class="flex h-screen">
+        <!-- Sidebar -->
+        <div class="flex-shrink-0 w-64 bg-white dark:bg-dark-charcoal/50 border-r border-medium-gray/50 dark:border-white/10">
+            <div class="flex h-full flex-col justify-between p-4">
+                <div class="flex flex-col gap-4">
+                    <div class="flex items-center gap-3 p-2">
+                        <div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBQwxfI7cfsTw7rMTdz-roOjyw1Mv6iXZmF97Viqw_5ACXX__9vOMcmKE9PAOJYNsbQrUqQwR4UTIdFFFwiPzP1it4sfCpAhs3T2QS0JJvm6RV4uB3yRPLbl2TFRZV33_jR1RbAcMiErgDy-QhTSLn2KVkChHU7AsAYN7FDzRJOjs4wpKNvq_0HZCvkEJV7LgaahdbkbdKXHXyaNFQH1A84dLPdsxAzXZG1hM1rEKIx7wwkHlFzu5Szev4Kb5bmHe29OkPGX9n95BnW");'></div>
+                        <div class="flex flex-col">
+                            <h1 class="text-dark-charcoal dark:text-white text-base font-bold leading-normal">ZipZapZoi</h1>
+                            <p class="text-energetic-blue text-sm font-normal leading-normal">Admin Console</p>
+                        </div>
+                    </div>
+                    <nav class="flex flex-col gap-2 mt-4">
+                        <a class="flex items-center gap-3 px-3 py-2 text-dark-charcoal/80 dark:text-white/80 hover:bg-light-gray dark:hover:bg-dark-charcoal/80 rounded" href="#">
+                            <span class="material-symbols-outlined text-xl">dashboard</span>
+                            <p class="text-sm font-medium leading-normal">Dashboard</p>
+                        </a>
+                        <a class="flex items-center gap-3 px-3 py-2 text-dark-charcoal/80 dark:text-white/80 hover:bg-light-gray dark:hover:bg-dark-charcoal/80 rounded" href="#">
+                            <span class="material-symbols-outlined text-xl">view_list</span>
+                            <p class="text-sm font-medium leading-normal">Listings</p>
+                        </a>
+                        <a class="flex items-center gap-3 px-3 py-2 text-dark-charcoal/80 dark:text-white/80 hover:bg-light-gray dark:hover:bg-dark-charcoal/80 rounded" href="#">
+                            <span class="material-symbols-outlined text-xl">group</span>
+                            <p class="text-sm font-medium leading-normal">Users</p>
+                        </a>
+                        <a class="flex items-center gap-3 px-3 py-2 rounded bg-energetic-blue/10 dark:bg-energetic-blue/20 text-energetic-blue dark:text-white" href="#">
+                            <span class="material-symbols-outlined text-xl !fill-1">folder_managed</span>
+                            <p class="text-sm font-bold leading-normal">Categories</p>
+                        </a>
+                        <a class="flex items-center gap-3 px-3 py-2 text-dark-charcoal/80 dark:text-white/80 hover:bg-light-gray dark:hover:bg-dark-charcoal/80 rounded" href="#">
+                            <span class="material-symbols-outlined text-xl">settings</span>
+                            <p class="text-sm font-medium leading-normal">Settings</p>
+                        </a>
+                    </nav>
+                </div>
+                <div class="flex flex-col gap-4">
+                    <button class="flex w-full cursor-pointer items-center justify-center overflow-hidden rounded h-10 px-4 bg-medium-gray/50 dark:bg-white/10 text-dark-charcoal dark:text-white text-sm font-medium leading-normal tracking-[0.015em] hover:bg-medium-gray/70">
+                        <span class="truncate">Logout</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <main class="flex-1 flex flex-col h-screen overflow-y-auto bg-light-gray dark:bg-background-dark">
+            <!-- Header -->
+            <header class="sticky top-0 z-10 bg-light-gray/80 dark:bg-background-dark/80 backdrop-blur-sm p-6 border-b border-medium-gray/50 dark:border-white/10">
+                <div class="flex flex-wrap justify-between items-center gap-4">
+                    <div class="flex-grow">
+                        <p class="text-dark-charcoal dark:text-white text-2xl font-bold leading-tight tracking-tight mb-2">Category & Field Manager</p>
+                        <div class="flex flex-wrap gap-2">
+                            <a class="text-energetic-blue/80 dark:text-energetic-blue/90 text-sm font-medium leading-normal" href="#">Admin Console</a>
+                            <span class="text-dark-charcoal/50 dark:text-white/50 text-sm font-medium leading-normal">/</span>
+                            <span class="text-dark-charcoal dark:text-white text-sm font-medium leading-normal">Category & Field Manager</span>
+                        </div>
+                    </div>
+                    <div class="flex-grow w-full lg:w-auto lg:max-w-md">
+                        <div class="relative w-full">
+                            <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-dark-charcoal/50 dark:text-white/50">search</span>
+                            <input id="globalSearch" class="w-full pl-12 pr-28 text-sm border-2 border-medium-gray/60 dark:border-white/20 bg-white dark:bg-dark-charcoal/80 rounded-full h-12 focus:ring-2 focus:ring-energetic-blue focus:border-energetic-blue outline-none transition-all shadow-bouncy-sm" placeholder="Search categories, fields..." type="text"/>
+                            <button class="absolute right-2 top-1/2 -translate-y-1/2 flex min-w-[84px] cursor-pointer items-center justify-center overflow-hidden rounded-full h-9 px-4 bg-energetic-blue text-white text-sm font-bold leading-normal shadow-soft hover:brightness-110 transition-all">
+                                <span class="truncate">Search</span>
+                            </button>
+                        </div>
+                    </div>
+                    <button onclick="saveChanges()" class="flex min-w-[84px] cursor-pointer items-center justify-center overflow-hidden rounded h-10 px-5 bg-primary text-dark-charcoal/80 text-sm font-bold leading-normal shadow-soft hover:brightness-110 transition-all">
+                        <span class="truncate">Save Changes</span>
+                    </button>
+                </div>
+            </header>
+
+            <!-- Three-column Layout -->
+            <div class="flex-1 p-6 grid grid-cols-1 lg:grid-cols-12 gap-6">
+                <!-- Left Panel: Categories -->
+                <div class="lg:col-span-3">
+                    <div class="bg-white dark:bg-dark-charcoal/50 p-4 rounded-lg shadow-soft h-full">
+                        <div class="flex justify-between items-center mb-4">
+                            <h3 class="text-base font-bold">Categories</h3>
+                            <div class="flex items-center gap-2">
+                                <button onclick="toggleReorderMode('category')" class="flex items-center justify-center size-8 rounded bg-primary/20 dark:bg-primary/30 text-primary dark:text-white hover:bg-primary/30 dark:hover:bg-primary/40" title="Reorder Categories">
+                                    <span class="material-symbols-outlined text-lg">swap_vert</span>
+                                </button>
+                                <button onclick="addCategory()" class="flex items-center justify-center size-8 rounded bg-energetic-blue/10 dark:bg-energetic-blue/20 text-energetic-blue dark:text-white hover:bg-energetic-blue/20">
+                                    <span class="material-symbols-outlined text-lg">add</span>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="relative mb-4">
+                            <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-dark-charcoal/40 dark:text-white/40">search</span>
+                            <input id="categorySearch" class="w-full pl-10 pr-4 py-2 text-sm border border-medium-gray/80 dark:border-white/20 bg-light-gray dark:bg-dark-charcoal/80 rounded focus:ring-2 focus:ring-energetic-blue focus:border-energetic-blue outline-none transition-all" placeholder="Search categories..." type="text"/>
+                        </div>
+                        <ul id="categoryList" class="space-y-1">
+                            <!-- Categories will be rendered here -->
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Center Panel: Subcategories & Fields -->
+                <div class="lg:col-span-5">
+                    <div class="flex flex-col gap-6">
+                        <!-- Subcategories Card -->
+                        <div class="bg-white dark:bg-dark-charcoal/50 p-4 rounded-lg shadow-soft">
+                            <div class="flex justify-between items-center mb-4">
+                                <h3 class="text-base font-bold">Subcategories for <span id="selectedCategoryName" class="text-energetic-blue">Vehicles</span></h3>
+                                <div class="flex items-center gap-2">
+                                    <button onclick="toggleReorderMode('subcategory')" class="flex items-center justify-center size-8 rounded bg-primary/20 dark:bg-primary/30 text-primary dark:text-white hover:bg-primary/30 dark:hover:bg-primary/40" title="Reorder Subcategories">
+                                        <span class="material-symbols-outlined text-lg">swap_vert</span>
+                                    </button>
+                                    <button onclick="addSubcategory()" class="flex items-center justify-center size-8 rounded bg-energetic-blue/10 dark:bg-energetic-blue/20 text-energetic-blue dark:text-white hover:bg-energetic-blue/20">
+                                        <span class="material-symbols-outlined text-lg">add</span>
+                                    </button>
+                                </div>
+                            </div>
+                            <div id="subcategoryList" class="space-y-3">
+                                <!-- Subcategories will be rendered here -->
+                            </div>
+                        </div>
+
+                        <!-- Custom Fields Card -->
+                        <div class="bg-white dark:bg-dark-charcoal/50 p-4 rounded-lg shadow-soft">
+                            <div class="flex justify-between items-center mb-4">
+                                <h3 class="text-base font-bold">Custom Fields for <span id="selectedSubcategoryName" class="text-energetic-blue">Cars</span></h3>
+                                <div class="flex items-center gap-2">
+                                    <button onclick="toggleReorderMode('field')" class="flex items-center justify-center size-8 rounded bg-primary/20 dark:bg-primary/30 text-primary dark:text-white hover:bg-primary/30 dark:hover:bg-primary/40" title="Reorder Fields">
+                                        <span class="material-symbols-outlined text-lg">swap_vert</span>
+                                    </button>
+                                    <button onclick="addField()" class="flex items-center justify-center size-8 rounded bg-energetic-blue/10 dark:bg-energetic-blue/20 text-energetic-blue dark:text-white hover:bg-energetic-blue/20" title="Add New Field">
+                                        <span class="material-symbols-outlined text-lg">add</span>
+                                    </button>
+                                </div>
+                            </div>
+                            <div id="fieldList" class="space-y-3">
+                                <!-- Fields will be rendered here -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Panel: Field Editor -->
+                <div class="lg:col-span-4">
+                    <div class="bg-white dark:bg-dark-charcoal/50 p-4 rounded-lg shadow-soft h-full sticky top-28">
+                        <h3 class="text-base font-bold mb-4">Edit Field: <span id="editingFieldName" class="text-energetic-blue">Model</span></h3>
+                        <form id="fieldEditForm" class="space-y-4">
+                            <!-- Archive Toggle -->
+                            <div class="flex items-center justify-between p-3 rounded-lg bg-sunny-yellow/20 dark:bg-sunny-yellow/10 border-l-4 border-sunny-yellow shadow-soft">
+                                <div class="flex items-center gap-3">
+                                    <span class="material-symbols-outlined text-yellow-600 dark:text-sunny-yellow text-2xl">archive</span>
+                                    <div>
+                                        <p class="text-sm font-bold text-yellow-800 dark:text-yellow-200">Field Status</p>
+                                        <p class="text-xs text-yellow-700 dark:text-yellow-400">Toggle to archive/activate</p>
+                                    </div>
+                                </div>
+                                <button onclick="toggleArchive(event)" type="button" aria-checked="false" class="relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent bg-medium-gray dark:bg-white/20 transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-sunny-yellow focus:ring-offset-2" id="archive-toggle" role="switch">
+                                    <span class="pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out translate-x-0"></span>
+                                </button>
+                            </div>
+
+                            <div>
+                                <label class="block text-sm font-medium mb-1" for="field-label">Field Label</label>
+                                <input class="w-full text-sm border border-medium-gray/80 dark:border-white/20 bg-light-gray dark:bg-dark-charcoal/80 rounded focus:ring-2 focus:ring-energetic-blue focus:border-energetic-blue outline-none transition-all p-2" id="field-label" type="text"/>
+                            </div>
+
+                            <div>
+                                <label class="block text-sm font-medium mb-1" for="field-type">Field Type</label>
+                                <select class="w-full text-sm border border-medium-gray/80 dark:border-white/20 bg-light-gray dark:bg-dark-charcoal/80 rounded focus:ring-2 focus:ring-energetic-blue focus:border-energetic-blue outline-none transition-all p-2" id="field-type">
+                                    <option value="text">Text Input</option>
+                                    <option value="number">Number Input</option>
+                                    <option value="date">Date Picker</option>
+                                    <option value="dropdown">Dropdown</option>
+                                    <option value="checkbox">Checkbox</option>
+                                </select>
+                            </div>
+
+                            <div>
+                                <label class="block text-sm font-medium mb-1" for="placeholder">Placeholder Text</label>
+                                <input class="w-full text-sm border border-medium-gray/80 dark:border-white/20 bg-light-gray dark:bg-dark-charcoal/80 rounded focus:ring-2 focus:ring-energetic-blue focus:border-energetic-blue outline-none transition-all p-2" id="placeholder" type="text"/>
+                            </div>
+
+                            <!-- Validation Rules -->
+                            <div class="border-t border-medium-gray/50 dark:border-white/10 pt-4">
+                                <h4 class="text-sm font-bold mb-2">Validation Rules</h4>
+                                <div class="flex items-center justify-between">
+                                    <label class="text-sm font-medium" for="is-required">Field is required</label>
+                                    <button onclick="toggleRequired(event)" type="button" aria-checked="false" class="relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent bg-medium-gray dark:bg-white/20 transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-energetic-blue focus:ring-offset-2" id="is-required" role="switch">
+                                        <span class="pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out translate-x-0"></span>
+                                    </button>
+                                </div>
+                                <div class="mt-4 space-y-2">
+                                    <div class="grid grid-cols-2 gap-2">
+                                        <div>
+                                            <label class="block text-xs font-medium mb-1 text-dark-charcoal/70 dark:text-white/70" for="min-length">Min Length</label>
+                                            <input class="w-full text-sm border border-medium-gray/80 dark:border-white/20 bg-light-gray dark:bg-dark-charcoal/80 rounded focus:ring-2 focus:ring-energetic-blue focus:border-energetic-blue outline-none transition-all p-2" id="min-length" type="number"/>
+                                        </div>
+                                        <div>
+                                            <label class="block text-xs font-medium mb-1 text-dark-charcoal/70 dark:text-white/70" for="max-length">Max Length</label>
+                                            <input class="w-full text-sm border border-medium-gray/80 dark:border-white/20 bg-light-gray dark:bg-dark-charcoal/80 rounded focus:ring-2 focus:ring-energetic-blue focus:border-energetic-blue outline-none transition-all p-2" id="max-length" type="number"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Conditional Logic -->
+                            <div class="border-t border-medium-gray/50 dark:border-white/10 pt-4">
+                                <div class="flex justify-between items-center mb-2">
+                                    <h4 class="text-sm font-bold">Conditional Logic</h4>
+                                    <button onclick="addConditionalRule()" type="button" class="flex min-w-[84px] cursor-pointer items-center justify-center gap-2 overflow-hidden rounded-full h-8 px-3 bg-energetic-blue/10 dark:bg-energetic-blue/20 text-energetic-blue dark:text-white text-xs font-bold leading-normal shadow-soft hover:bg-energetic-blue/20">
+                                        <span class="material-symbols-outlined text-base">add</span>
+                                        <span class="truncate">Add Rule</span>
+                                    </button>
+                                </div>
+                                <div id="conditionalRulesContainer" class="space-y-3">
+                                    <!-- Conditional rules will be rendered here -->
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // Data Structure
+        let data = {
+            categories: [
+                {
+                    id: 1,
+                    name: 'Vehicles',
+                    icon: 'directions_car',
+                    expanded: true,
+                    archived: false,
+                    subcategories: [
+                        {
+                            id: 1,
+                            name: 'Cars',
+                            icon: 'directions_car',
+                            archived: false,
+                            fields: [
+                                { id: 1, name: 'Make', type: 'text', placeholder: 'e.g., Toyota', required: true, minLength: 2, maxLength: 50, archived: false },
+                                { id: 2, name: 'Model', type: 'text', placeholder: 'e.g., Camry', required: true, minLength: 1, maxLength: 50, archived: false },
+                                { id: 3, name: 'Year', type: 'number', placeholder: 'e.g., 2023', required: true, archived: false },
+                                { id: 4, name: 'Color', type: 'dropdown', placeholder: 'Select color', required: false, archived: true },
+                                { id: 5, name: 'Mileage', type: 'number', placeholder: 'e.g., 50000', required: false, archived: false }
+                            ]
+                        },
+                        {
+                            id: 2,
+                            name: 'Motorcycles',
+                            icon: 'two_wheeler',
+                            archived: false,
+                            fields: []
+                        }
+                    ]
+                },
+                {
+                    id: 2,
+                    name: 'Electronics',
+                    icon: 'devices',
+                    expanded: false,
+                    archived: false,
+                    subcategories: []
+                },
+                {
+                    id: 3,
+                    name: 'Real Estate',
+                    icon: 'home',
+                    expanded: false,
+                    archived: false,
+                    subcategories: []
+                },
+                {
+                    id: 4,
+                    name: 'Jobs',
+                    icon: 'work',
+                    expanded: false,
+                    archived: true,
+                    subcategories: []
+                }
+            ],
+            selectedCategory: 1,
+            selectedSubcategory: 1,
+            selectedField: 2
+        };
+
+        // Initialize
+        function init() {
+            renderCategories();
+            renderSubcategories();
+            renderFields();
+            loadFieldEditor();
+        }
+
+        // Render Categories
+        function renderCategories() {
+            const categoryList = document.getElementById('categoryList');
+            const searchTerm = document.getElementById('categorySearch').value.toLowerCase();
+            
+            categoryList.innerHTML = data.categories
+                .filter(cat => cat.name.toLowerCase().includes(searchTerm))
+                .map(category => `
+                    <li class="${category.archived ? 'opacity-50' : ''}">
+                        <div class="flex items-center justify-between p-2 rounded ${category.id === data.selectedCategory ? 'bg-energetic-blue/20 dark:bg-energetic-blue/30' : 'hover:bg-light-gray dark:hover:bg-dark-charcoal'} cursor-pointer" onclick="selectCategory(${category.id})">
+                            <div class="flex items-center gap-2">
+                                <span class="material-symbols-outlined cursor-grab text-dark-charcoal/40 dark:text-white/40">drag_indicator</span>
+                                <span class="text-sm font-${category.id === data.selectedCategory ? 'bold text-energetic-blue dark:text-white' : 'medium'}">${category.name}${category.archived ? ' (Archived)' : ''}</span>
+                            </div>
+                            <span class="material-symbols-outlined text-lg text-dark-charcoal/60 dark:text-white/60">${category.expanded ? 'expand_more' : 'chevron_right'}</span>
+                        </div>
+                        ${category.expanded && category.subcategories.length > 0 ? `
+                            <ul class="pl-4 mt-1 space-y-1">
+                                ${category.subcategories.map(sub => `
+                                    <li><a class="flex items-center gap-2 p-2 text-sm rounded hover:bg-light-gray dark:hover:bg-dark-charcoal" href="#" onclick="selectSubcategory(${category.id}, ${sub.id}); event.preventDefault();">
+                                        <span class="material-symbols-outlined cursor-grab text-dark-charcoal/30 dark:text-white/30 text-base">drag_indicator</span>
+                                        ${sub.name}
+                                    </a></li>
+                                `).join('')}
+                            </ul>
+                        ` : ''}
+                    </li>
+                `).join('');
+        }
+
+        // Render Subcategories
+        function renderSubcategories() {
+            const category = data.categories.find(c => c.id === data.selectedCategory);
+            if (!category) return;
+            
+            document.getElementById('selectedCategoryName').textContent = category.name;
+            const subcategoryList = document.getElementById('subcategoryList');
+            
+            subcategoryList.innerHTML = category.subcategories.map(sub => `
+                <div class="flex items-center justify-between gap-4 rounded p-3 ${sub.archived ? 'opacity-50 ' : ''}bg-light-gray dark:bg-dark-charcoal/80 ${sub.id === data.selectedSubcategory ? 'ring-2 ring-energetic-blue' : ''}">
+                    <div class="flex items-center gap-3">
+                        <span class="material-symbols-outlined cursor-grab text-dark-charcoal/40 dark:text-white/40">drag_indicator</span>
+                        <div class="flex items-center justify-center size-8 bg-energetic-blue/20 rounded">
+                            <span class="material-symbols-outlined text-lg text-energetic-blue">${sub.icon}</span>
+                        </div>
+                        <p class="text-sm font-medium">${sub.name}</p>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <button onclick="editSubcategory(${category.id}, ${sub.id})" class="text-dark-charcoal/60 dark:text-white/60 hover:text-energetic-blue" title="Edit">
+                            <span class="material-symbols-outlined text-lg">edit</span>
+                        </button>
+                        <button onclick="archiveSubcategory(${category.id}, ${sub.id})" class="text-dark-charcoal/60 dark:text-white/60 hover:text-sunny-yellow" title="${sub.archived ? 'Restore' : 'Archive'}">
+                            <span class="material-symbols-outlined text-lg">${sub.archived ? 'unarchive' : 'archive'}</span>
+                        </button>
+                        <button onclick="deleteSubcategory(${category.id}, ${sub.id})" class="text-dark-charcoal/60 dark:text-white/60 hover:text-vibrant-magenta" title="Delete">
+                            <span class="material-symbols-outlined text-lg">delete</span>
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Render Fields
+        function renderFields() {
+            const category = data.categories.find(c => c.id === data.selectedCategory);
+            if (!category) return;
+            
+            const subcategory = category.subcategories.find(s => s.id === data.selectedSubcategory);
+            if (!subcategory) return;
+            
+            document.getElementById('selectedSubcategoryName').textContent = subcategory.name;
+            const fieldList = document.getElementById('fieldList');
+            
+            fieldList.innerHTML = subcategory.fields.map(field => `
+                <div onclick="selectField(${data.selectedCategory}, ${data.selectedSubcategory}, ${field.id})" class="flex items-center justify-between gap-4 rounded p-3 ${field.archived ? 'opacity-50 ' : ''}${field.id === data.selectedField ? 'bg-energetic-blue/20 dark:bg-energetic-blue/30 ring-2 ring-energetic-blue scale-105 shadow-bouncy-md z-10 relative' : 'bg-light-gray dark:bg-dark-charcoal/80'} cursor-grab active:cursor-grabbing active:scale-105 active:shadow-bouncy-md transition-all duration-200 ease-in-out">
+                    <div class="flex items-center gap-3">
+                        <span class="material-symbols-outlined ${field.id === data.selectedField ? 'text-dark-charcoal/60 dark:text-white/60' : 'text-dark-charcoal/40 dark:text-white/40'}">drag_indicator</span>
+                        <p class="text-sm ${field.id === data.selectedField ? 'font-semibold text-energetic-blue dark:text-white' : 'font-medium'} ${field.archived ? 'italic' : ''}">${field.name}</p>
+                        <span class="text-xs bg-white/50 dark:bg-black/20 text-dark-charcoal/70 dark:text-white/70 px-2 py-0.5 rounded-full">${field.type}</span>
+                        ${field.archived ? '<span class="text-xs bg-sunny-yellow/30 text-yellow-800 dark:bg-sunny-yellow/20 dark:text-yellow-300 px-2 py-0.5 rounded-full">Archived</span>' : ''}
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <button onclick="archiveField(${data.selectedCategory}, ${data.selectedSubcategory}, ${field.id}); event.stopPropagation();" class="${field.id === data.selectedField ? 'text-dark-charcoal/80 dark:text-white/80' : 'text-dark-charcoal/60 dark:text-white/60'} hover:text-${field.archived ? 'primary' : 'sunny-yellow'}" title="${field.archived ? 'Restore' : 'Archive'} Field">
+                            <span class="material-symbols-outlined text-lg">${field.archived ? 'unarchive' : 'archive'}</span>
+                        </button>
+                        <button onclick="deleteField(${data.selectedCategory}, ${data.selectedSubcategory}, ${field.id}); event.stopPropagation();" class="${field.id === data.selectedField ? 'text-dark-charcoal/80 dark:text-white/80' : 'text-dark-charcoal/60 dark:text-white/60'} hover:text-vibrant-magenta" title="Delete Field">
+                            <span class="material-symbols-outlined text-lg">delete</span>
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Load Field Editor
+        function loadFieldEditor() {
+            const category = data.categories.find(c => c.id === data.selectedCategory);
+            if (!category) return;
+            
+            const subcategory = category.subcategories.find(s => s.id === data.selectedSubcategory);
+            if (!subcategory) return;
+            
+            const field = subcategory.fields.find(f => f.id === data.selectedField);
+            if (!field) return;
+            
+            document.getElementById('editingFieldName').textContent = field.name;
+            document.getElementById('field-label').value = field.name;
+            document.getElementById('field-type').value = field.type;
+            document.getElementById('placeholder').value = field.placeholder || '';
+            document.getElementById('min-length').value = field.minLength || '';
+            document.getElementById('max-length').value = field.maxLength || '';
+            
+            // Set required toggle
+            const requiredToggle = document.getElementById('is-required');
+            requiredToggle.setAttribute('aria-checked', field.required);
+            requiredToggle.classList.toggle('bg-energetic-blue', field.required);
+            requiredToggle.classList.toggle('bg-medium-gray', !field.required);
+            requiredToggle.querySelector('span').classList.toggle('translate-x-5', field.required);
+            requiredToggle.querySelector('span').classList.toggle('translate-x-0', !field.required);
+            
+            // Set archive toggle
+            const archiveToggle = document.getElementById('archive-toggle');
+            archiveToggle.setAttribute('aria-checked', field.archived);
+            archiveToggle.classList.toggle('bg-sunny-yellow', field.archived);
+            archiveToggle.classList.toggle('bg-medium-gray', !field.archived);
+            archiveToggle.querySelector('span').classList.toggle('translate-x-5', field.archived);
+            archiveToggle.querySelector('span').classList.toggle('translate-x-0', !field.archived);
+        }
+
+        // Select Category
+        function selectCategory(categoryId) {
+            const category = data.categories.find(c => c.id === categoryId);
+            if (category) {
+                category.expanded = !category.expanded;
+                data.selectedCategory = categoryId;
+                if (category.subcategories.length > 0) {
+                    data.selectedSubcategory = category.subcategories[0].id;
+                }
+                renderCategories();
+                renderSubcategories();
+                renderFields();
+                if (category.subcategories.length > 0 && category.subcategories[0].fields.length > 0) {
+                    data.selectedField = category.subcategories[0].fields[0].id;
+                    loadFieldEditor();
+                }
+            }
+        }
+
+        // Select Subcategory
+        function selectSubcategory(categoryId, subcategoryId) {
+            data.selectedCategory = categoryId;
+            data.selectedSubcategory = subcategoryId;
+            const category = data.categories.find(c => c.id === categoryId);
+            const subcategory = category.subcategories.find(s => s.id === subcategoryId);
+            if (subcategory.fields.length > 0) {
+                data.selectedField = subcategory.fields[0].id;
+            }
+            renderSubcategories();
+            renderFields();
+            loadFieldEditor();
+        }
+
+        // Select Field
+        function selectField(categoryId, subcategoryId, fieldId) {
+            data.selectedCategory = categoryId;
+            data.selectedSubcategory = subcategoryId;
+            data.selectedField = fieldId;
+            renderFields();
+            loadFieldEditor();
+        }
+
+        // Add Category
+        function addCategory() {
+            const name = prompt('Enter category name:');
+            if (name) {
+                const newId = Math.max(...data.categories.map(c => c.id)) + 1;
+                data.categories.push({
+                    id: newId,
+                    name: name,
+                    icon: 'category',
+                    expanded: false,
+                    archived: false,
+                    subcategories: []
+                });
+                renderCategories();
+            }
+        }
+
+        // Add Subcategory
+        function addSubcategory() {
+            const category = data.categories.find(c => c.id === data.selectedCategory);
+            if (!category) return;
+            
+            const name = prompt('Enter subcategory name:');
+            if (name) {
+                const newId = category.subcategories.length > 0 ? 
+                    Math.max(...category.subcategories.map(s => s.id)) + 1 : 1;
+                category.subcategories.push({
+                    id: newId,
+                    name: name,
+                    icon: 'folder',
+                    archived: false,
+                    fields: []
+                });
+                renderSubcategories();
+            }
+        }
+
+        // Add Field
+        function addField() {
+            const category = data.categories.find(c => c.id === data.selectedCategory);
+            if (!category) return;
+            
+            const subcategory = category.subcategories.find(s => s.id === data.selectedSubcategory);
+            if (!subcategory) return;
+            
+            const name = prompt('Enter field name:');
+            if (name) {
+                const newId = subcategory.fields.length > 0 ? 
+                    Math.max(...subcategory.fields.map(f => f.id)) + 1 : 1;
+                subcategory.fields.push({
+                    id: newId,
+                    name: name,
+                    type: 'text',
+                    placeholder: '',
+                    required: false,
+                    archived: false
+                });
+                data.selectedField = newId;
+                renderFields();
+                loadFieldEditor();
+            }
+        }
+
+        // Edit Subcategory
+        function editSubcategory(categoryId, subcategoryId) {
+            const category = data.categories.find(c => c.id === categoryId);
+            const subcategory = category.subcategories.find(s => s.id === subcategoryId);
+            const newName = prompt('Enter new name:', subcategory.name);
+            if (newName) {
+                subcategory.name = newName;
+                renderSubcategories();
+            }
+        }
+
+        // Archive Subcategory
+        function archiveSubcategory(categoryId, subcategoryId) {
+            const category = data.categories.find(c => c.id === categoryId);
+            const subcategory = category.subcategories.find(s => s.id === subcategoryId);
+            subcategory.archived = !subcategory.archived;
+            renderSubcategories();
+        }
+
+        // Delete Subcategory
+        function deleteSubcategory(categoryId, subcategoryId) {
+            if (confirm('Are you sure you want to delete this subcategory?')) {
+                const category = data.categories.find(c => c.id === categoryId);
+                category.subcategories = category.subcategories.filter(s => s.id !== subcategoryId);
+                renderSubcategories();
+            }
+        }
+
+        // Archive Field
+        function archiveField(categoryId, subcategoryId, fieldId) {
+            const category = data.categories.find(c => c.id === categoryId);
+            const subcategory = category.subcategories.find(s => s.id === subcategoryId);
+            const field = subcategory.fields.find(f => f.id === fieldId);
+            field.archived = !field.archived;
+            renderFields();
+            loadFieldEditor();
+        }
+
+        // Delete Field
+        function deleteField(categoryId, subcategoryId, fieldId) {
+            if (confirm('Are you sure you want to delete this field?')) {
+                const category = data.categories.find(c => c.id === categoryId);
+                const subcategory = category.subcategories.find(s => s.id === subcategoryId);
+                subcategory.fields = subcategory.fields.filter(f => f.id !== fieldId);
+                if (subcategory.fields.length > 0) {
+                    data.selectedField = subcategory.fields[0].id;
+                }
+                renderFields();
+                loadFieldEditor();
+            }
+        }
+
+        // Toggle Required
+        function toggleRequired(event) {
+            event.preventDefault();
+            const category = data.categories.find(c => c.id === data.selectedCategory);
+            const subcategory = category.subcategories.find(s => s.id === data.selectedSubcategory);
+            const field = subcategory.fields.find(f => f.id === data.selectedField);
+            field.required = !field.required;
+            loadFieldEditor();
+        }
+
+        // Toggle Archive
+        function toggleArchive(event) {
+            event.preventDefault();
+            const category = data.categories.find(c => c.id === data.selectedCategory);
+            const subcategory = category.subcategories.find(s => s.id === data.selectedSubcategory);
+            const field = subcategory.fields.find(f => f.id === data.selectedField);
+            field.archived = !field.archived;
+            renderFields();
+            loadFieldEditor();
+        }
+
+        // Toggle Reorder Mode
+        function toggleReorderMode(type) {
+            alert(`Reorder mode for ${type} - Drag and drop functionality would be implemented here`);
+        }
+
+        // Add Conditional Rule
+        function addConditionalRule() {
+            const container = document.getElementById('conditionalRulesContainer');
+            const ruleHTML = `
+                <div class="p-3 rounded-lg bg-light-gray dark:bg-dark-charcoal/80 space-y-3 shadow-inner">
+                    <div class="flex items-center gap-2">
+                        <p class="text-sm font-medium">Show this field if:</p>
+                        <select class="w-auto grow text-xs border border-medium-gray/80 dark:border-white/20 bg-white dark:bg-dark-charcoal rounded focus:ring-2 focus:ring-energetic-blue focus:border-energetic-blue outline-none transition-all p-1.5">
+                            <option>All</option>
+                            <option>Any</option>
+                        </select>
+                        <p class="text-sm font-medium">of the following match:</p>
+                    </div>
+                    <div class="flex items-start gap-2">
+                        <div class="flex-grow space-y-2">
+                            <div class="grid grid-cols-3 gap-2">
+                                <select class="w-full text-sm border border-medium-gray/80 dark:border-white/20 bg-white dark:bg-dark-charcoal rounded focus:ring-2 focus:ring-energetic-blue focus:border-energetic-blue outline-none transition-all p-2">
+                                    <option>Make</option>
+                                    <option>Year</option>
+                                    <option>Color</option>
+                                </select>
+                                <select class="w-full text-sm border border-medium-gray/80 dark:border-white/20 bg-white dark:bg-dark-charcoal rounded focus:ring-2 focus:ring-energetic-blue focus:border-energetic-blue outline-none transition-all p-2">
+                                    <option>is equal to</option>
+                                    <option>is not equal to</option>
+                                    <option>contains</option>
+                                    <option>does not contain</option>
+                                </select>
+                                <input class="w-full text-sm border border-medium-gray/80 dark:border-white/20 bg-white dark:bg-dark-charcoal rounded focus:ring-2 focus:ring-energetic-blue focus:border-energetic-blue outline-none transition-all p-2" type="text" placeholder="Value"/>
+                            </div>
+                        </div>
+                        <button onclick="this.parentElement.parentElement.remove()" class="flex-shrink-0 flex items-center justify-center size-9 rounded bg-white/80 dark:bg-dark-charcoal hover:bg-vibrant-magenta/10 dark:hover:bg-vibrant-magenta/20 text-dark-charcoal/60 dark:text-white/60 hover:text-vibrant-magenta dark:hover:text-vibrant-magenta mt-0" title="Remove Rule">
+                            <span class="material-symbols-outlined text-lg">delete</span>
+                        </button>
+                    </div>
+                </div>
+            `;
+            container.insertAdjacentHTML('beforeend', ruleHTML);
+        }
+
+        // Save Changes
+        function saveChanges() {
+            // Update field from editor
+            const category = data.categories.find(c => c.id === data.selectedCategory);
+            if (category) {
+                const subcategory = category.subcategories.find(s => s.id === data.selectedSubcategory);
+                if (subcategory) {
+                    const field = subcategory.fields.find(f => f.id === data.selectedField);
+                    if (field) {
+                        field.name = document.getElementById('field-label').value;
+                        field.type = document.getElementById('field-type').value;
+                        field.placeholder = document.getElementById('placeholder').value;
+                        field.minLength = document.getElementById('min-length').value;
+                        field.maxLength = document.getElementById('max-length').value;
+                    }
+                }
+            }
+            
+            alert('Changes saved successfully!');
+            renderFields();
+        }
+
+        // Search functionality
+        document.getElementById('categorySearch').addEventListener('input', renderCategories);
+        document.getElementById('globalSearch').addEventListener('input', function() {
+            const term = this.value.toLowerCase();
+            // Implement global search across all categories, subcategories, and fields
+            console.log('Searching for:', term);
+        });
+
+        // Form field updates
+        document.getElementById('field-label').addEventListener('input', function() {
+            document.getElementById('editingFieldName').textContent = this.value;
+        });
+
+        // Initialize on load
+        init();
+    </script>
+</body>
+</html>
