@@ -1,59 +1,59 @@
 <!DOCTYPE html>
 <html class="light" lang="en">
 <head>
-<meta charset="utf-8"/>
-<meta name="viewport" content="width=device-width,initial-scale=1"/>
-<title>ZipZapZoi - Create a New Listing</title>
-<style>
-/* focus styles for keyboard users */
-:focus {
-  outline: 3px solid rgba(77,150,255,0.25);
-  outline-offset: 2px;
-}
-</style>
-<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-<link href="https://fonts.googleapis.com" rel="preconnect"/>
-<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
-<link href="https://fonts.googleapis.com/css2?family=Spline+Sans:wght@300..700&display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet"/>
-<script>
-  tailwind.config = {
-    darkMode: "class",
-    theme: {
-      extend: {
-        colors: {
-          "primary": "#FF6B6B",
-          "secondary": "#4D96FF",
-          "background-light": "#F8F9FA",
-          "background-dark": "#1A1B1C",
-          "card-light": "#FFFFFF",
-          "card-dark": "#2C2D2E",
-          "text-light": "#343A40",
-          "text-dark": "#E9ECEF",
-          "text-muted-light": "#6C757D",
-          "text-muted-dark": "#ADB5BD",
-          "border-light": "#E9ECEF",
-          "border-dark": "#495057",
-          "success": "#1DD1A1"
-        },
-        fontFamily: {
-          "display": ["Spline Sans", "sans-serif"]
-        },
-        borderRadius: {
-          "DEFAULT": "1rem",
-          "lg": "1.5rem",
-          "xl": "2rem",
-          "full": "9999px"
-        },
-        boxShadow: {
-          'bouncy': '0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.05)',
-          'bouncy-lg': '0 20px 30px -10px rgba(0, 0, 0, 0.1), 0 10px 15px -8px rgba(0, 0, 0, 0.1)',
-        }
-      },
-    },
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>ZipZapZoi - Create a New Listing</title>
+  <style>
+  /* focus styles for keyboard users */
+  :focus {
+    outline: 3px solid rgba(77,150,255,0.25);
+    outline-offset: 2px;
   }
-</script>
-<script src="js/data-manager.js"></script>
+  </style>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <link href="https://fonts.googleapis.com" rel="preconnect"/>
+  <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+  <link href="https://fonts.googleapis.com/css2?family=Spline+Sans:wght@300..700&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet"/>
+  <script>
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "primary": "#FF6B6B",
+            "secondary": "#4D96FF",
+            "background-light": "#F8F9FA",
+            "background-dark": "#1A1B1C",
+            "card-light": "#FFFFFF",
+            "card-dark": "#2C2D2E",
+            "text-light": "#343A40",
+            "text-dark": "#E9ECEF",
+            "text-muted-light": "#6C757D",
+            "text-muted-dark": "#ADB5BD",
+            "border-light": "#E9ECEF",
+            "border-dark": "#495057",
+            "success": "#1DD1A1"
+          },
+          fontFamily: {
+            "display": ["Spline Sans", "sans-serif"]
+          },
+          borderRadius: {
+            "DEFAULT": "1rem",
+            "lg": "1.5rem",
+            "xl": "2rem",
+            "full": "9999px"
+          },
+          boxShadow: {
+            'bouncy': '0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.05)',
+            'bouncy-lg': '0 20px 30px -10px rgba(0, 0, 0, 0.1), 0 10px 15px -8px rgba(0, 0, 0, 0.1)',
+          }
+        },
+      },
+    }
+  </script>
+  <script src="js/data-manager.js"></script>
 </head>
 <body class="font-display bg-background-light dark:bg-background-dark text-text-light dark:text-text-dark antialiased">
 <div class="relative flex h-auto min-h-screen w-full flex-col group/design-root overflow-x-hidden">
@@ -102,18 +102,18 @@
           </div>
         </div>
 
-        <!-- ImageGrid as Category Selection -->
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <!-- Category cards (TOP) -->
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-6">
           <div class="group flex flex-col gap-3 p-3 rounded-lg cursor-pointer border-2 border-transparent hover:border-primary hover:bg-primary/10 dark:hover:bg-primary/20 transition-all transform hover:-translate-y-1" data-category="Vehicles">
-            <div class="w-full bg-center bg-no-repeat aspect-square bg-cover rounded-lg" data-alt="Illustration of a modern car" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAnG74ulNSzqLN0MYtT6ErPt17JZmLqW_NKc9r2B6c1Y0Lp1Gl0jWVl1EdsYZM_7Z5JdehlLmlq8Tm7aWGIb65Mg0O5BUGlrQ8sU8jOubfq5uROFh_x5pXhP6Z0BTRgPBzsDMvRWcV7PCv7hq2xLLKXslnZGiVYnoPMA_updcH36QmD3C9NJBPsQk_i5_NX3DairwNY2TuTjO7kRXTTXgZGWYjFFKH9uR-FDph0r-TGkzPDScp6vbw7BuXa6YEh-C3PvjSjIlYehx04");'></div>
+            <div class="w-full bg-center bg-no-repeat aspect-square bg-cover rounded-lg" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAnG74ulNSzqLN0MYtT6ErPt17JZmLqW_NKc9r2B6c1Y0Lp1Gl0jWVl1EdsYZM_7Z5JdehlLmlq8Tm7aWGIb65Mg0O5BUGlrQ8sU8jOubfq5uROFh_x5pXhP6Z0BTRgPBzsDMvRWcV7PCv7hq2xLLKXslnZGiVYnoPMA_updcH36QmD3C9NJBPsQk_i5_NX3DairwNY2TuTjO7kRXTTXgZGWYjFFKH9uR-FDph0r-TGkzPDScp6vbw7BuXa6YEh-C3PvjSjIlYehx04");'></div>
             <div>
               <p class="text-base font-medium text-text-light dark:text-text-dark">Vehicles</p>
               <p class="text-sm font-normal text-text-muted-light dark:text-text-muted-dark">Cars, bikes &amp; boats</p>
             </div>
           </div>
 
-          <div class="group flex flex-col gap-3 p-3 rounded-lg cursor-pointer border-2 border-primary bg-primary/10 dark:bg-primary/20 transform -translate-y-1" data-category="Home & Garden">
-            <div class="w-full bg-center bg-no-repeat aspect-square bg-cover rounded-lg" data-alt="Stylish modern living room with a sofa" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAWPLTsUEaNUU_CvjTn0Xp2cEUdr2mBodcq9EiV-4PxZ6SeoGCZbeJAUfEcyaHEuTMuBjpFxyTs8qN3LTu_mjNI7MxFmX_WkF3RuBaw_WYZakzgIXuIGprYBuSMRxVvYopEBD0m5UCvrvUqKbyo_EFzColCY7CenEX1CpS3qf-l3wuq89v3EtIGedD5FOM80_gWZtP4OlvYhXliMy5RJIa3QAdL7AVYzH-Ibg2RYmb5JEiX3_5NOZyK6xwG889R836AQFATeeBX2MNM");'></div>
+          <div class="group flex flex-col gap-3 p-3 rounded-lg cursor-pointer border-2 border-transparent hover:border-primary hover:bg-primary/10 dark:hover:bg-primary/20 transition-all transform hover:-translate-y-1" data-category="Home & Garden">
+            <div class="w-full bg-center bg-no-repeat aspect-square bg-cover rounded-lg" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAWPLTsUEaNUU_CvjTn0Xp2cEUdr2mBodcq9EiV-4PxZ6SeoGCZbeJAUfEcyaHEuTMuBjpFxyTs8qN3LTu_mjNI7MxFmX_WkF3RuBaw_WYZakzgIXuIGprYBuSMRxVvYopEBD0m5UCvrvUqKbyo_EFzColCY7CenEX1CpS3qf-l3wuq89v3EtIGedD5FOM80_gWZtP4OlvYhXliMy5RJIa3QAdL7AVYzH-Ibg2RYmb5JEiX3_5NOZyK6xwG889R836AQFATeeBX2MNM");'></div>
             <div>
               <p class="text-base font-medium text-text-light dark:text-text-dark">Home &amp; Garden</p>
               <p class="text-sm font-normal text-text-muted-light dark:text-text-muted-dark">Furniture &amp; decor</p>
@@ -121,73 +121,193 @@
           </div>
 
           <div class="group flex flex-col gap-3 p-3 rounded-lg cursor-pointer border-2 border-transparent hover:border-primary hover:bg-primary/10 dark:hover:bg-primary/20 transition-all transform hover:-translate-y-1" data-category="Electronics">
-            <div class="w-full bg-center bg-no-repeat aspect-square bg-cover rounded-lg" data-alt="A smartphone and a laptop on a desk" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDhVpR1nycezXGqSv7fcu9K_npuM_34VYF05Ngy7SV0dwZ0f2qKxUpyKCvj8NwdVZuk2bC1iyiv-m3dNQVxbLJvI698rcLtl5FOda9z95w2oMkBohOAoGyu6qe5AupIWdCOob30Pct0FoZiT93xcf6hMJfTgTXP1b6H2C2fh3DgVLGuRlw_HzkwdFIRj_kwwlqIy8IrHKMOz05BrqUr-4hVHHMimbajTZQ4Ov01FuyJ7Hy05jYmrRrNlSfj1AWz9TbV0V2IdrUhTtkT");'></div>
+            <div class="w-full bg-center bg-no-repeat aspect-square bg-cover rounded-lg" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDhVpR1nycezXGqSv7fcu9K_npuM_34VYF05Ngy7SV0dwZ0f2qKxUpyKCvj8NwdVZuk2bC1iyiv-m3dNQVxbLJvI698rcLtl5FOda9z95w2oMkBohOAoGyu6qe5AupIWdCOob30Pct0FoZiT93xcf6hMJfTgTXP1b6H2C2fh3DgVLGuRlw_HzkwdFIRj_kwwlqIy8IrHKMOz05BrqUr-4hVHHMimbajTZQ4Ov01FuyJ7Hy05jYmrRrNlSfj1AWz9TbV0V2IdrUhTtkT");'></div>
             <div>
               <p class="text-base font-medium text-text-light dark:text-text-dark">Electronics</p>
               <p class="text-sm font-normal text-text-muted-light dark:text-text-muted-dark">Phones, laptops &amp; TVs</p>
             </div>
           </div>
 
-          <div class="group flex flex-col gap-3 p-3 rounded-lg cursor-pointer border-2 border-transparent hover:border-primary hover:bg-primary/10 dark:hover:bg-primary/20 transition-all transform hover:-translate-y-1" data-category="Property">
-            <div class="w-full bg-center bg-no-repeat aspect-square bg-cover rounded-lg" data-alt="A modern apartment building exterior" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCRU2nr9g_EfwWSKwqhsXM9c-bUV1jJ4377iMGlM2pkp-aebNGMY5OJXbkc69nm5Ocx9Skp39alne9grR994D5KrXKdougziXUZRxNO21mLudVA4S3CVoG1J7M9_WcgGfcBWNH6-OA2RJ3OtGcuFUSYveJZpC95CKUkzqriV6tYyQo93Lkgs2Bskfy4pRmkL_dxa07M1V_wlnlF_vBHFUGvJJtWkS1EUTWSBq9hKfl5CVqlgDhayZGrW-oMELUHZ0OQlJZPRlvNOIqB");'></div>
-            <div>
-              <p class="text-base font-medium text-text-light dark:text-text-dark">Property</p>
-              <p class="text-sm font-normal text-text-muted-light dark:text-text-muted-dark">Apartments &amp; houses</p>
-            </div>
-          </div>
-
-          <div class="group flex flex-col gap-3 p-3 rounded-lg cursor-pointer border-2 border-transparent hover:border-primary hover:bg-primary/10 dark:hover:bg-primary/20 transition-all transform hover:-translate-y-1" data-category="Fashion">
-            <div class="w-full bg-center bg-no-repeat aspect-square bg-cover rounded-lg" data-alt="Fashionable clothes on a rack" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBja-GVKP92Ne3Hoiieej7aiwo0MZdPhoF0sNy5lgiJoBus7pzZxV-4T3bT1u2CUyVWO_S15MjhcSLLgbCXA4UawnlZVG5vGpb0pC2iK6Qk_nLox12PNKVbkZPP8-ZaPWzh1n9D_mPi1Zmktgh30O0kOd1h8EwLSRBYlf2-3p_AdUjqIwbVtF7Zyt0Ok1WatF4Ud0UOe1HWnGJrx66gwbpoj_KT87q7SCnykCR0q2UJk3ScvKDLyW6lR8AwkPOzFR_tF9p-zWVyqcso");'></div>
-            <div>
-              <p class="text-base font-medium text-text-light dark:text-text-dark">Fashion</p>
-              <p class="text-sm font-normal text-text-muted-light dark:text-text-muted-dark">Clothing, shoes &amp; more</p>
-            </div>
-          </div>
-
-          <div class="group flex flex-col gap-3 p-3 rounded-lg cursor-pointer border-2 border-transparent hover:border-primary hover:bg-primary/10 dark:hover:bg-primary/20 transition-all transform hover:-translate-y-1" data-category="Hobbies">
-            <div class="w-full bg-center bg-no-repeat aspect-square bg-cover rounded-lg" data-alt="A collection of hobby items like a camera and a guitar" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDVjEjyXeDwaMqgc_qEB_pkF8IBeC79CREPS_NyrT367_OqAcyXEmWul1Z6UnhlbAmIyaokbrr89ywg0Gd3LHEVYzTPgvMTc6VK0xXHPj6V9lQqYgcw1pDMQMr_F4KkjioREAaA9J2z-CyHKYGbLyer2WOQ4d4-8wkTFsRHZMQZ3NJrirN3b85oItihBXA4_RzcYe2Sjqis_4QQ8mc9wRbgF932TNqVFXhugXpKP9-zpn-1SZIaRJL4S409P_IRZ5TY_wTVOBgBshs3");'></div>
-            <div>
-              <p class="text-base font-medium text-text-light dark:text-text-dark">Hobbies</p>
-              <p class="text-sm font-normal text-text-muted-light dark:text-text-muted-dark">Music, arts &amp; sports</p>
-            </div>
-          </div>
-
-          <div class="group flex flex-col gap-3 p-3 rounded-lg cursor-pointer border-2 border-transparent hover:border-primary hover:bg-primary/10 dark:hover:bg-primary/20 transition-all transform hover:-translate-y-1" data-category="Pets">
-            <div class="w-full bg-center bg-no-repeat aspect-square bg-cover rounded-lg" data-alt="A cute puppy playing in a field" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBTwOTXgQ1EWDYnCI0kX7hGaRTgzw_wnNENJW4mPSVFYxJ-MxcCemB13Jh_lD7HNxkVOXsirKoZFbo--g-RcMLNYi_M8fMpP2FCfOXk8dLtGAfvfd--f1OR83PdqxFb9Q4kZK8mron7P_zsY0-FivUWuafzuxXhGWw8-jjDQyYjnyCPOzhJx2iIMwqPwX1XS3t3cXDDPSEL5IqFctEvr46Gb-spaG01F4NyyIk5HB-825n6mteMgAESRZRTGnmxAJgVTSPEQXYVX3Dk");'></div>
-            <div>
-              <p class="text-base font-medium text-text-light dark:text-text-dark">Pets</p>
-              <p class="text-sm font-normal text-text-muted-light dark:text-text-muted-dark">Dogs, cats &amp; supplies</p>
-            </div>
-          </div>
-
-          <div class="group flex flex-col gap-3 p-3 rounded-lg cursor-pointer border-2 border-transparent hover:border-primary hover:bg-primary/10 dark:hover:bg-primary/20 transition-all transform hover:-translate-y-1" data-category="Services">
-            <div class="w-full bg-center bg-no-repeat aspect-square bg-cover rounded-lg" data-alt="A person performing a job service like plumbing" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCsOxTYTTSKZeC8xTmqiW6kERt31J5Ol2IkKV4XXux8g_cEQcfIhWhkoNxxHTgsDVuB8MrMQf55ANjKwjCDekyYgXXGAYuBzIx66aP8wDmQyFyGgPcM3xpfyGrtKsGD-PdF0RstYVX5YOkipF8AXEJaePmJ7tsSySN9NHIiGq_-nTlV7beVs8SONz1_QXCoiWT9qimRJx30_gYO9Ar2nKnGCvSjcGj6GDMPzzXrkCtgStbdQoWMgMyTRXCkBPbjTn4zobqf7CTgCAPA");'></div>
-            <div>
-              <p class="text-base font-medium text-text-light dark:text-text-dark">Services</p>
-              <p class="text-sm font-normal text-text-muted-light dark:text-text-muted-dark">Local professional help</p>
-            </div>
-          </div>
+          <!-- Add remaining cards here similar to above: Property, Fashion, Hobbies, Pets, Services -->
         </div>
 
-        <!-- ButtonGroup -->
-        <div class="flex justify-stretch border-t border-border-light dark:border-border-dark mt-4">
-          <div class="flex flex-1 gap-4 flex-wrap pt-6 justify-between items-center">
-            <button class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-full h-14 px-6 bg-transparent text-text-muted-light dark:text-text-muted-dark text-base font-bold leading-normal tracking-[0.015em] hover:text-text-light dark:hover:text-text-dark transition-colors">
-              <span class="truncate">Cancel</span>
-            </button>
-            <button id="postNextBtn" class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-full h-14 px-8 bg-primary text-text-light text-base font-bold leading-normal tracking-[0.015em] shadow-lg shadow-primary/30 hover:shadow-xl hover:shadow-primary/40 active:scale-95 transition-all duration-200">
-              <span class="truncate">Next Step</span>
-            </button>
-          </div>
+        <!-- Subcategory -->
+        <div class="space-y-1 mt-6">
+          <label for="zzzSubcategorySelect" class="block text-sm font-medium text-gray-700">
+            Subcategory
+          </label>
+          <select
+            id="zzzSubcategorySelect"
+            name="zzzSubcategorySelect"
+            class="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2 text-sm"
+          >
+            <option value="">Choose a subcategory</option>
+          </select>
         </div>
+
+        <!-- Dynamic fields container -->
+        <div id="zzzDynamicFields" class="space-y-4 mt-4"></div>
       </div>
     </div>
   </main>
 </div>
 
+<!-- Schema-driven subcategory + fields logic -->
+<script>
+(function () {
+  const STORAGE_KEY = 'zzz_classifieds_schema';
+
+  const CATEGORY_ID_MAP = {
+    'Vehicles': 'vehicles',
+    'Home & Garden': 'property',
+    'Electronics': 'electronics',
+    'Property': 'property',
+    'Fashion': 'fashion',
+    'Hobbies': 'hobbies',
+    'Pets': 'pets',
+    'Services': 'services'
+  };
+
+  function loadSchema() {
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if (!raw) return null;
+      return JSON.parse(raw);
+    } catch {
+      return null;
+    }
+  }
+
+  const schema = loadSchema();
+  if (!schema) {
+    console.warn('No schema found – configure categories in AdminConsoleV2 first.');
+    return;
+  }
+
+  let selectedCategoryId = null;
+  let selectedSubcategoryId = null;
+
+  const fieldsContainer = document.getElementById('zzzDynamicFields');
+  const subSelect = document.getElementById('zzzSubcategorySelect');
+  if (!fieldsContainer || !subSelect) return;
+
+  function populateSubcategories() {
+    subSelect.innerHTML = '<option value="">Choose a subcategory</option>';
+    fieldsContainer.innerHTML = '';
+
+    if (!selectedCategoryId) return;
+
+    const subs = (schema.subcategories || []).filter(
+      s => s.categoryId === selectedCategoryId
+    );
+
+    if (!subs.length) {
+      const opt = document.createElement('option');
+      opt.value = '';
+      opt.textContent = 'No subcategories configured';
+      subSelect.appendChild(opt);
+      return;
+    }
+
+    subs.forEach(sub => {
+      const opt = document.createElement('option');
+      opt.value = sub.id;
+      opt.textContent = sub.label;
+      subSelect.appendChild(opt);
+    });
+  }
+
+  function renderFields() {
+    fieldsContainer.innerHTML = '';
+    if (!selectedSubcategoryId) return;
+
+    const fields = (schema.fields || []).filter(
+      f => f.subcategoryId === selectedSubcategoryId
+    );
+
+    if (!fields.length) {
+      fieldsContainer.innerHTML =
+        '<p class="text-sm text-gray-500">No extra fields for this subcategory.</p>';
+      return;
+    }
+
+    fields.forEach(field => {
+      const wrapper = document.createElement('div');
+      wrapper.className = 'space-y-1';
+
+      const label = document.createElement('label');
+      label.className = 'block text-sm font-medium text-gray-700';
+      label.textContent = field.label + (field.required ? ' *' : '');
+      label.htmlFor = 'zzzField_' + field.id;
+
+      const baseClasses = 'mt-1 block w-full border border-gray-300 rounded-md px-3 py-2 text-sm';
+      let input;
+
+      switch ((field.type || 'text').toLowerCase()) {
+        case 'number':
+          input = document.createElement('input');
+          input.type = 'number';
+          input.className = baseClasses;
+          break;
+        case 'date':
+          input = document.createElement('input');
+          input.type = 'date';
+          input.className = baseClasses;
+          break;
+        case 'dropdown':
+          input = document.createElement('select');
+          input.className = baseClasses;
+          const opt = document.createElement('option');
+          opt.value = '';
+          opt.textContent = 'Select...';
+          input.appendChild(opt);
+          break;
+        case 'checkbox':
+          input = document.createElement('input');
+          input.type = 'checkbox';
+          input.className = 'h-4 w-4 text-blue-600 border-gray-300 rounded';
+          break;
+        default:
+          input = document.createElement('input');
+          input.type = 'text';
+          input.className = baseClasses;
+      }
+
+      input.id = 'zzzField_' + field.id;
+      input.name = 'zzzField_' + field.id;
+      if (field.required) input.required = true;
+
+      wrapper.appendChild(label);
+      wrapper.appendChild(input);
+      fieldsContainer.appendChild(wrapper);
+    });
+  }
+
+  subSelect.addEventListener('change', (e) => {
+    selectedSubcategoryId = e.target.value || null;
+    renderFields();
+  });
+
+  // Wire category cards to schema logic
+  const cards = document.querySelectorAll('[data-category]');
+  cards.forEach(card => {
+    const label = card.getAttribute('data-category') || card.querySelector('p')?.textContent.trim();
+    if (label) card.setAttribute('data-category-label', label);
+
+    card.addEventListener('click', () => {
+      const lbl = card.getAttribute('data-category-label');
+      const catId = CATEGORY_ID_MAP[lbl] || null;
+      selectedCategoryId = catId;
+      selectedSubcategoryId = null;
+      populateSubcategories();
+    });
+  });
+})();
+</script>
+
+<!-- Card selection UI behaviour (purely visual, no Next/redirect) -->
 <script>
 (function(){
-  // improved category selection using data-category attributes
   const categories = document.querySelectorAll('.grid .group, .group');
   let selected = null;
 
@@ -195,318 +315,18 @@
     cat.addEventListener('click', ()=>{
       categories.forEach(c=>c.classList.remove('border-primary','bg-primary/10','dark:bg-primary/20','-translate-y-1'));
       cat.classList.add('border-primary','bg-primary/10','dark:bg-primary/20','-translate-y-1');
-      // prefer data-category if present
       selected = cat.dataset.category || (cat.querySelector('p') && cat.querySelector('p').textContent.trim());
-      // accessibility: announce selection for screen readers
       cat.setAttribute('aria-pressed','true');
     });
 
-    // keyboard support
     cat.setAttribute('tabindex','0');
     cat.setAttribute('role','button');
     cat.addEventListener('keydown', (e) => {
       if(e.key === 'Enter' || e.key === ' ') { e.preventDefault(); cat.click(); }
     });
   });
-
-  // Next button
-  const nextBtn = document.getElementById('postNextBtn');
-
-  if(nextBtn){
-    nextBtn.addEventListener('click',()=>{
-      if(!selected){
-        alert('Please select a category before continuing.');
-        return;
-      }
-      sessionStorage.setItem('zzz_post_category', selected);
-      sessionStorage.setItem('zzz_post_source','post-listing');
-      window.location.href = 'All in one Listing Builder (Post Listing).html';
-    });
-  }
-
-  // Cancel - goes back
-  const cancelBtn = Array.from(document.querySelectorAll('button')).find(b => b.textContent.trim().toLowerCase() === 'cancel');
-  if(cancelBtn){
-    cancelBtn.addEventListener('click',()=>history.back());
-  }
 })();
-// ===== LOAD CATEGORIES FROM DATA MANAGER =====
-
-window.addEventListener('DOMContentLoaded', () => {
-  console.log('🚀 Loading categories for Post Listing...');
-  loadCategories();
-  checkUserLogin();
-});
-
-function checkUserLogin() {
-  const currentUser = ZZZDataManager.getCurrentUser();
-  
-  if (!currentUser) {
-    // User not logged in - for now, create a demo user
-    console.log('⚠️ No user logged in. Creating demo user...');
-    const demoUser = {
-      id: 'user_demo_' + Date.now(),
-      name: 'Demo User',
-      email: 'demo@zipzapzoi.com',
-      role: 'seller'
-    };
-    ZZZDataManager.setCurrentUser(demoUser);
-    console.log('✅ Demo user created:', demoUser);
-  } else {
-    console.log('✅ User logged in:', currentUser.name);
-  }
-}
-
-function loadCategories() {
-  const categories = ZZZDataManager.getAllCategories();
-  const categorySelect = document.getElementById('categorySelect') || 
-                         document.getElementById('category') ||
-                         document.querySelector('select[name="category"]');
-  
-  if (!categorySelect) {
-    console.error('❌ Category select element not found!');
-    return;
-  }
-  
-  // Clear and populate category dropdown
-  categorySelect.innerHTML = '<option value="">-- Select Category --</option>';
-  
-  categories.forEach(cat => {
-    const option = document.createElement('option');
-    option.value = cat.id;
-    option.textContent = cat.name;
-    categorySelect.appendChild(option);
-  });
-  
-  console.log(`✅ Loaded ${categories.length} categories`);
-  
-  // Add change event listener
-  categorySelect.addEventListener('change', onCategoryChange);
-}
-
-function onCategoryChange(event) {
-  const categoryId = event.target.value;
-  
-  if (!categoryId) {
-    clearSubcategories();
-    clearDynamicFields();
-    return;
-  }
-  
-  console.log('📁 Category selected:', categoryId);
-  loadSubcategories(categoryId);
-}
-
-function loadSubcategories(categoryId) {
-  const subcategories = ZZZDataManager.getSubcategoriesByCategory(categoryId);
-  const subcategorySelect = document.getElementById('subcategorySelect') || 
-                            document.getElementById('subcategory') ||
-                            document.querySelector('select[name="subcategory"]');
-  
-  if (!subcategorySelect) {
-    console.error('❌ Subcategory select element not found!');
-    return;
-  }
-  
-  // Clear and populate subcategory dropdown
-  subcategorySelect.innerHTML = '<option value="">-- Select Subcategory --</option>';
-  
-  if (subcategories.length === 0) {
-    subcategorySelect.innerHTML = '<option value="">No subcategories available</option>';
-    subcategorySelect.disabled = true;
-    return;
-  }
-  
-  subcategories.forEach(sub => {
-    const option = document.createElement('option');
-    option.value = sub.id;
-    option.textContent = sub.name;
-    subcategorySelect.appendChild(option);
-  });
-  
-  subcategorySelect.disabled = false;
-  console.log(`✅ Loaded ${subcategories.length} subcategories`);
-  
-  // Add change event listener
-  subcategorySelect.removeEventListener('change', onSubcategoryChange); // Remove old listener
-  subcategorySelect.addEventListener('change', onSubcategoryChange);
-  
-  // Clear dynamic fields when category changes
-  clearDynamicFields();
-}
-
-function onSubcategoryChange(event) {
-  const subcategoryId = event.target.value;
-  const categoryId = document.getElementById('categorySelect')?.value || 
-                     document.getElementById('category')?.value;
-  
-  if (!subcategoryId || !categoryId) {
-    clearDynamicFields();
-    return;
-  }
-  
-  console.log('📂 Subcategory selected:', subcategoryId);
-  loadDynamicFields(categoryId, subcategoryId);
-}
-
-function loadDynamicFields(categoryId, subcategoryId) {
-  const fields = ZZZDataManager.getFieldsBySubcategory(categoryId, subcategoryId);
-  const container = document.getElementById('dynamicFieldsContainer') || 
-                    document.getElementById('customFields') ||
-                    document.querySelector('[data-dynamic-fields]');
-  
-  if (!container) {
-    console.error('❌ Dynamic fields container not found!');
-    return;
-  }
-  
-  if (fields.length === 0) {
-    container.innerHTML = '<p style="color: #999;">No additional fields for this subcategory.</p>';
-    return;
-  }
-  
-  let html = '<h3 style="margin: 20px 0 10px 0; font-size: 18px;">Additional Details</h3>';
-  
-  fields.forEach(field => {
-    html += `
-      <div style="margin-bottom: 16px;">
-        <label style="display: block; margin-bottom: 6px; font-weight: 500; font-size: 14px;">
-          ${field.label}
-          ${field.required ? '<span style="color: red;">*</span>' : ''}
-        </label>
-    `;
-    
-    if (field.type === 'select') {
-      html += `<select id="field_${field.id}" name="field_${field.id}" 
-                style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px; font-size: 14px;"
-                ${field.required ? 'required' : ''}>`;
-      html += `<option value="">Select ${field.label}</option>`;
-      (field.options || []).forEach(opt => {
-        html += `<option value="${opt}">${opt}</option>`;
-      });
-      html += `</select>`;
-    } else if (field.type === 'textarea') {
-      html += `<textarea id="field_${field.id}" name="field_${field.id}" 
-                placeholder="${field.placeholder || ''}"
-                style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px; font-size: 14px; min-height: 80px;"
-                ${field.required ? 'required' : ''}></textarea>`;
-    } else {
-      html += `<input type="${field.type}" id="field_${field.id}" name="field_${field.id}" 
-                placeholder="${field.placeholder || ''}"
-                style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px; font-size: 14px;"
-                ${field.required ? 'required' : ''}>`;
-    }
-    
-    html += `</div>`;
-  });
-  
-  container.innerHTML = html;
-  console.log(`✅ Loaded ${fields.length} dynamic fields`);
-}
-
-function clearSubcategories() {
-  const subcategorySelect = document.getElementById('subcategorySelect') || 
-                            document.getElementById('subcategory');
-  if (subcategorySelect) {
-    subcategorySelect.innerHTML = '<option value="">-- Select Category First --</option>';
-    subcategorySelect.disabled = true;
-  }
-}
-
-function clearDynamicFields() {
-  const container = document.getElementById('dynamicFieldsContainer') || 
-                    document.getElementById('customFields');
-  if (container) {
-    container.innerHTML = '';
-  }
-}
-
-// ===== SUBMIT LISTING =====
-
-function submitListing(event) {
-  event.preventDefault();
-  
-  console.log('📤 Submitting listing...');
-  
-  const currentUser = ZZZDataManager.getCurrentUser();
-  if (!currentUser) {
-    alert('⚠️ Please login to post a listing');
-    return;
-  }
-  
-  // Get form values
-  const title = document.getElementById('listingTitle')?.value || 
-                document.getElementById('title')?.value || 
-                document.querySelector('input[name="title"]')?.value;
-                
-  const description = document.getElementById('listingDescription')?.value || 
-                      document.getElementById('description')?.value || 
-                      document.querySelector('textarea[name="description"]')?.value;
-                      
-  const price = document.getElementById('listingPrice')?.value || 
-                document.getElementById('price')?.value || 
-                document.querySelector('input[name="price"]')?.value;
-                
-  const categoryId = document.getElementById('categorySelect')?.value || 
-                     document.getElementById('category')?.value;
-                     
-  const subcategoryId = document.getElementById('subcategorySelect')?.value || 
-                        document.getElementById('subcategory')?.value;
-  
-  // Validation
-  if (!title || !description || !price || !categoryId || !subcategoryId) {
-    alert('⚠️ Please fill in all required fields');
-    return;
-  }
-  
-  // Create listing object
-  const listingData = {
-    title: title.trim(),
-    description: description.trim(),
-    price: parseFloat(price),
-    categoryId: categoryId,
-    subcategoryId: subcategoryId,
-    userId: currentUser.id,
-    status: 'pending', // Requires admin approval
-    customFields: {}
-  };
-  
-  // Collect custom field values
-  const fields = ZZZDataManager.getFieldsBySubcategory(categoryId, subcategoryId);
-  fields.forEach(field => {
-    const fieldElement = document.getElementById(`field_${field.id}`);
-    if (fieldElement && fieldElement.value) {
-      listingData.customFields[field.id] = fieldElement.value;
-    }
-  });
-  
-  // Save listing
-  const newListing = ZZZDataManager.addListing(listingData);
-  
-  if (newListing) {
-    console.log('✅ Listing created:', newListing);
-    alert('🎉 Listing submitted successfully!\n\nYour listing is pending admin approval.');
-    
-    // Redirect to success page or clear form
-    const successPage = document.querySelector('a[href*="Success"]');
-    if (successPage) {
-      window.location.href = 'Post Listing Success.html';
-    } else {
-      // Clear form
-      document.querySelector('form')?.reset();
-      clearDynamicFields();
-    }
-  } else {
-    alert('❌ Error submitting listing. Please try again.');
-  }
-}
 </script>
-<script>
-  function finishPostListing() {
-    // optional: in future, save new listing to localStorage here
-    // then go back to classifieds with a flag in URL
-    window.location.href = 'classifieds.html?posted=1';
-  }
-</script>
+
 </body>
 </html>

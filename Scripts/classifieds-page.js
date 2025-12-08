@@ -19,15 +19,50 @@ class ClassifiedsPage {
 
     this.init();
   }
+loadSchemaCategories() {
+  try {
+    const raw = localStorage.getItem('zzz_classifieds_schema');
+    if (!raw) return;
+    const schema = JSON.parse(raw);
+    const categories = schema.categories || [];
+    const select = document.getElementById('filterCategory');
+    if (!select) return;
 
-  init() {
-    console.log('ClassifiedsPage initialized');
-    this.setupEventListeners();
-    this.showPostSuccessIfNeeded();
-    this.loadListings();
+    // Clear existing (keep the first "All" / placeholder option if you have one)
+    const first = select.firstElementChild;
+    select.innerHTML = '';
+    if (first) select.appendChild(first);
+
+    categories.forEach(cat => {
+      const opt = document.createElement('option');
+      opt.value = cat.id;          // important: use id, not label
+      opt.textContent = cat.label; // what user sees
+      select.appendChild(opt);
+    });
+  } catch (e) {
+    console.error('Failed to load schema categories', e);
   }
+}
+  init() {
+  console.log('ClassifiedsPage initialized');
+  this.setupEventListeners();
+  this.loadSchemaCategories();   // NEW: build category dropdown from AdminConsoleV2
+  this.loadListings();
+}
 
   setupEventListeners() {
+   const categoryCards = document.querySelectorAll('[data-category]');
+categoryCards.forEach(card => {
+  card.addEventListener('click', () => {
+    const cat = card.getAttribute('data-category') || '';
+    this.filters.category = cat;
+    const categorySelect = document.getElementById('filterCategory');
+    if (categorySelect) categorySelect.value = cat;
+    this.applyFilters();
+    const grid = document.getElementById('listingsGrid');
+    if (grid) grid.scrollIntoView({ behavior: 'smooth' });
+  });
+});
     const searchInput = document.getElementById('searchQuery');
     const cityInput = document.getElementById('filterCity');
     const btnSearch = document.getElementById('btnSearch');
@@ -78,68 +113,67 @@ class ClassifiedsPage {
   }
 
   loadListings() {
-    this.listings = [
-      {
-        id: 1,
-        title: 'Classic Cruiser Bicycle',
-        description: 'Vintage-style bicycle in great condition, perfect for city rides.',
-        price: 150,
-        category: 'hobbies',
-        city: 'Brooklyn, NY',
-        image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuC9v9yKgLOhQIsSwjwmeFy5QtXAFnWc30xu6IY0LnJ-X2kdjEYiFxIy_TlwzmFiZLHxHYC8K3-cikVjDf53mPhx2wcEwfWl0usWA1rO4WwRl8Tt7J72SI7Bft6Hh8BAzSb9eTnqads583R9by_wZbb001_XkY3Dswbfe6wr9SUW4TYaSTcC8SJHs4iJW6r3Ks9vmggW7ZIz7Lk0SITn1FcS9s-JiXYjX7RqCev9NW22i_0z29CF6nnMeftwCszuh-Rr6lBZ3gygdXhV',
-        seller: { name: 'Alex Rider', rating: 4.7 },
-        views: 120,
-        featured: true,
-        verified: false,
-        postedAt: new Date('2024-06-01T10:00:00')
-      },
-      {
-        id: 2,
-        title: 'Smartphone Pro X',
-        description: 'Flagship smartphone with high-end camera and display.',
-        price: 799,
-        category: 'electronics',
-        city: 'San Francisco, CA',
-        image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuAE8y5ncRKtYD1yZr9DWwowTqNMAPuO9VG5Fi2IHTQXzSs4_8YR4fa3o6WEzO2QEApIAaESAp6Tt6kE5y3hssMaoVNpCssi1KWQqzyQCFGC5y0fNy9DbelP1opeHRyTb_F55jA1rxsRArHJ-_KWl7BlP-B0u-LvqAF4OBSYHIT6SDbg3XUD20SpqNyYIQkPkarSEq1hP1iBd-N9GbxdVaWD-ej4DJ624EQMHnjiACd8z2BAImB-mwVd76fjXAOkMU4lwdXRvMwUtHlu',
-        seller: { name: 'Tech World', rating: 4.9 },
-        views: 210,
-        featured: true,
-        verified: true,
-        postedAt: new Date('2024-06-10T12:00:00')
-      },
-      {
-        id: 3,
-        title: 'Limited Edition Sneakers',
-        description: 'Rare drop, lightly used, original box included.',
-        price: 220,
-        category: 'fashion',
-        city: 'Los Angeles, CA',
-        image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuC_lhRrp4rXScKnSb29hVZWW23goH1OguRKVsw5ClKZXlNN99FpCZbydp9Bz7aAQWFqz7bIbHBNTjz-omhIh7IJ-bRKMQ4SBBjQwnwH-Z5g_GemjyH7JeaRHTnJdSXrvphkYnaYGnEE5NJyLkYRe7traJENt54SAUi_FbVjVloQJo-fwRY7IX6DPIL3b7D7qThHyfkYKGt36XvjXxUy5mdoT62mZLOpFIFjt7NMGvplvL5vjAqed3uiLk2PJW7RvuxpzOmk1tdXB0k2',
-        seller: { name: 'Sneaker Hub', rating: 4.8 },
-        views: 180,
-        featured: false,
-        verified: true,
-        postedAt: new Date('2024-06-05T09:00:00')
-      },
-      {
-        id: 4,
-        title: 'Mid-Century Armchair',
-        description: 'Comfortable leather armchair, perfect for living room.',
-        price: 450,
-        category: 'home',
-        city: 'Chicago, IL',
-        image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuCbLtS3fb_ApdSUEMaSeJdUgnQqokXCOoU-D5CXuelweF9zsK3ezT6my4lj_kvO4SZKqOh9z32yhNWuzx-fNJQd-qPLOSPuqP37K5uWC0VkTv0L-EHB19jrTnq65wh8UeGIfD7LfDPomL4ds34nWmzUvTpxh0fq5Rh6txhoUhPluS683EAHWNTlu1q-cjUSyRokNlEj-JloKaYHT8IIcsnJl7d3Mk_oMj68JzoTRx0jkZu0NYeWydZKtJW-IWSjz2ACAuQXZpoQ-s1N',
-        seller: { name: 'Home Studio', rating: 4.6 },
-        views: 95,
-        featured: false,
-        verified: false,
-        postedAt: new Date('2024-05-28T15:00:00')
-      }
-    ];
+  this.listings = [
+    {
+      id: 1,
+      title: 'Classic Cruiser Bicycle',
+      description: 'Vintage-style bicycle in great condition, perfect for city rides.',
+      price: 150,
+      category: 'vehicles',           // CHANGED from 'hobbies'
+      city: 'Brooklyn, NY',
+      image: 'https://...',
+      seller: { name: 'Alex Rider', rating: 4.7 },
+      views: 120,
+      featured: true,
+      verified: false,
+      postedAt: new Date('2024-06-01T10:00:00')
+    },
+    {
+      id: 2,
+      title: 'Smartphone Pro X',
+      description: 'Flagship smartphone with high-end camera and display.',
+      price: 799,
+      category: 'electronics',        // already matches default schema
+      city: 'San Francisco, CA',
+      image: 'https://...',
+      seller: { name: 'Tech World', rating: 4.9 },
+      views: 210,
+      featured: true,
+      verified: true,
+      postedAt: new Date('2024-06-10T12:00:00')
+    },
+    {
+      id: 3,
+      title: 'Limited Edition Sneakers',
+      description: 'Rare drop, lightly used, original box included.',
+      price: 220,
+      category: 'fashion',            // already matches default schema
+      city: 'Los Angeles, CA',
+      image: 'https://...',
+      seller: { name: 'Sneaker Hub', rating: 4.8 },
+      views: 180,
+      featured: false,
+      verified: true,
+      postedAt: new Date('2024-06-05T09:00:00')
+    },
+    {
+      id: 4,
+      title: 'Mid-Century Armchair',
+      description: 'Comfortable leather armchair, perfect for living room.',
+      price: 450,
+      category: 'property',           // CHANGED from 'home' (or create a 'home' category in admin)
+      city: 'Chicago, IL',
+      image: 'https://...',
+      seller: { name: 'Home Studio', rating: 4.6 },
+      views: 95,
+      featured: false,
+      verified: false,
+      postedAt: new Date('2024-05-28T15:00:00')
+    }
+  ];
 
-    this.applyFilters();
-  }
-
+  this.applyFilters();
+}
   applyFilters() {
     const searchInput = document.getElementById('searchQuery');
     const cityInput = document.getElementById('filterCity');

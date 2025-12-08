@@ -33,7 +33,7 @@
 
       <p class="mt-4 text-sm text-center">
         Don't have an account?
-        <a href="User-Registration.html" class="text-blue-600">Sign Up</a>
+        <a href="User Registration.html" class="text-blue-600">Sign Up</a>
       </p>
     </div>
   </main>
@@ -92,12 +92,23 @@
           console.warn('Could not save user', e);
         }
 
-        // correct filenames
-        if (user.role.toLowerCase().includes('admin')) {
-          window.location.replace('Admin-Console.html');
-        } else {
-          window.location.replace('Seller-Dashboard.html');
-        }
+        // After saving user to storage
+
+// Look for a redirect query parameter
+const params = new URLSearchParams(window.location.search);
+const redirect = params.get('redirect');
+
+// Decide where to go next
+let target;
+if (redirect) {
+  target = redirect; // e.g. "dashboard.html"
+} else if (user.role.toLowerCase().includes('admin')) {
+  target = 'Admin Console.html';
+} else {
+  target = 'Seller Dashboard.html';
+}
+window.location.replace(target);
+
       });
     });
   </script>

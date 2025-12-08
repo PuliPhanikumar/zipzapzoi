@@ -84,13 +84,13 @@
         <!-- When NOT logged in -->
         <div data-auth-hide class="flex items-center gap-6">
           <a
-            href="Login-Page.html"
-            class="text-sm font-semibold hover:text-secondary dark:hover:text-primary transition-colors"
-          >
-            Log In
-          </a>
+  href="Login Page.html?redirect=classifieds.html"
+  class="text-sm font-semibold hover:text-secondary dark:hover:text-primary transition-colors"
+>
+  Log In
+</a>
           <a
-            href="User-Registration.html"
+            href="User Registration.html"
             class="text-sm font-semibold bg-secondary text-white py-2.5 px-5 rounded-full shadow-bouncy hover:shadow-bouncy-hover hover:-translate-y-1 transition-all duration-300"
           >
             Sign Up
@@ -228,51 +228,73 @@
           </div>
         </section>
 
-        <!-- CATEGORIES (unchanged) -->
-        <section class="pb-12 bg-background-light dark:bg-background-dark">
-          <div class="container mx-auto px-6">
-            <h2 class="text-3xl font-bold text-center mb-10">Explore Categories</h2>
-            <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-6">
-              <a class="group flex flex-col items-center gap-3 text-center cursor-pointer" href="#">
-                <div class="category-card flex items-center justify-center w-32 h-32 rounded-xl shadow-bouncy group-hover:shadow-bouncy-hover group-hover:-translate-y-2 transition-all duration-300 ease-in-out border border-border-light/50 dark:border-border-dark/50">
-                  <span class="material-symbols-outlined text-5xl text-[#4D96A9]">devices</span>
-                </div>
-                <p class="text-base font-semibold">Electronics</p>
-              </a>
-              <a class="group flex flex-col items-center gap-3 text-center cursor-pointer" href="#">
-                <div class="category-card flex items-center justify-center w-32 h-32 rounded-xl shadow-bouncy group-hover:shadow-bouncy-hover group-hover:-translate-y-2 transition-all duration-300 ease-in-out border border-border-light/50 dark:border-border-dark/50">
-                  <span class="material-symbols-outlined text-5xl text-[#6B81FF]">directions_car</span>
-                </div>
-                <p class="text-base font-semibold">Vehicles</p>
-              </a>
-              <a class="group flex flex-col items-center gap-3 text-center cursor-pointer" href="#">
-                <div class="category-card flex items-center justify-center w-32 h-32 rounded-xl shadow-bouncy group-hover:shadow-bouncy-hover group-hover:-translate-y-2 transition-all duration-300 ease-in-out border border-border-light/50 dark:border-border-dark/50">
-                  <span class="material-symbols-outlined text-5xl text-[#4CAF50]">yard</span>
-                </div>
-                <p class="text-base font-semibold">Home &amp; Garden</p>
-              </a>
-              <a class="group flex flex-col items-center gap-3 text-center cursor-pointer" href="#">
-                <div class="category-card flex items-center justify-center w-32 h-32 rounded-xl shadow-bouncy group-hover:shadow-bouncy-hover group-hover:-translate-y-2 transition-all duration-300 ease-in-out border border-border-light/50 dark:border-border-dark/50">
-                  <span class="material-symbols-outlined text-5xl text-[#FFC107]">checkroom</span>
-                </div>
-                <p class="text-base font-semibold">Clothing</p>
-              </a>
-              <a class="group flex flex-col items-center gap-3 text-center cursor-pointer" href="#">
-                <div class="category-card flex items-center justify-center w-32 h-32 rounded-xl shadow-bouncy group-hover:shadow-bouncy-hover group-hover:-translate-y-2 transition-all duration-300 ease-in-out border border-border-light/50 dark:border-border-dark/50">
-                  <span class="material-symbols-outlined text-5xl text-[#9C27B0]">real_estate_agent</span>
-                </div>
-                <p class="text-base font-semibold">Real Estate</p>
-              </a>
-              <a class="group flex flex-col items-center gap-3 text-center cursor-pointer" href="#">
-                <div class="category-card flex items-center justify-center w-32 h-32 rounded-xl shadow-bouncy group-hover:shadow-bouncy-hover group-hover:-translate-y-2 transition-all duration-300 ease-in-out border border-border-light/50 dark:border-border-dark/50">
-                  <span class="material-symbols-outlined text-5xl text-[#E91E63]">work</span>
-                </div>
-                <p class="text-base font-semibold">Jobs</p>
-              </a>
-            </div>
-          </div>
-        </section>
+       <!-- CATEGORIES -->
+<section class="pb-12 bg-background-light dark:bg-background-dark">
+  <div class="container mx-auto px-6">
+    <h2 class="text-3xl font-bold text-center mb-10">Explore Categories</h2>
+    <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-6">
+      <a
+        class="group flex flex-col items-center gap-3 text-center cursor-pointer"
+        data-category="electronics"
+      >
+        <div class="category-card flex items-center justify-center w-32 h-32 rounded-xl shadow-bouncy group-hover:shadow-bouncy-hover group-hover:-translate-y-2 transition-all duration-300 ease-in-out border border-border-light/50 dark:border-border-dark/50">
+          <span class="material-symbols-outlined text-5xl text-[#4D96A9]">devices</span>
+        </div>
+        <p class="text-base font-semibold">Electronics</p>
+      </a>
 
+      <a
+        class="group flex flex-col items-center gap-3 text-center cursor-pointer"
+        data-category="vehicles"
+      >
+        <div class="category-card flex items-center justify-center w-32 h-32 rounded-xl shadow-bouncy group-hover:shadow-bouncy-hover group-hover:-translate-y-2 transition-all duration-300 ease-in-out border border-border-light/50 dark:border-border-dark/50">
+          <span class="material-symbols-outlined text-5xl text-[#6B81FF]">directions_car</span>
+        </div>
+        <p class="text-base font-semibold">Vehicles</p>
+      </a>
+
+      <a
+        class="group flex flex-col items-center gap-3 text-center cursor-pointer"
+        data-category="home"
+      >
+        <div class="category-card flex items-center justify-center w-32 h-32 rounded-xl shadow-bouncy group-hover:shadow-bouncy-hover group-hover:-translate-y-2 transition-all duration-300 ease-in-out border border-border-light/50 dark:border-border-dark/50">
+          <span class="material-symbols-outlined text-5xl text-[#4CAF50]">yard</span>
+        </div>
+        <p class="text-base font-semibold">Home &amp; Garden</p>
+      </a>
+
+      <a
+        class="group flex flex-col items-center gap-3 text-center cursor-pointer"
+        data-category="fashion"
+      >
+        <div class="category-card flex items-center justify-center w-32 h-32 rounded-xl shadow-bouncy group-hover:shadow-bouncy-hover group-hover:-translate-y-2 transition-all duration-300 ease-in-out border border-border-light/50 dark:border-border-dark/50">
+          <span class="material-symbols-outlined text-5xl text-[#FFC107]">checkroom</span>
+        </div>
+        <p class="text-base font-semibold">Clothing</p>
+      </a>
+
+      <a
+        class="group flex flex-col items-center gap-3 text-center cursor-pointer"
+        data-category="property"
+      >
+        <div class="category-card flex items-center justify-center w-32 h-32 rounded-xl shadow-bouncy group-hover:shadow-bouncy-hover group-hover:-translate-y-2 transition-all duration-300 ease-in-out border border-border-light/50 dark:border-border-dark/50">
+          <span class="material-symbols-outlined text-5xl text-[#9C27B0]">real_estate_agent</span>
+        </div>
+        <p class="text-base font-semibold">Real Estate</p>
+      </a>
+
+      <a
+        class="group flex flex-col items-center gap-3 text-center cursor-pointer"
+        data-category="jobs"
+      >
+        <div class="category-card flex items-center justify-center w-32 h-32 rounded-xl shadow-bouncy group-hover:shadow-bouncy-hover group-hover:-translate-y-2 transition-all duration-300 ease-in-out border border-border-light/50 dark:border-border-dark/50">
+          <span class="material-symbols-outlined text-5xl text-[#E91E63]">work</span>
+        </div>
+        <p class="text-base font-semibold">Jobs</p>
+      </a>
+    </div>
+  </div>
+</section>
         <!-- SUMMER SALE (unchanged) -->
         <section class="py-12 md:py-16">
           <div class="container mx-auto px-6">

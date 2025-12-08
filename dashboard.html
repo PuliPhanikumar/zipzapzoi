@@ -166,10 +166,16 @@ body { overflow-x: hidden; height: 100vh; width: 100vw; min-height: max(884px, 1
     document.getElementById('welcomeTitle').textContent = `Welcome back, ${userData.email.split('@')[0]}!`;
 
   } else {
-    navArea.innerHTML = `
-      <a href="Login Page.html" class="px-4 py-2 text-sm font-semibold text-dark-charcoal dark:text-white hover:text-primary transition-colors">Log In</a>
-      <a href="User Registration.html" class="px-5 py-2 bg-primary text-white rounded-full font-bold shadow-bouncy hover:-translate-y-0.5 hover:shadow-bouncy-lg transition-all">Sign Up</a>
-    `;
+  navArea.innerHTML = `
+  <a href="Login Page.html?redirect=dashboard.html"
+     class="px-4 py-2 text-sm font-semibold text-dark-charcoal dark:text-white hover:text-primary transition-colors">
+    Log In
+  </a>
+  <a href="User Registration.html"
+     class="px-5 py-2 bg-primary text-white rounded-full font-bold shadow-bouncy hover:-translate-y-0.5 hover:shadow-bouncy-lg transition-all">
+    Sign Up
+  </a>
+`;
     // If user is not logged in, still show dashboard but unpersonalized
     document.getElementById('welcomeTitle').textContent = 'Welcome to ZipZapZoi!';
   }
