@@ -5,7 +5,6 @@
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <title>Create Your ZipZapZoi Account</title>
 
-<!-- Fonts + Tailwind -->
 <link href="https://fonts.googleapis.com" rel="preconnect"/>
 <link crossorigin href="https://fonts.gstatic.com" rel="preconnect"/>
 <link href="https://fonts.googleapis.com/css2?family=Spline+Sans:wght@400;500;700&display=swap" rel="stylesheet"/>
@@ -18,10 +17,8 @@ tailwind.config = {
   theme: {
     extend: {
       colors: {
-        "primary": "#FF6B6B",
-        "secondary": "#4ECDC4",
-        "accent-yellow": "#FFD166",
-        "accent-purple": "#A06CD5",
+        "primary": "#019863", // Updated to match Classifieds Theme
+        "secondary": "#4D96A9",
         "background-light": "#F7F5FF",
         "background-dark": "#1a1a1a",
       },
@@ -38,11 +35,12 @@ tailwind.config = {
 
 <style>
 .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; font-size: 20px; }
+/* Custom Checkbox */
 .fake-captcha { display:flex; align-items:center; gap:.75rem; padding:.6rem .75rem; border-radius:.7rem; border:1px solid rgba(0,0,0,0.06); background:linear-gradient(180deg,#fff,#fafafa); }
 .fake-captcha .box { width:26px; height:26px; border-radius:6px; border:2px solid #ddd; display:flex; align-items:center; justify-content:center; background:#fff; transition:all .18s ease; }
-.fake-captcha input:checked + .box { border-color:#FF6B6B; transform:scale(1.05); box-shadow:0 4px 12px rgba(255,107,107,.15); }
+.fake-captcha input:checked + .box { border-color:#019863; background:#019863; transform:scale(1.05); }
+.fake-captcha input:checked + .box::after { content:'✔'; color:white; font-size:16px; font-weight:bold; }
 </style>
-<script src="js/data-manager.js"></script>
 </head>
 
 <body class="bg-background-light dark:bg-background-dark font-display text-[#4A4A4A] dark:text-gray-300">
@@ -62,40 +60,42 @@ tailwind.config = {
 <form id="registerForm" class="flex flex-col gap-4">
 
   <label class="flex flex-col gap-2">
-    <p>Email Address</p>
-    <input id="regEmail" type="email" placeholder="you@example.com" class="form-input h-14 rounded-lg border-2 border-gray-200 bg-soft-gray p-4 text-base dark:border-gray-700 dark:bg-gray-800 dark:text-white"/>
+    <p class="font-bold text-sm">Full Name</p>
+    <input id="regName" type="text" placeholder="John Doe" class="form-input h-12 rounded-lg border border-gray-300 bg-white p-4 text-base dark:border-gray-600 dark:bg-gray-800 dark:text-white" required/>
   </label>
 
   <label class="flex flex-col gap-2">
-    <p>Phone Number</p>
-    <input id="regPhone" type="tel" placeholder="+91 99999 99999" class="form-input h-14 rounded-lg border-2 border-gray-200 bg-soft-gray p-4 text-base dark:border-gray-700 dark:bg-gray-800 dark:text-white"/>
+    <p class="font-bold text-sm">Email Address</p>
+    <input id="regEmail" type="email" placeholder="you@example.com" class="form-input h-12 rounded-lg border border-gray-300 bg-white p-4 text-base dark:border-gray-600 dark:bg-gray-800 dark:text-white" required/>
   </label>
 
   <label class="flex flex-col gap-2">
-    <p>Password</p>
-    <input id="regPassword" type="password" placeholder="Enter your password" class="form-input h-14 rounded-lg border-2 border-gray-200 bg-soft-gray p-4 text-base dark:border-gray-700 dark:bg-gray-800 dark:text-white"/>
+    <p class="font-bold text-sm">Password</p>
+    <input id="regPassword" type="password" placeholder="Create a password" class="form-input h-12 rounded-lg border border-gray-300 bg-white p-4 text-base dark:border-gray-600 dark:bg-gray-800 dark:text-white" required/>
   </label>
 
   <label class="flex flex-col gap-2">
-    <p>Confirm Password</p>
-    <input id="regConfirm" type="password" placeholder="Confirm your password" class="form-input h-14 rounded-lg border-2 border-gray-200 bg-soft-gray p-4 text-base dark:border-gray-700 dark:bg-gray-800 dark:text-white"/>
+    <p class="font-bold text-sm">Confirm Password</p>
+    <input id="regConfirm" type="password" placeholder="Confirm password" class="form-input h-12 rounded-lg border border-gray-300 bg-white p-4 text-base dark:border-gray-600 dark:bg-gray-800 dark:text-white" required/>
   </label>
 
-  <label class="fake-captcha mt-2 cursor-pointer">
+  <label class="fake-captcha mt-2 cursor-pointer select-none">
     <input id="fakeCaptcha" type="checkbox" class="sr-only"/>
     <div class="box"></div>
     <div>
       <div class="text-sm font-medium">I'm not a robot</div>
-      <p class="text-xs text-gray-500">Click to verify (prototype)</p>
+      <p class="text-xs text-gray-500">Anti-bot verification</p>
     </div>
   </label>
 
-  <label class="flex items-center gap-2 mt-2">
-    <input id="terms" type="checkbox" class="size-5 accent-primary rounded-md border border-gray-400"/>
-    <p class="text-sm">I agree to the <a href="#" class="text-primary underline">Terms & Conditions</a></p>
+  <label class="flex items-center gap-2 mt-2 select-none">
+    <input id="terms" type="checkbox" class="h-5 w-5 rounded border-gray-300 text-primary focus:ring-primary"/>
+    <p class="text-sm">I agree to the <a href="#" class="text-primary font-bold hover:underline">Terms & Conditions</a></p>
   </label>
 
-  <button id="registerBtn" type="button" class="mt-4 flex h-14 w-full items-center justify-center rounded-full bg-primary text-white text-lg font-bold shadow-bouncy hover:-translate-y-1 hover:shadow-bouncy-hover transition-all">Create My Account</button>
+  <button id="registerBtn" type="button" class="mt-4 flex h-14 w-full items-center justify-center rounded-full bg-primary text-white text-lg font-bold shadow-lg hover:-translate-y-1 hover:shadow-xl transition-all">
+    Create My Account
+  </button>
 </form>
 
 <p class="text-center text-sm mt-2 text-gray-600 dark:text-gray-400">
@@ -107,65 +107,78 @@ tailwind.config = {
 
 <script>
 (function(){
-  const email = document.getElementById('regEmail');
-  const phone = document.getElementById('regPhone');
-  const pass = document.getElementById('regPassword');
-  const confirm = document.getElementById('regConfirm');
+  const nameInput = document.getElementById('regName');
+  const emailInput = document.getElementById('regEmail');
+  const passInput = document.getElementById('regPassword');
+  const confirmInput = document.getElementById('regConfirm');
   const terms = document.getElementById('terms');
   const captcha = document.getElementById('fakeCaptcha');
   const btn = document.getElementById('registerBtn');
 
   btn.addEventListener('click', ()=>{
-    const e = (email.value||'').trim().toLowerCase();
-    const p = (phone.value||'').trim();
-    const pw = (pass.value||'').trim();
-    const cpw = (confirm.value||'').trim();
+    const name = nameInput.value.trim();
+    const email = emailInput.value.trim().toLowerCase();
+    const password = passInput.value.trim();
+    const confirm = confirmInput.value.trim();
 
-    if(!e || !p || !pw || !cpw){
-      alert('Please fill in all fields.');
+    // Validation
+    if(!name || !email || !password || !confirm){
+      alert('⚠️ Please fill in all fields.');
       return;
     }
-    if(pw !== cpw){
-      alert('Passwords do not match.');
+    if(password !== confirm){
+      alert('❌ Passwords do not match.');
       return;
     }
     if(!captcha.checked){
-      alert('Please verify the "I\'m not a robot" checkbox.');
+      alert('🤖 Please verify you are not a robot.');
       return;
     }
     if(!terms.checked){
-      alert('Please agree to Terms and Conditions.');
+      alert('📜 You must agree to the Terms & Conditions.');
       return;
     }
 
-    // Determine role
-    const role = e.includes('admin') ? 'admin' : 'user';
-
-    // Store user in local storage
-    const users = JSON.parse(localStorage.getItem('zzz_users') || '[]');
-    if(users.some(u=>u.email===e)){
-      alert('An account with this email already exists.');
+    // 1. Check existing users in Mock DB
+    const existingUsers = JSON.parse(localStorage.getItem('zzz_users') || '[]');
+    
+    // Check if email taken
+    if(existingUsers.some(u => u.email === email)){
+      alert('❌ An account with this email already exists. Please Log In.');
+      window.location.href = 'Login Page.html';
       return;
     }
-    users.push({ email:e, phone:p, password:pw, role });
-    localStorage.setItem('zzz_users', JSON.stringify(users));
 
-    // Save session
-    const userData = { email:e, phone:p, role };
-    sessionStorage.setItem('zzz_user', JSON.stringify(userData));
-    localStorage.setItem('zzz_user', JSON.stringify(userData));
+    // 2. Determine Role (Simple Logic: 'admin' in email = admin role)
+    const role = email.includes('admin') ? 'admin' : 'user';
 
-    alert('Account created successfully!');
+    // 3. Create User Object
+    const newUser = {
+      id: 'user_' + Date.now(),
+      name: name,
+      email: email,
+      password: password, // In real app, never store plain text!
+      role: role,
+      avatar: 'https://via.placeholder.com/150'
+    };
 
-    // Redirect based on role
+    // 4. Save to Mock DB (LocalStorage)
+    existingUsers.push(newUser);
+    localStorage.setItem('zzz_users', JSON.stringify(existingUsers));
+
+    // 5. Auto-Login (Set Session)
+    localStorage.setItem('zzz_user', JSON.stringify(newUser));
+
+    alert('✅ Account created successfully! Logging you in...');
+
+    // 6. Redirect Based on Role
     if(role === 'admin'){
-      window.location.href = 'Admin Console.html';
+      window.location.href = 'AdminConsoleV2.html';
     } else {
-      window.location.href = 'Seller Dashboard.html';
+      window.location.href = 'classifieds.html';
     }
   });
 })();
 </script>
-<script src="scripts/boot.js"></script>
 </body>
 </html>

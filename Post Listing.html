@@ -3,17 +3,8 @@
 <head>
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width,initial-scale=1"/>
-  <title>ZipZapZoi - Create a New Listing</title>
-  <style>
-  /* focus styles for keyboard users */
-  :focus {
-    outline: 3px solid rgba(77,150,255,0.25);
-    outline-offset: 2px;
-  }
-  </style>
+  <title>ZipZapZoi - Post Your Ad</title>
   <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-  <link href="https://fonts.googleapis.com" rel="preconnect"/>
-  <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
   <link href="https://fonts.googleapis.com/css2?family=Spline+Sans:wght@300..700&display=swap" rel="stylesheet"/>
   <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet"/>
   <script>
@@ -22,311 +13,568 @@
       theme: {
         extend: {
           colors: {
-            "primary": "#FF6B6B",
-            "secondary": "#4D96FF",
+            "primary": "#019863",
+            "secondary": "#4D96A9",
             "background-light": "#F8F9FA",
             "background-dark": "#1A1B1C",
             "card-light": "#FFFFFF",
             "card-dark": "#2C2D2E",
-            "text-light": "#343A40",
+            "text-light": "#333333",
             "text-dark": "#E9ECEF",
-            "text-muted-light": "#6C757D",
-            "text-muted-dark": "#ADB5BD",
             "border-light": "#E9ECEF",
-            "border-dark": "#495057",
-            "success": "#1DD1A1"
+            "border-dark": "#444444"
           },
-          fontFamily: {
-            "display": ["Spline Sans", "sans-serif"]
-          },
-          borderRadius: {
-            "DEFAULT": "1rem",
-            "lg": "1.5rem",
-            "xl": "2rem",
-            "full": "9999px"
-          },
+          fontFamily: { "display": ["Spline Sans", "sans-serif"] },
           boxShadow: {
             'bouncy': '0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.05)',
-            'bouncy-lg': '0 20px 30px -10px rgba(0, 0, 0, 0.1), 0 10px 15px -8px rgba(0, 0, 0, 0.1)',
           }
         },
       },
     }
   </script>
-  <script src="js/data-manager.js"></script>
+  <style>
+    /* Smooth transition for showing/hiding fields */
+    .fade-enter { opacity: 0; transform: translateY(-10px); }
+    .fade-enter-active { opacity: 1; transform: translateY(0); transition: opacity 300ms, transform 300ms; }
+    .fade-exit { opacity: 1; transform: translateY(0); }
+    .fade-exit-active { opacity: 0; transform: translateY(-10px); transition: opacity 200ms, transform 200ms; }
+    
+    /* Custom Scrollbar for dropdowns */
+    select::-webkit-scrollbar { width: 8px; }
+    select::-webkit-scrollbar-track { background: transparent; }
+    select::-webkit-scrollbar-thumb { background-color: #cbd5e1; border-radius: 20px; }
+  </style>
 </head>
-<body class="font-display bg-background-light dark:bg-background-dark text-text-light dark:text-text-dark antialiased">
-<div class="relative flex h-auto min-h-screen w-full flex-col group/design-root overflow-x-hidden">
-  <!-- TopNavBar -->
-  <header class="sticky top-0 z-10 w-full bg-card-light/80 dark:bg-card-dark/80 backdrop-blur-md">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="flex items-center justify-between h-16">
-        <div class="flex items-center gap-8">
-          <div class="flex items-center gap-2 text-text-light dark:text-text-dark">
-            <span class="material-symbols-outlined text-secondary text-3xl">all_inclusive</span>
-            <h2 class="text-xl font-bold">ZipZapZoi</h2>
-          </div>
-        </div>
-        <div class="hidden md:flex flex-1 justify-end gap-6 items-center">
-          <a class="text-sm font-medium hover:text-secondary" href="#">Browse</a>
-          <a class="text-sm font-medium hover:text-secondary" href="#">Messages</a>
-          <a class="text-sm font-medium hover:text-secondary" href="#">Help</a>
-          <button class="flex max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-full h-10 bg-card-light dark:bg-card-dark border border-border-light dark:border-border-dark text-text-light dark:text-text-dark gap-2 text-sm font-bold leading-normal tracking-[0.015em] min-w-0 px-2.5 hover:border-secondary transition-colors">
-            <span class="material-symbols-outlined text-xl">notifications</span>
-          </button>
-          <div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10" data-alt="User profile picture" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCk1SS5_zFqd51Qg2LVvuPaNkfTZ5rCqFM0NJIfdCVIOLhqxKr9Af8YSTK4GvnUe3VDHNFZPLksrEmewWN7ceWpig_63IdBrs_tdjjC8Vx7n2T3lafIGJHajkFPTxdlgZpiy2xOLYl5XJPCl1pb4pcEMxBuVxLrXIRwC0ljYThbZktHomGpST8u4Ury82dzGYgWuKP31WpzCIti4-G0PEPk_mZ5w5hq_bNPRYOgwcRk9FuPV00Tmflf5eKqlaY8UaToCWW2PYoTYQj_");'></div>
-        </div>
-      </div>
+<body class="font-display bg-background-light dark:bg-background-dark text-text-light dark:text-text-dark antialiased transition-colors duration-300">
+
+<header class="sticky top-0 z-50 bg-card-light/90 dark:bg-card-dark/90 backdrop-blur-md border-b border-border-light dark:border-border-dark">
+  <div class="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
+    <div class="flex items-center gap-2">
+      <span class="material-symbols-outlined text-secondary text-3xl">all_inclusive</span>
+      <h2 class="text-xl font-bold">ZipZapZoi</h2>
     </div>
-  </header>
+    <a href="classifieds.html" class="text-sm font-semibold hover:text-secondary transition-colors">Cancel & Exit</a>
+  </div>
+</header>
 
-  <!-- Main Content -->
-  <main class="flex-1 w-full py-12 md:py-20">
-    <div class="layout-content-container flex flex-col max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 gap-10">
-      <!-- ProgressBar -->
-      <div class="flex flex-col gap-3">
-        <div class="flex gap-6 justify-between">
-          <p class="text-base font-medium">Step 1 of 5</p>
-        </div>
-        <div class="rounded-full bg-border-light dark:bg-border-dark h-3 overflow-hidden">
-          <div class="h-full rounded-full bg-primary transition-all duration-500" style="width: 20%;"></div>
-        </div>
-      </div>
-
-      <!-- Form Content Card -->
-      <div class="bg-card-light dark:bg-card-dark rounded-xl shadow-bouncy-lg p-6 sm:p-10 flex flex-col gap-8">
-        <div class="flex flex-wrap justify-between gap-3">
-          <div class="flex min-w-72 flex-col gap-3">
-            <p class="text-4xl font-black leading-tight tracking-[-0.033em] text-text-light dark:text-text-dark">What are you selling?</p>
-            <p class="text-base font-normal leading-normal text-text-muted-light dark:text-text-muted-dark">Choose a category to get started. This helps buyers find your item.</p>
-          </div>
-        </div>
-
-        <!-- Category cards (TOP) -->
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-6">
-          <div class="group flex flex-col gap-3 p-3 rounded-lg cursor-pointer border-2 border-transparent hover:border-primary hover:bg-primary/10 dark:hover:bg-primary/20 transition-all transform hover:-translate-y-1" data-category="Vehicles">
-            <div class="w-full bg-center bg-no-repeat aspect-square bg-cover rounded-lg" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAnG74ulNSzqLN0MYtT6ErPt17JZmLqW_NKc9r2B6c1Y0Lp1Gl0jWVl1EdsYZM_7Z5JdehlLmlq8Tm7aWGIb65Mg0O5BUGlrQ8sU8jOubfq5uROFh_x5pXhP6Z0BTRgPBzsDMvRWcV7PCv7hq2xLLKXslnZGiVYnoPMA_updcH36QmD3C9NJBPsQk_i5_NX3DairwNY2TuTjO7kRXTTXgZGWYjFFKH9uR-FDph0r-TGkzPDScp6vbw7BuXa6YEh-C3PvjSjIlYehx04");'></div>
-            <div>
-              <p class="text-base font-medium text-text-light dark:text-text-dark">Vehicles</p>
-              <p class="text-sm font-normal text-text-muted-light dark:text-text-muted-dark">Cars, bikes &amp; boats</p>
-            </div>
-          </div>
-
-          <div class="group flex flex-col gap-3 p-3 rounded-lg cursor-pointer border-2 border-transparent hover:border-primary hover:bg-primary/10 dark:hover:bg-primary/20 transition-all transform hover:-translate-y-1" data-category="Home & Garden">
-            <div class="w-full bg-center bg-no-repeat aspect-square bg-cover rounded-lg" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAWPLTsUEaNUU_CvjTn0Xp2cEUdr2mBodcq9EiV-4PxZ6SeoGCZbeJAUfEcyaHEuTMuBjpFxyTs8qN3LTu_mjNI7MxFmX_WkF3RuBaw_WYZakzgIXuIGprYBuSMRxVvYopEBD0m5UCvrvUqKbyo_EFzColCY7CenEX1CpS3qf-l3wuq89v3EtIGedD5FOM80_gWZtP4OlvYhXliMy5RJIa3QAdL7AVYzH-Ibg2RYmb5JEiX3_5NOZyK6xwG889R836AQFATeeBX2MNM");'></div>
-            <div>
-              <p class="text-base font-medium text-text-light dark:text-text-dark">Home &amp; Garden</p>
-              <p class="text-sm font-normal text-text-muted-light dark:text-text-muted-dark">Furniture &amp; decor</p>
-            </div>
-          </div>
-
-          <div class="group flex flex-col gap-3 p-3 rounded-lg cursor-pointer border-2 border-transparent hover:border-primary hover:bg-primary/10 dark:hover:bg-primary/20 transition-all transform hover:-translate-y-1" data-category="Electronics">
-            <div class="w-full bg-center bg-no-repeat aspect-square bg-cover rounded-lg" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDhVpR1nycezXGqSv7fcu9K_npuM_34VYF05Ngy7SV0dwZ0f2qKxUpyKCvj8NwdVZuk2bC1iyiv-m3dNQVxbLJvI698rcLtl5FOda9z95w2oMkBohOAoGyu6qe5AupIWdCOob30Pct0FoZiT93xcf6hMJfTgTXP1b6H2C2fh3DgVLGuRlw_HzkwdFIRj_kwwlqIy8IrHKMOz05BrqUr-4hVHHMimbajTZQ4Ov01FuyJ7Hy05jYmrRrNlSfj1AWz9TbV0V2IdrUhTtkT");'></div>
-            <div>
-              <p class="text-base font-medium text-text-light dark:text-text-dark">Electronics</p>
-              <p class="text-sm font-normal text-text-muted-light dark:text-text-muted-dark">Phones, laptops &amp; TVs</p>
-            </div>
-          </div>
-
-          <!-- Add remaining cards here similar to above: Property, Fashion, Hobbies, Pets, Services -->
-        </div>
-
-        <!-- Subcategory -->
-        <div class="space-y-1 mt-6">
-          <label for="zzzSubcategorySelect" class="block text-sm font-medium text-gray-700">
-            Subcategory
-          </label>
-          <select
-            id="zzzSubcategorySelect"
-            name="zzzSubcategorySelect"
-            class="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2 text-sm"
-          >
-            <option value="">Choose a subcategory</option>
-          </select>
-        </div>
-
-        <!-- Dynamic fields container -->
-        <div id="zzzDynamicFields" class="space-y-4 mt-4"></div>
-      </div>
+<main class="max-w-5xl mx-auto px-4 py-8 pb-24">
+  
+  <div class="mb-8">
+    <div class="flex justify-between text-sm font-medium mb-2">
+      <span class="text-secondary">Step 1: Category</span>
+      <span class="text-gray-400" id="stepIndicator">Step 2: Details</span>
+      <span class="text-gray-400">Step 3: Review</span>
     </div>
-  </main>
+    <div class="h-2 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
+      <div id="progressBar" class="h-full bg-secondary w-1/3 transition-all duration-500"></div>
+    </div>
+  </div>
+
+  <form id="listingForm" class="flex flex-col gap-6" onsubmit="event.preventDefault();">
+    
+    <div class="bg-card-light dark:bg-card-dark rounded-2xl shadow-bouncy p-6 border border-border-light dark:border-border-dark">
+      <h3 class="text-xl font-bold mb-4 flex items-center gap-2">
+        <span class="bg-secondary/10 text-secondary p-1 rounded-md material-symbols-outlined">category</span>
+        Choose a Category
+      </h3>
+      
+      <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3" id="categoryGrid">
+        </div>
+    </div>
+
+    <div id="detailsSection" class="hidden flex-col gap-6">
+      
+      <div class="bg-card-light dark:bg-card-dark rounded-2xl shadow-bouncy p-6 border border-border-light dark:border-border-dark">
+        <div class="flex justify-between items-center mb-6">
+          <h3 class="text-xl font-bold flex items-center gap-2">
+            <span class="bg-primary/10 text-primary p-1 rounded-md material-symbols-outlined">fact_check</span>
+            <span id="categoryTitle">Details</span>
+          </h3>
+          <button type="button" id="changeCatBtn" class="text-sm text-red-500 hover:underline">Change Category</button>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div class="col-span-1 md:col-span-2">
+            <label class="block text-sm font-bold mb-2">Subcategory *</label>
+            <select id="subCategorySelect" class="w-full rounded-xl border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-800 py-3 px-4 focus:ring-secondary focus:border-secondary transition-all" required>
+              <option value="">Select Subcategory...</option>
+            </select>
+          </div>
+
+          <div id="dynamicFieldsArea" class="col-span-1 md:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-6"></div>
+        </div>
+      </div>
+
+      <div class="bg-card-light dark:bg-card-dark rounded-2xl shadow-bouncy p-6 border border-border-light dark:border-border-dark">
+        <h3 class="text-xl font-bold mb-6">Listing Information</h3>
+        
+        <div class="space-y-6">
+          <div>
+            <label class="block text-sm font-bold mb-2">Ad Title *</label>
+            <input type="text" id="postTitle" class="w-full rounded-xl border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-800 py-3 px-4" placeholder="e.g. iPhone 14 Pro Max 256GB - Brand New" required>
+            <p class="text-xs text-gray-500 mt-1">Mention key features like Brand, Model, Type</p>
+          </div>
+
+          <div id="priceRow" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+              <label id="priceLabel" class="block text-sm font-bold mb-2">Price (₹) *</label>
+              <div class="relative">
+                <span class="absolute left-4 top-3.5 text-gray-500">₹</span>
+                <input type="number" id="postPrice" class="w-full pl-8 rounded-xl border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-800 py-3 px-4" placeholder="0">
+              </div>
+            </div>
+            <div class="flex items-center gap-4 mt-8">
+               <label class="flex items-center gap-2 cursor-pointer">
+                 <input type="checkbox" class="rounded text-secondary focus:ring-secondary w-5 h-5">
+                 <span class="text-sm font-medium">Price Negotiable</span>
+               </label>
+            </div>
+          </div>
+
+          <div>
+            <label class="block text-sm font-bold mb-2">Description *</label>
+            <textarea id="postDescription" rows="5" class="w-full rounded-xl border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-800 py-3 px-4" placeholder="Describe your item/service in detail. Include condition, features, and reason for selling." required></textarea>
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-card-light dark:bg-card-dark rounded-2xl shadow-bouncy p-6 border border-border-light dark:border-border-dark">
+        <h3 class="text-xl font-bold mb-6">Confirm Location</h3>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div>
+            <label class="block text-sm font-bold mb-2">State *</label>
+            <select id="stateSelect" class="w-full rounded-xl border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-800 py-3 px-4" required>
+              <option value="">Select State</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-sm font-bold mb-2">City *</label>
+            <select id="citySelect" class="w-full rounded-xl border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-800 py-3 px-4" disabled required>
+              <option value="">Select State First</option>
+            </select>
+          </div>
+          <div class="col-span-1 md:col-span-2">
+            <label class="block text-sm font-bold mb-2">Specific Area / Google Location</label>
+            <div class="relative">
+              <span class="material-symbols-outlined absolute left-3 top-3 text-gray-400">location_on</span>
+              <input type="text" class="w-full pl-10 rounded-xl border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-800 py-3 px-4" placeholder="e.g. Indiranagar, Bengaluru or Paste Google Maps Link">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-card-light dark:bg-card-dark rounded-2xl shadow-bouncy p-6 border border-border-light dark:border-border-dark" id="photoSection">
+        <h3 class="text-xl font-bold mb-2">Upload Photos</h3>
+        <p class="text-sm text-gray-500 mb-4" id="photoLimitText">Add up to 8 photos. First photo is your cover image.</p>
+        
+        <div class="border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-xl p-8 text-center hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors cursor-pointer relative">
+          <input type="file" multiple accept="image/*" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer" id="fileInput">
+          <span class="material-symbols-outlined text-4xl text-gray-400 mb-2">add_a_photo</span>
+          <p class="font-medium text-secondary">Click to upload or drag & drop</p>
+          <p class="text-xs text-gray-400 mt-1">JPG, PNG up to 5MB each</p>
+        </div>
+        <div id="photoPreview" class="grid grid-cols-4 sm:grid-cols-6 gap-2 mt-4"></div>
+      </div>
+
+      <div class="flex items-center gap-3 p-4 bg-yellow-50 dark:bg-yellow-900/20 rounded-xl border border-yellow-200 dark:border-yellow-800">
+        <input type="checkbox" id="hidePhone" class="rounded text-secondary w-5 h-5">
+        <div>
+          <p class="font-bold text-sm text-text-light dark:text-text-dark">Hide my phone number</p>
+          <p class="text-xs text-gray-500 dark:text-gray-400">Buyers will only contact you via ZipZapZoi Chat.</p>
+        </div>
+      </div>
+
+      <div class="flex flex-col sm:flex-row gap-4 pt-4">
+        <button type="button" id="previewBtn" class="flex-1 py-4 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 text-text-light dark:text-text-dark font-bold rounded-xl transition-all">
+          Preview Listing
+        </button>
+        <button type="submit" class="flex-[2] py-4 bg-secondary hover:bg-primary text-white font-bold rounded-xl shadow-lg transition-all transform hover:-translate-y-1 flex justify-center items-center gap-2">
+          <span>Post Now</span>
+          <span class="material-symbols-outlined">send</span>
+        </button>
+      </div>
+
+    </div>
+  </form>
+</main>
+
+<div id="previewModal" class="fixed inset-0 z-[100] bg-black/70 hidden items-center justify-center p-4 backdrop-blur-sm">
+  <div class="bg-card-light dark:bg-card-dark w-full max-w-2xl max-h-[90vh] overflow-y-auto rounded-2xl shadow-2xl">
+    <div class="p-6 border-b border-border-light dark:border-border-dark flex justify-between items-center bg-secondary text-white">
+      <h3 class="text-xl font-bold">Ad Preview</h3>
+      <button id="closePreview" class="material-symbols-outlined hover:text-red-200">close</button>
+    </div>
+    <div class="p-6 space-y-4" id="previewContent">
+      </div>
+    <div class="p-6 border-t border-border-light dark:border-border-dark flex justify-end gap-3">
+      <button id="closePreviewBtn" class="px-6 py-2 rounded-lg border border-gray-300 dark:border-gray-600 font-bold">Edit</button>
+      <button id="confirmPostBtn" class="px-6 py-2 rounded-lg bg-primary text-white font-bold shadow-md">Confirm & Post</button>
+    </div>
+  </div>
 </div>
 
-<!-- Schema-driven subcategory + fields logic -->
 <script>
-(function () {
-  const STORAGE_KEY = 'zzz_classifieds_schema';
-
-  const CATEGORY_ID_MAP = {
-    'Vehicles': 'vehicles',
-    'Home & Garden': 'property',
-    'Electronics': 'electronics',
-    'Property': 'property',
-    'Fashion': 'fashion',
-    'Hobbies': 'hobbies',
-    'Pets': 'pets',
-    'Services': 'services'
+(function() {
+  
+  // --- 1. DATA SCHEMA (The Brains) ---
+  const schema = {
+    'electronics': { 
+      label: 'Electronics', icon: 'devices', color: 'text-cyan-500', 
+      subs: ['Mobiles & Accessories', 'Computers & Laptops', 'Home Appliances', 'TVs - Audio & Video', 'Cameras & Photography', 'Gaming & Consoles', 'Wearables', 'Kitchen Electronics', 'Office Electronics', 'Other'],
+      fields: [
+        { id: 'brand', label: 'Brand Name', type: 'text', required: true },
+        { id: 'condition', label: 'Condition', type: 'select', options: ['New', 'Used - Good', 'Used - Fair', 'Refurbished'], required: true }
+      ]
+    },
+    'vehicles': { 
+      label: 'Vehicles', icon: 'directions_car', color: 'text-blue-600',
+      subs: ['Cars', 'Bikes & Scooters', 'Commercial Vehicles', 'Auto Rickshaws', 'EVs', 'Bicycles', 'Parts & Accessories', 'Boats'],
+      fields: [
+        { id: 'brand', label: 'Brand/Make', type: 'text', required: true },
+        { id: 'year', label: 'Year of Manufacture', type: 'number', required: true },
+        { id: 'fuel', label: 'Fuel Type', type: 'select', options: ['Petrol', 'Diesel', 'CNG', 'Electric', 'Hybrid', 'LPG'] },
+        { id: 'transmission', label: 'Transmission', type: 'select', options: ['Manual', 'Automatic'] },
+        { id: 'km_driven', label: 'KM Driven', type: 'number' },
+        { id: 'owners', label: 'No. of Owners', type: 'select', options: ['1st', '2nd', '3rd', '4th+'] }
+      ]
+    },
+    'home': { 
+      label: 'Home & Garden', icon: 'yard', color: 'text-green-600',
+      subs: ['Furniture', 'Home Decor', 'Kitchen & Dining', 'Plants & Garden', 'Tools & Hardware', 'Cleaning', 'Bedding', 'Others'],
+      fields: [
+         { id: 'furn_type', label: 'Item Type', type: 'text', required: true },
+         { id: 'condition', label: 'Condition', type: 'select', options: ['New', 'Used - Excellent', 'Used - Good', 'Used - Fair'] }
+      ]
+    },
+    'clothing': { 
+      label: 'Clothing', icon: 'checkroom', color: 'text-pink-500',
+      subs: ['Men Clothing', 'Women Clothing', 'Kids Clothing', 'Sports Wear', 'Foot Wear', 'Ethnic & Traditional', 'Accessories'],
+      fields: [
+        { id: 'cloth_type', label: 'Type', type: 'select', options: ['Men', 'Women', 'Kids', 'Unisex'], required: true },
+        { id: 'size', label: 'Size', type: 'text', placeholder: 'e.g. M, L, XL, 9, 10' },
+        { id: 'brand', label: 'Brand', type: 'text' }
+      ]
+    },
+    'real_estate': { 
+      label: 'Real Estate', icon: 'real_estate_agent', color: 'text-purple-600',
+      subs: ['Apartments', 'Independent Houses', 'Builder Floors', 'Plots/Land', 'Farmhouses', 'Commercial Office', 'Shops', 'Rental Houses', 'PG/Hostels'],
+      fields: [
+        { id: 'listing_type', label: 'Type', type: 'select', options: ['For Sale', 'For Rent/Lease'], required: true },
+        { id: 'listed_by', label: 'Listed By', type: 'select', options: ['Owner', 'Dealer', 'Builder'] },
+        { id: 'bhk', label: 'Bedrooms (BHK)', type: 'select', options: ['1 RK', '1 BHK', '2 BHK', '3 BHK', '4+ BHK'] },
+        { id: 'area', label: 'Area (sq ft)', type: 'number', required: true },
+        { id: 'furnishing', label: 'Furnishing', type: 'select', options: ['Fully Furnished', 'Semi-Furnished', 'Unfurnished'] },
+        { id: 'project', label: 'Project Name', type: 'text' }
+      ]
+    },
+    'jobs': { 
+      label: 'Jobs', icon: 'work', color: 'text-red-500',
+      subs: ['IT & Software', 'Sales & Marketing', 'Accounting', 'HR', 'BPO/Customer Service', 'Education', 'Healthcare', 'Engineering', 'Driver/Logistics', 'Part-time/Freelance'],
+      fields: [
+        { id: 'role', label: 'Role/Position', type: 'text', required: true },
+        { id: 'salary_min', label: 'Salary From (Monthly)', type: 'number' },
+        { id: 'salary_max', label: 'Salary To (Monthly)', type: 'number' },
+        { id: 'exp', label: 'Experience Required', type: 'select', options: ['Fresher', '0-1 Years', '1-3 Years', '3-5 Years', '5+ Years'] }
+      ],
+      priceLabel: 'Salary (Approx)'
+    },
+    'services': { 
+      label: 'Services', icon: 'handyman', color: 'text-orange-500',
+      subs: ['Home Services', 'Automotive', 'Health & Wellness', 'Beauty', 'Education/Tutors', 'Astrology', 'Others'],
+      fields: [
+        { id: 'service_type', label: 'Service Availability', type: 'select', options: ['At Home', 'At Center', 'Online/Remote'] }
+      ],
+      photoLimit: 4
+    },
+    'sports': { 
+      label: 'Sports', icon: 'sports_soccer', color: 'text-teal-500',
+      subs: ['Cricket', 'Football', 'Gym/Fitness', 'Indoor Games', 'Outdoor Adventure', 'Apparel', 'Other'],
+      fields: [
+        { id: 'equip_type', label: 'Equipment Type', type: 'text' },
+        { id: 'condition', label: 'Condition', type: 'select', options: ['New', 'Used'] }
+      ],
+      photoLimit: 4
+    },
+    'pets': { 
+      label: 'Pets', icon: 'pets', color: 'text-yellow-600',
+      subs: ['Dogs', 'Cats', 'Birds', 'Fish', 'Pet Accessories', 'Pet Food', 'Services'],
+      fields: [
+        { id: 'breed', label: 'Breed/Type', type: 'text' },
+        { id: 'age', label: 'Age', type: 'text' }
+      ],
+      photoLimit: 6
+    },
+    'tourism': { 
+      label: 'Tourism', icon: 'flight', color: 'text-sky-500',
+      subs: ['Packages', 'Transport', 'Hotels', 'Adventure', 'Visa Services'],
+      fields: [
+        { id: 'package_dur', label: 'Duration (Days)', type: 'number' },
+        { id: 'dest', label: 'Destination', type: 'text', required: true }
+      ],
+      photoLimit: 6
+    },
+    'doctors': { 
+      label: 'Doctors', icon: 'stethoscope', color: 'text-rose-600',
+      subs: ['General', 'Dentist', 'Cardiologist', 'Dermatologist', 'Pediatrician', 'Gynecologist', 'Orthopedic', 'Homeopathy', 'Ayurveda'],
+      fields: [
+        { id: 'qualification', label: 'Qualification', type: 'text', placeholder: 'e.g. MBBS, MD' },
+        { id: 'exp_yrs', label: 'Experience (Years)', type: 'number' },
+        { id: 'avail', label: 'Availability', type: 'text', placeholder: 'e.g. Mon-Sat 10am-6pm' }
+      ],
+      priceLabel: 'Consultancy Fee',
+      photoLimit: 4
+    },
+    'charity': { 
+      label: 'Charity', icon: 'volunteer_activism', color: 'text-green-500',
+      subs: ['Education', 'Medical', 'Food', 'Disaster Relief', 'Animal Welfare', 'Community'],
+      fields: [
+        { id: 'event_date', label: 'Event Date (if applicable)', type: 'date' },
+        { id: 'ngo_id', label: 'NGO Reg. No (Optional)', type: 'text' }
+      ],
+      hidePrice: true,
+      photoLimit: 2,
+      note: 'Note: Charity listings are free and expire in 10 days.'
+    },
+    'food': { 
+      label: 'Food', icon: 'restaurant', color: 'text-orange-600',
+      subs: ['Restaurant Sale', 'Catering', 'Home Chef', 'Street Food', 'Bakery', 'Organic'],
+      fields: [
+        { id: 'fssai', label: 'FSSAI License (Optional)', type: 'text' },
+        { id: 'veg_nonveg', label: 'Type', type: 'select', options: ['Veg', 'Non-Veg', 'Both'] }
+      ],
+      photoLimit: 6
+    },
+    'events': { 
+      label: 'Events', icon: 'celebration', color: 'text-purple-500',
+      subs: ['Weddings', 'Birthdays', 'Corporate', 'Concerts', 'Festivals'],
+      fields: [
+        { id: 'capacity', label: 'Capacity (Pax)', type: 'number' },
+        { id: 'booking_type', label: 'Booking', type: 'select', options: ['Ticketed', 'RSVP', 'Open Entry'] }
+      ],
+      photoLimit: 6
+    }
   };
 
-  function loadSchema() {
-    try {
-      const raw = localStorage.getItem(STORAGE_KEY);
-      if (!raw) return null;
-      return JSON.parse(raw);
-    } catch {
-      return null;
+  // --- 2. MOCK DATA FOR INDIA LOCATIONS ---
+  const indiaData = {
+    "Andhra Pradesh": ["Visakhapatnam", "Vijayawada", "Guntur", "Nellore", "Tirupati"],
+    "Karnataka": ["Bengaluru", "Mysuru", "Mangaluru", "Hubballi", "Belagavi"],
+    "Maharashtra": ["Mumbai", "Pune", "Nagpur", "Nashik", "Aurangabad"],
+    "Tamil Nadu": ["Chennai", "Coimbatore", "Madurai", "Tiruchirappalli", "Salem"],
+    "Telangana": ["Hyderabad", "Warangal", "Nizamabad", "Karimnagar", "Khammam"],
+    "Delhi": ["New Delhi", "North Delhi", "South Delhi", "East Delhi", "West Delhi"],
+    "West Bengal": ["Kolkata", "Howrah", "Durgapur", "Asansol", "Siliguri"],
+    "Gujarat": ["Ahmedabad", "Surat", "Vadodara", "Rajkot", "Bhavnagar"],
+    "Uttar Pradesh": ["Lucknow", "Kanpur", "Ghaziabad", "Agra", "Varanasi"],
+    "Rajasthan": ["Jaipur", "Jodhpur", "Udaipur", "Kota", "Ajmer"]
+  };
+
+  // --- 3. DOM ELEMENTS ---
+  const categoryGrid = document.getElementById('categoryGrid');
+  const detailsSection = document.getElementById('detailsSection');
+  const dynamicFieldsArea = document.getElementById('dynamicFieldsArea');
+  const subCategorySelect = document.getElementById('subCategorySelect');
+  const categoryTitle = document.getElementById('categoryTitle');
+  const changeCatBtn = document.getElementById('changeCatBtn');
+  const progressBar = document.getElementById('progressBar');
+  const stateSelect = document.getElementById('stateSelect');
+  const citySelect = document.getElementById('citySelect');
+  const priceRow = document.getElementById('priceRow');
+  const priceLabel = document.getElementById('priceLabel');
+  const photoSection = document.getElementById('photoSection');
+  const photoLimitText = document.getElementById('photoLimitText');
+
+  let currentCategory = null;
+
+  // --- 4. INITIALIZATION ---
+  
+  // Render Categories
+  Object.keys(schema).forEach(key => {
+    const cat = schema[key];
+    const div = document.createElement('div');
+    div.className = `cursor-pointer flex flex-col items-center justify-center p-4 rounded-xl border-2 border-transparent bg-gray-50 dark:bg-gray-800 hover:border-secondary hover:bg-white dark:hover:bg-gray-700 transition-all gap-2 group`;
+    div.innerHTML = `
+      <span class="material-symbols-outlined text-4xl ${cat.color} group-hover:scale-110 transition-transform">${cat.icon}</span>
+      <span class="text-sm font-bold text-center">${cat.label}</span>
+    `;
+    div.onclick = () => selectCategory(key);
+    categoryGrid.appendChild(div);
+  });
+
+  // Populate States
+  Object.keys(indiaData).forEach(state => {
+    const opt = document.createElement('option');
+    opt.value = state;
+    opt.textContent = state;
+    stateSelect.appendChild(opt);
+  });
+
+  stateSelect.addEventListener('change', (e) => {
+    const state = e.target.value;
+    citySelect.innerHTML = '<option value="">Select City</option>';
+    if (state && indiaData[state]) {
+      indiaData[state].forEach(city => {
+        const opt = document.createElement('option');
+        opt.value = city;
+        opt.textContent = city;
+        citySelect.appendChild(opt);
+      });
+      citySelect.disabled = false;
+    } else {
+      citySelect.disabled = true;
     }
-  }
+  });
 
-  const schema = loadSchema();
-  if (!schema) {
-    console.warn('No schema found – configure categories in AdminConsoleV2 first.');
-    return;
-  }
+  // --- 5. LOGIC FUNCTIONS ---
 
-  let selectedCategoryId = null;
-  let selectedSubcategoryId = null;
-
-  const fieldsContainer = document.getElementById('zzzDynamicFields');
-  const subSelect = document.getElementById('zzzSubcategorySelect');
-  if (!fieldsContainer || !subSelect) return;
-
-  function populateSubcategories() {
-    subSelect.innerHTML = '<option value="">Choose a subcategory</option>';
-    fieldsContainer.innerHTML = '';
-
-    if (!selectedCategoryId) return;
-
-    const subs = (schema.subcategories || []).filter(
-      s => s.categoryId === selectedCategoryId
-    );
-
-    if (!subs.length) {
+  function selectCategory(key) {
+    currentCategory = schema[key];
+    
+    // UI Updates
+    categoryGrid.parentElement.classList.add('hidden');
+    detailsSection.classList.remove('hidden');
+    detailsSection.classList.add('flex');
+    progressBar.style.width = '66%';
+    document.getElementById('stepIndicator').className = "text-secondary font-bold";
+    categoryTitle.textContent = `${currentCategory.label} Details`;
+    
+    // Reset & Populate Subcategories
+    subCategorySelect.innerHTML = '<option value="">Select Subcategory...</option>';
+    currentCategory.subs.forEach(sub => {
       const opt = document.createElement('option');
-      opt.value = '';
-      opt.textContent = 'No subcategories configured';
-      subSelect.appendChild(opt);
-      return;
-    }
-
-    subs.forEach(sub => {
-      const opt = document.createElement('option');
-      opt.value = sub.id;
-      opt.textContent = sub.label;
-      subSelect.appendChild(opt);
+      opt.value = sub;
+      opt.textContent = sub;
+      subCategorySelect.appendChild(opt);
     });
-  }
 
-  function renderFields() {
-    fieldsContainer.innerHTML = '';
-    if (!selectedSubcategoryId) return;
+    // Populate Specific Fields
+    dynamicFieldsArea.innerHTML = '';
+    if (currentCategory.fields) {
+      currentCategory.fields.forEach(field => {
+        const wrapper = document.createElement('div');
+        wrapper.className = 'w-full';
+        
+        let inputHtml = '';
+        if (field.type === 'select') {
+          const options = field.options.map(o => `<option value="${o}">${o}</option>`).join('');
+          inputHtml = `<select name="${field.id}" class="w-full rounded-xl border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-800 py-3 px-4 focus:ring-secondary"><option value="">Select...</option>${options}</select>`;
+        } else {
+          inputHtml = `<input type="${field.type}" name="${field.id}" class="w-full rounded-xl border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-800 py-3 px-4 focus:ring-secondary" placeholder="${field.placeholder || ''}" ${field.required ? 'required' : ''}>`;
+        }
 
-    const fields = (schema.fields || []).filter(
-      f => f.subcategoryId === selectedSubcategoryId
-    );
-
-    if (!fields.length) {
-      fieldsContainer.innerHTML =
-        '<p class="text-sm text-gray-500">No extra fields for this subcategory.</p>';
-      return;
+        wrapper.innerHTML = `
+          <label class="block text-sm font-bold mb-2 text-gray-700 dark:text-gray-300">${field.label}</label>
+          ${inputHtml}
+        `;
+        dynamicFieldsArea.appendChild(wrapper);
+      });
     }
 
-    fields.forEach(field => {
-      const wrapper = document.createElement('div');
-      wrapper.className = 'space-y-1';
+    // Special Logic (Charity, Price Labels, Photo Limits)
+    if (currentCategory.hidePrice) {
+      priceRow.classList.add('hidden');
+      // Add note for charity
+      const note = document.createElement('p');
+      note.className = "col-span-1 md:col-span-2 text-green-600 font-bold text-sm bg-green-100 p-2 rounded-lg";
+      note.textContent = currentCategory.note || "This listing is free.";
+      dynamicFieldsArea.appendChild(note);
+    } else {
+      priceRow.classList.remove('hidden');
+      priceLabel.textContent = currentCategory.priceLabel ? `${currentCategory.priceLabel} (₹) *` : 'Price (₹) *';
+    }
 
-      const label = document.createElement('label');
-      label.className = 'block text-sm font-medium text-gray-700';
-      label.textContent = field.label + (field.required ? ' *' : '');
-      label.htmlFor = 'zzzField_' + field.id;
+    // Photo Limits
+    const limit = currentCategory.photoLimit || 8;
+    photoLimitText.textContent = `Add up to ${limit} photos. First photo is cover.`;
+    
+    window.scrollTo(0, 0);
+  }
 
-      const baseClasses = 'mt-1 block w-full border border-gray-300 rounded-md px-3 py-2 text-sm';
-      let input;
+  // Change Category Handler
+  changeCatBtn.addEventListener('click', () => {
+    detailsSection.classList.add('hidden');
+    detailsSection.classList.remove('flex');
+    categoryGrid.parentElement.classList.remove('hidden');
+    progressBar.style.width = '33%';
+    // Optional: Reset form fields here if strict
+  });
 
-      switch ((field.type || 'text').toLowerCase()) {
-        case 'number':
-          input = document.createElement('input');
-          input.type = 'number';
-          input.className = baseClasses;
-          break;
-        case 'date':
-          input = document.createElement('input');
-          input.type = 'date';
-          input.className = baseClasses;
-          break;
-        case 'dropdown':
-          input = document.createElement('select');
-          input.className = baseClasses;
-          const opt = document.createElement('option');
-          opt.value = '';
-          opt.textContent = 'Select...';
-          input.appendChild(opt);
-          break;
-        case 'checkbox':
-          input = document.createElement('input');
-          input.type = 'checkbox';
-          input.className = 'h-4 w-4 text-blue-600 border-gray-300 rounded';
-          break;
-        default:
-          input = document.createElement('input');
-          input.type = 'text';
-          input.className = baseClasses;
+  // Photo Preview Logic
+  const fileInput = document.getElementById('fileInput');
+  const photoPreview = document.getElementById('photoPreview');
+  
+  fileInput.addEventListener('change', function() {
+    photoPreview.innerHTML = '';
+    const files = Array.from(this.files);
+    // Enforce limit based on category
+    const max = (currentCategory && currentCategory.photoLimit) ? currentCategory.photoLimit : 8;
+    
+    files.slice(0, max).forEach(file => {
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        const div = document.createElement('div');
+        div.className = 'aspect-square rounded-lg bg-cover bg-center border border-gray-300 relative group overflow-hidden';
+        div.style.backgroundImage = `url(${e.target.result})`;
+        div.innerHTML = `<div class="absolute inset-0 bg-black/50 hidden group-hover:flex items-center justify-center text-white text-xs">Cover</div>`;
+        photoPreview.appendChild(div);
       }
-
-      input.id = 'zzzField_' + field.id;
-      input.name = 'zzzField_' + field.id;
-      if (field.required) input.required = true;
-
-      wrapper.appendChild(label);
-      wrapper.appendChild(input);
-      fieldsContainer.appendChild(wrapper);
+      reader.readAsDataURL(file);
     });
+  });
+
+  // --- 6. PREVIEW & SUBMIT LOGIC ---
+  const previewBtn = document.getElementById('previewBtn');
+  const previewModal = document.getElementById('previewModal');
+  const previewContent = document.getElementById('previewContent');
+  const closePreview = document.getElementById('closePreview');
+  const closePreviewBtn = document.getElementById('closePreviewBtn');
+
+  function generatePreview() {
+    const title = document.getElementById('postTitle').value;
+    const price = document.getElementById('postPrice').value;
+    const desc = document.getElementById('postDescription').value;
+    const loc = `${document.getElementById('citySelect').value}, ${document.getElementById('stateSelect').value}`;
+    const sub = subCategorySelect.value;
+
+    let html = `
+      <div class="space-y-4">
+        <div class="flex justify-between items-start border-b pb-4 dark:border-gray-600">
+          <div>
+            <h2 class="text-2xl font-bold text-gray-800 dark:text-white">${title || 'No Title'}</h2>
+            <p class="text-secondary font-semibold">${currentCategory ? currentCategory.label : ''} > ${sub || 'General'}</p>
+          </div>
+          <div class="text-right">
+             <span class="text-xl font-bold text-primary block">${currentCategory.hidePrice ? 'Free' : '₹ ' + (price || '0')}</span>
+          </div>
+        </div>
+        
+        <div class="grid grid-cols-2 gap-4 text-sm bg-gray-50 dark:bg-gray-800 p-4 rounded-lg">
+          <div><span class="text-gray-500 block">Location</span> <span class="font-medium">${loc}</span></div>
+          <div><span class="text-gray-500 block">Date</span> <span class="font-medium">${new Date().toLocaleDateString()}</span></div>
+        </div>
+
+        <div>
+          <h4 class="font-bold border-b mb-2 pb-1 dark:border-gray-600">Description</h4>
+          <p class="text-gray-600 dark:text-gray-300 whitespace-pre-wrap">${desc || 'No description provided.'}</p>
+        </div>
+      </div>
+    `;
+    previewContent.innerHTML = html;
+    previewModal.classList.remove('hidden');
+    previewModal.classList.add('flex');
   }
 
-  subSelect.addEventListener('change', (e) => {
-    selectedSubcategoryId = e.target.value || null;
-    renderFields();
-  });
+  previewBtn.addEventListener('click', generatePreview);
+  
+  const hideModal = () => {
+    previewModal.classList.add('hidden');
+    previewModal.classList.remove('flex');
+  };
 
-  // Wire category cards to schema logic
-  const cards = document.querySelectorAll('[data-category]');
-  cards.forEach(card => {
-    const label = card.getAttribute('data-category') || card.querySelector('p')?.textContent.trim();
-    if (label) card.setAttribute('data-category-label', label);
+  closePreview.onclick = hideModal;
+  closePreviewBtn.onclick = hideModal;
 
-    card.addEventListener('click', () => {
-      const lbl = card.getAttribute('data-category-label');
-      const catId = CATEGORY_ID_MAP[lbl] || null;
-      selectedCategoryId = catId;
-      selectedSubcategoryId = null;
-      populateSubcategories();
-    });
-  });
 })();
 </script>
-
-<!-- Card selection UI behaviour (purely visual, no Next/redirect) -->
-<script>
-(function(){
-  const categories = document.querySelectorAll('.grid .group, .group');
-  let selected = null;
-
-  categories.forEach(cat=>{
-    cat.addEventListener('click', ()=>{
-      categories.forEach(c=>c.classList.remove('border-primary','bg-primary/10','dark:bg-primary/20','-translate-y-1'));
-      cat.classList.add('border-primary','bg-primary/10','dark:bg-primary/20','-translate-y-1');
-      selected = cat.dataset.category || (cat.querySelector('p') && cat.querySelector('p').textContent.trim());
-      cat.setAttribute('aria-pressed','true');
-    });
-
-    cat.setAttribute('tabindex','0');
-    cat.setAttribute('role','button');
-    cat.addEventListener('keydown', (e) => {
-      if(e.key === 'Enter' || e.key === ' ') { e.preventDefault(); cat.click(); }
-    });
-  });
-})();
-</script>
-
 </body>
 </html>

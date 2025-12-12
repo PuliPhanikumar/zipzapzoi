@@ -1,115 +1,130 @@
-<!doctype html>
-<html lang="en">
+<!DOCTYPE html>
+<html class="light" lang="en">
 <head>
   <meta charset="utf-8"/>
-  <meta name="viewport" content="width=device-width,initial-scale=1"/>
-  <title>Log in to ZipZapZoi</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>ZipZapZoi - Login</title>
   <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Spline+Sans:wght@400;600;700&display=swap" rel="stylesheet">
-  <script src="js/data-manager.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Spline+Sans:wght@300..700&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet"/>
+  <script>
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "primary": "#019863",
+            "secondary": "#4D96A9",
+            "background-light": "#F8F9FA",
+            "background-dark": "#1A1B1C",
+          },
+          fontFamily: { "display": ["Spline Sans", "sans-serif"] },
+          borderRadius: { "DEFAULT": "1rem" }
+        },
+      },
+    }
+  </script>
 </head>
-<body class="font-display bg-gray-50">
+<body class="font-display bg-background-light dark:bg-background-dark text-gray-800 dark:text-gray-100 flex items-center justify-center min-h-screen p-4">
 
-  <main class="min-h-screen flex items-center justify-center p-6">
-    <div class="w-full max-w-md bg-white p-8 rounded-2xl shadow-lg">
-      <h1 class="text-2xl font-bold mb-4">Log in to ZipZapZoi</h1>
-
-      <label class="block mb-3">
-        <span class="text-sm">Email or Phone</span>
-        <input id="loginEmail" class="w-full mt-1 p-3 border rounded" placeholder="you@example.com"/>
-      </label>
-
-      <label class="block mb-4">
-        <span class="text-sm">Password</span>
-        <div class="flex">
-          <input id="loginPassword" type="password" class="w-full mt-1 p-3 border rounded-l" placeholder="password"/>
-          <button type="button" id="togglePassword" class="mt-1 px-3 border rounded-r">👁</button>
-        </div>
-      </label>
-
-      <button type="button" id="loginBtn" class="w-full py-3 bg-blue-600 text-white rounded font-semibold">
-        Log In
-      </button>
-
-      <p class="mt-4 text-sm text-center">
-        Don't have an account?
-        <a href="User Registration.html" class="text-blue-600">Sign Up</a>
-      </p>
+  <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-xl w-full max-w-md overflow-hidden">
+    <div class="bg-secondary p-8 text-center text-white">
+      <div class="flex justify-center mb-4">
+        <span class="material-symbols-outlined text-6xl">account_circle</span>
+      </div>
+      <h2 class="text-3xl font-bold">Welcome Back!</h2>
+      <p class="text-white/80 mt-2">Log in to manage your listings</p>
     </div>
-  </main>
 
-  <!-- Boot loader injects nav/auth/logout -->
-  <script src="scripts/boot.js"></script>
+    <div class="p-8">
+      <form id="loginForm" class="space-y-6">
+        <div>
+          <label class="block text-sm font-bold mb-2 text-gray-600 dark:text-gray-300">Email Address</label>
+          <input type="email" id="email" class="w-full px-4 py-3 rounded-xl border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 focus:ring-2 focus:ring-secondary outline-none transition-all" placeholder="name@example.com" required>
+        </div>
+        
+        <div>
+          <label class="block text-sm font-bold mb-2 text-gray-600 dark:text-gray-300">Password</label>
+          <input type="password" id="password" class="w-full px-4 py-3 rounded-xl border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 focus:ring-2 focus:ring-secondary outline-none transition-all" placeholder="••••••••" required>
+        </div>
+
+        <div class="flex items-center justify-between text-sm">
+          <label class="flex items-center gap-2 cursor-pointer">
+            <input type="checkbox" class="rounded text-secondary focus:ring-secondary">
+            <span class="text-gray-500">Remember me</span>
+          </label>
+          <a href="#" class="text-secondary font-bold hover:underline">Forgot Password?</a>
+        </div>
+
+        <button type="submit" class="w-full py-4 bg-primary hover:bg-green-600 text-white font-bold rounded-xl shadow-lg transform transition hover:-translate-y-1">
+          Log In
+        </button>
+      </form>
+
+      <div class="mt-8 text-center text-sm text-gray-500">
+        Don't have an account? <a href="User Registration.html" class="text-secondary font-bold hover:underline">Sign Up</a>
+      </div>
+      
+      <div class="mt-6 p-4 bg-yellow-50 dark:bg-yellow-900/20 rounded-xl border border-yellow-200 dark:border-yellow-800 text-xs text-center text-gray-600 dark:text-gray-400">
+        <p class="font-bold mb-1">Demo Credentials:</p>
+        <p>Admin: <span class="font-mono bg-white dark:bg-black px-1 rounded">admin@zipzapzoi.com</span> / <span class="font-mono bg-white dark:bg-black px-1 rounded">admin123</span></p>
+        <p class="mt-1">User: <span class="font-mono bg-white dark:bg-black px-1 rounded">user@zipzapzoi.com</span> / <span class="font-mono bg-white dark:bg-black px-1 rounded">user123</span></p>
+      </div>
+    </div>
+  </div>
 
   <script>
-    document.addEventListener('DOMContentLoaded', function () {
-      // Toggle password visibility
-      const toggle = document.getElementById('togglePassword');
-      const pwd = document.getElementById('loginPassword');
-      if (toggle && pwd) {
-        toggle.addEventListener('click', function () {
-          pwd.type = pwd.type === 'password' ? 'text' : 'password';
-        });
-      }
+    document.getElementById('loginForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      const email = document.getElementById('email').value.trim();
+      const password = document.getElementById('password').value.trim();
 
-      const btn = document.getElementById('loginBtn');
-      if (!btn) return;
-
-      btn.addEventListener('click', function () {
-        const emailEl = document.getElementById('loginEmail');
-        const passEl = document.getElementById('loginPassword');
-        const email = (emailEl.value || '').trim();
-        const password = (passEl.value || '').trim();
-
-        if (!email || !password) {
-          alert('Enter email and password');
-          return;
-        }
-
-        if (password !== '1234') {
-          alert('Invalid credentials (mock). Try 1234');
-          return;
-        }
-
-        const user = {
-          email,
-          name: email.split('@')[0],
-          role: email.includes('admin') ? 'admin' : 'seller'
+      // --- MOCK AUTH LOGIC ---
+      
+      // 1. ADMIN LOGIN
+      if (email === 'admin@zipzapzoi.com' && password === 'admin123') {
+        const adminUser = {
+          id: 'admin_01',
+          name: 'Super Admin',
+          email: email,
+          role: 'admin', // Critical Role Flag
+          avatar: 'https://via.placeholder.com/150'
         };
-
-        try {
-          // legacy keys
-          sessionStorage.setItem('zzzuser', JSON.stringify(user));
-          localStorage.setItem('zzzuser', JSON.stringify(user));
-          // new keys used by auth + classifieds
-          sessionStorage.setItem('zzz_user', JSON.stringify(user));
-          localStorage.setItem('zzz_user', JSON.stringify(user));
-          // data manager user
-          if (window.ZZZDataManager && window.ZZZDataManager.setCurrentUser) {
-            window.ZZZDataManager.setCurrentUser(user);
-          }
-        } catch (e) {
-          console.warn('Could not save user', e);
-        }
-
-        // After saving user to storage
-
-// Look for a redirect query parameter
-const params = new URLSearchParams(window.location.search);
-const redirect = params.get('redirect');
-
-// Decide where to go next
-let target;
-if (redirect) {
-  target = redirect; // e.g. "dashboard.html"
-} else if (user.role.toLowerCase().includes('admin')) {
-  target = 'Admin Console.html';
-} else {
-  target = 'Seller Dashboard.html';
-}
-window.location.replace(target);
-
-      });
+        
+        // Save to Session
+        // Note: We use the same key 'zzz_user' but with a role property
+        localStorage.setItem('zzz_user', JSON.stringify(adminUser));
+        
+        // Redirect to Admin Console
+        alert("Login Successful! Redirecting to Admin Console...");
+        window.location.href = 'AdminConsoleV2.html';
+      } 
+      
+      // 2. REGULAR USER LOGIN
+      else if (email === 'user@zipzapzoi.com' && password === 'user123') {
+        const regularUser = {
+          id: 'user_01',
+          name: 'Zoi User',
+          email: email,
+          role: 'user',
+          avatar: 'https://via.placeholder.com/150'
+        };
+        
+        localStorage.setItem('zzz_user', JSON.stringify(regularUser));
+        
+        // Redirect based on URL param or default to Classifieds
+        const params = new URLSearchParams(window.location.search);
+        const redirect = params.get('redirect') || 'classifieds.html';
+        
+        alert("Login Successful!");
+        window.location.href = redirect;
+      } 
+      
+      // 3. FAILED LOGIN
+      else {
+        alert("Invalid Email or Password. Please try the demo credentials.");
+      }
     });
   </script>
 </body>
