@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+  <script>
+  // --- AUTH CHECK ---
+  (function() {
+    // Optional: You might want public profiles to be visible without login.
+    // If you want to force login, uncomment the lines below:
+    /*
+    const raw = localStorage.getItem('zzz_user');
+    if (!raw) { window.location.href = 'Login Page.html'; }
+    */
+  })();
+  </script>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>ZipZapZoi - Seller Profile</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Spline+Sans:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet"/>
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: { sans: ["Spline Sans", "sans-serif"] },
+          colors: {
+            "primary": "#019863",
+            "secondary": "#4D96A9",
+            "background-light": "#F7F9FC",
+          },
+          boxShadow: {
+            "bouncy": "0 10px 20px -5px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)",
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    .material-symbols-outlined { font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+  </style>
+</head>
+<body class="bg-background-light min-h-screen flex flex-col text-gray-800">
+
+  <header class="bg-white border-b border-gray-200 sticky top-0 z-50 shadow-sm">
+    <div class="container mx-auto px-6 h-16 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <a href="classifieds.html" class="flex items-center gap-2 text-primary hover:text-green-700 transition-colors">
+          <span class="material-symbols-outlined text-3xl">all_inclusive</span>
+          <span class="font-bold text-xl tracking-tight hidden sm:block">ZipZapZoi</span>
+        </a>
+      </div>
+      
+      <div class="flex items-center gap-6">
+        <a href="classifieds.html" class="text-sm font-bold text-gray-500 hover:text-primary transition-colors">Browse</a>
+        <a href="favorites.html" class="text-sm font-bold text-gray-500 hover:text-primary transition-colors">Favorites</a>
+        <div class="h-9 w-9 rounded-full bg-primary text-white flex items-center justify-center font-bold shadow-md border-2 border-white" id="navAvatar">U</div>
+      </div>
+    </div>
+  </header>
+
+  <main class="flex-grow container mx-auto px-4 py-8 max-w-6xl">
+    
+    <div class="bg-white rounded-3xl shadow-bouncy overflow-hidden mb-8">
+      <div class="h-48 bg-gradient-to-r from-blue-400 to-secondary relative">
+        <button class="absolute top-4 right-4 bg-white/20 hover:bg-white/40 text-white p-2 rounded-full backdrop-blur-sm transition-colors" title="Report User">
+          <span class="material-symbols-outlined">flag</span>
+        </button>
+      </div>
+      
+      <div class="px-8 pb-8">
+        <div class="flex flex-col md:flex-row items-start md:items-end gap-6 -mt-12">
+          <div class="w-32 h-32 rounded-full border-4 border-white shadow-lg bg-gray-200 flex items-center justify-center text-4xl font-bold text-gray-500 relative">
+            <span id="profileInitial">A</span>
+            <div class="absolute bottom-2 right-2 w-6 h-6 bg-green-500 border-4 border-white rounded-full" title="Online"></div>
+          </div>
+          
+          <div class="flex-1 mb-2">
+            <div class="flex items-center gap-2">
+              <h1 class="text-3xl font-bold text-gray-900" id="profileName">Alex Doe</h1>
+              <span class="material-symbols-outlined text-blue-500 text-xl" title="Verified Identity">verified</span>
+            </div>
+            <p class="text-gray-500 font-medium">Member since 2021 • Indiranagar, Bengaluru</p>
+          </div>
+
+          <div class="flex gap-3 w-full md:w-auto mt-4 md:mt-0">
+            <button class="flex-1 md:flex-none bg-secondary hover:bg-cyan-700 text-white px-6 py-3 rounded-xl font-bold shadow-md transition-transform hover:-translate-y-1 flex items-center justify-center gap-2">
+              <span class="material-symbols-outlined">chat</span> Chat
+            </button>
+            <button class="flex-1 md:flex-none bg-gray-100 hover:bg-gray-200 text-gray-700 px-6 py-3 rounded-xl font-bold transition-colors flex items-center justify-center gap-2">
+              <span class="material-symbols-outlined">share</span> Share
+            </button>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-8 pt-8 border-t border-gray-100">
+          <div class="text-center p-4 bg-gray-50 rounded-2xl">
+            <div class="flex items-center justify-center gap-1 text-yellow-500 mb-1">
+              <span class="text-2xl font-bold text-gray-800">4.8</span>
+              <span class="material-symbols-outlined">star</span>
+            </div>
+            <p class="text-xs font-bold text-gray-400 uppercase tracking-wide">Rating (24)</p>
+          </div>
+          <div class="text-center p-4 bg-gray-50 rounded-2xl">
+            <p class="text-2xl font-bold text-gray-800 mb-1">98%</p>
+            <p class="text-xs font-bold text-gray-400 uppercase tracking-wide">Response Rate</p>
+          </div>
+          <div class="text-center p-4 bg-gray-50 rounded-2xl">
+            <p class="text-2xl font-bold text-gray-800 mb-1">2 Hrs</p>
+            <p class="text-xs font-bold text-gray-400 uppercase tracking-wide">Avg. Reply Time</p>
+          </div>
+          <div class="text-center p-4 bg-gray-50 rounded-2xl">
+            <p class="text-2xl font-bold text-gray-800 mb-1" id="activeCount">0</p>
+            <p class="text-xs font-bold text-gray-400 uppercase tracking-wide">Active Listings</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="flex gap-8 border-b border-gray-200 mb-8 px-2">
+      <button class="pb-4 border-b-2 border-primary text-primary font-bold">Active Listings</button>
+      <button class="pb-4 border-b-2 border-transparent text-gray-500 font-medium hover:text-gray-800 transition-colors">Reviews (24)</button>
+      <button class="pb-4 border-b-2 border-transparent text-gray-500 font-medium hover:text-gray-800 transition-colors">About</button>
+    </div>
+
+    <div id="listingsGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+      </div>
+
+  </main>
+
+  <footer class="bg-white border-t border-gray-200 py-8 mt-auto">
+    <div class="container mx-auto px-6 text-center text-sm text-gray-500">
+      &copy; 2024 ZipZapZoi.
+    </div>
+  </footer>
+
+  <script>
+    // --- 1. SETUP ---
+    // Try to get logged in user for navbar avatar
+    const currentUser = JSON.parse(localStorage.getItem('zzz_user'));
+    if(currentUser) document.getElementById('navAvatar').textContent = currentUser.name.charAt(0).toUpperCase();
+
+    // --- 2. LOAD SELLER DATA (Mock + LocalStorage) ---
+    function loadProfile() {
+      // In a real app, you'd get the Seller ID from URL (?id=...)
+      // For demo, we'll fetch ALL listings and pretend they belong to "Alex Doe" (or show random subset)
+      
+      const allListings = JSON.parse(localStorage.getItem('zzz_listings') || '[]');
+      
+      // If no listings, create some samples for visualization
+      let displayListings = allListings;
+      if (displayListings.length === 0) {
+        displayListings = [
+          { id: '101', title: "iPhone 14 Pro - Deep Purple", category: "Electronics", price: "65,000", image: "https://images.unsplash.com/photo-1695048133142-1a20484d2569?auto=format&fit=crop&w=600&q=80", location: "Bengaluru", time: "2 hrs ago" },
+          { id: '102', title: "Royal Enfield Classic 350", category: "Vehicles", price: "1,45,000", image: "https://images.unsplash.com/photo-1558981403-c5f9899a28bc?auto=format&fit=crop&w=600&q=80", location: "Bengaluru", time: "5 hrs ago" },
+          { id: '103', title: "Sony WH-1000XM5 Headphones", category: "Electronics", price: "22,000", image: "https://images.unsplash.com/photo-1618366712010-f4ae9c647dcb?auto=format&fit=crop&w=600&q=80", location: "Bengaluru", time: "1 day ago" }
+        ];
+      }
+
+      document.getElementById('activeCount').textContent = displayListings.length;
+      const grid = document.getElementById('listingsGrid');
+
+      grid.innerHTML = displayListings.map(item => `
+        <a href="Listing Detail.html?id=${item.id}" class="group block bg-white rounded-2xl shadow-sm hover:shadow-bouncy border border-gray-100 overflow-hidden transition-all duration-300">
+          <div class="relative h-48 bg-gray-100 overflow-hidden">
+            <img src="${item.image || 'https://via.placeholder.com/300'}" alt="${item.title}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+            <span class="absolute top-2 left-2 bg-black/60 text-white text-[10px] uppercase font-bold px-2 py-1 rounded backdrop-blur-sm tracking-wide">${item.category}</span>
+          </div>
+          <div class="p-4">
+            <h3 class="font-bold text-gray-800 line-clamp-1 group-hover:text-primary transition-colors">${item.title}</h3>
+            <p class="text-xl font-bold text-primary mt-1">₹ ${item.price}</p>
+            <div class="flex items-center justify-between mt-3 pt-3 border-t border-gray-100 text-xs text-gray-400">
+              <div class="flex items-center gap-1"><span class="material-symbols-outlined text-sm">location_on</span> ${item.location || 'India'}</div>
+              <span>${item.time || 'Recently'}</span>
+            </div>
+          </div>
+        </a>
+      `).join('');
+    }
+
+    // Initialize
+    loadProfile();
+
+  </script>
+</body>
+</html>

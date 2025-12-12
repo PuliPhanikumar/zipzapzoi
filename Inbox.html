@@ -1,449 +1,407 @@
 <!DOCTYPE html>
-<html class="light" lang="en">
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <script>
+  // --- AUTH CHECK ---
+  (function() {
+    const raw = localStorage.getItem('zzz_user');
+    if (!raw) {
+      window.location.href = 'Login Page.html';
+    }
+  })();
+  </script>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>ZipZapZoi - Messages</title>
-  <link href="https://fonts.googleapis.com" rel="preconnect">
-  <link crossorigin href="https://fonts.gstatic.com" rel="preconnect">
-  <link href="https://fonts.googleapis.com/css2?family=Spline+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
-  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Spline+Sans:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet"/>
+
   <script>
     tailwind.config = {
-      darkMode: 'class',
       theme: {
         extend: {
+          fontFamily: { sans: ["Spline Sans", "sans-serif"] },
           colors: {
-            primary: '#007BFF',
-            secondary: '#48C9B0',
-            'background-light': '#F7F8FC',
-            'background-dark': '#1A1C23',
-            'component-light': '#FFFFFF',
-            'component-dark': '#242731',
-            'text-light': '#333333',
-            'text-dark': '#E0E0E0',
-            'text-muted-light': '#6b7280',
-            'text-muted-dark': '#9ca3af',
-            'accent-yellow': '#FFC107',
-            'accent-coral': '#FF7F50'
-          },
-          fontFamily: {
-            display: 'Spline Sans, sans-serif'
-          },
-          borderRadius: {
-            DEFAULT: '1rem',
-            lg: '1.5rem',
-            xl: '2rem',
-            full: '9999px'
+            "primary": "#019863",
+            "secondary": "#4D96A9",
+            "bg-chat": "#E5DDD5",
+            "bubble-me": "#DCF8C6",
+            "bubble-them": "#FFFFFF",
           },
           boxShadow: {
-            bouncy: '0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -2px rgba(0, 0, 0, 0.05), inset 0 -2px 3px rgba(0, 0, 0, 0.04)',
-            'bouncy-lg': '0 10px 15px -3px rgba(0, 0, 0, 0.07), 0 4px 6px -4px rgba(0, 0, 0, 0.07), inset 0 -4px 6px rgba(0, 0, 0, 0.05)',
-            'bouncy-inner': 'inset 0 2px 4px 0 rgba(0, 0, 0, 0.05)',
-            'primary': '0 4px 14px 0 rgba(0, 123, 255, 0.39)'
+            "bouncy": "0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -2px rgba(0, 0, 0, 0.05)",
           }
         }
       }
     }
   </script>
   <style>
-    .material-symbols-outlined {
-      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
-      vertical-align: middle;
-    }
+    .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+    
+    /* Scrollbar Styling */
+    .custom-scroll::-webkit-scrollbar { width: 6px; }
+    .custom-scroll::-webkit-scrollbar-track { background: transparent; }
+    .custom-scroll::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+    .custom-scroll::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+    
+    .msg-bubble { max-width: 85%; word-wrap: break-word; }
+    .msg-time { font-size: 10px; opacity: 0.7; margin-top: 2px; text-align: right; }
+    
+    .slide-in { animation: slideIn 0.2s ease-out; }
+    @keyframes slideIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
   </style>
-  <script src="js/data-manager.js"></script>
 </head>
-<body class="bg-background-light dark:bg-background-dark font-display text-text-light dark:text-text-dark">
-  <script>
-    // Set current user FIRST - BEFORE anything else ✅
-    if (!localStorage.getItem('currentUser')) {
-      localStorage.setItem('currentUser', JSON.stringify({ id: 'user2', name: 'You' }));
-    }
-  </script>
+<body class="bg-gray-100 h-screen flex flex-col overflow-hidden text-gray-800">
 
-  <div class="flex h-screen w-full p-4 lg:p-6">
-    <div class="grid w-full h-full grid-cols-12 gap-4 lg:gap-6">
-      <!-- Left Column Navigation Sidebar -->
-      <aside class="col-span-12 lg:col-span-4 xl:col-span-3 flex flex-col gap-4 lg:gap-6">
-        <!-- SideNavBar -->
-        <div class="bg-component-light dark:bg-component-dark p-4 rounded-lg shadow-bouncy flex-shrink-0">
-          <div class="flex flex-col justify-between h-full">
-            <div class="flex flex-col gap-4">
-              <div class="flex items-center gap-3">
-                <div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-12" style="background-image: url(https://lh3.googleusercontent.com/aida-public/AB6AXuCUI9NB-4S_PuEF1yrhKkHgU8BGbh2G4wgNVssjvBM2pP916rFfPvMN-g-f826XKtOCzCLrZp1FcWdhTWG20FeVOVOAKYCsQgvcLqroDgD79Lfim3Kr4Pmn7szmlZsa5r98lD_ahALTRldYl7HhpA4WON9oeqZ_py274xUHJhOiYW6Sc9MdjswinPMNdt3BUshmrt1XukhWJVheJnvAMGm9MdCKuMDCnsk3KOmrfzRW6zyR3Oa9mtmcrYcbelxLon0AjRQjIwJaCUW3);"></div>
-                <div class="flex flex-col">
-                  <h1 class="text-text-light dark:text-text-dark text-base font-semibold">John Doe</h1>
-                  <p class="text-text-muted-light dark:text-text-muted-dark text-sm font-normal">My Account</p>
-                </div>
-              </div>
-              <div class="flex flex-col gap-1 mt-4">
-                <a class="flex items-center gap-4 px-4 py-2.5 rounded-full text-text-muted-light dark:text-text-muted-dark hover:bg-primary/10 hover:text-primary transition-all" href="#">
-                  <span class="material-symbols-outlined">home</span>
-                  <p class="text-sm font-medium">Home</p>
-                </a>
-                <a class="flex items-center gap-4 px-4 py-2.5 rounded-full text-text-muted-light dark:text-text-muted-dark hover:bg-primary/10 hover:text-primary transition-all" href="#">
-                  <span class="material-symbols-outlined">search</span>
-                  <p class="text-sm font-medium">Browse</p>
-                </a>
-                <a class="flex items-center gap-4 px-4 py-2.5 rounded-full bg-primary/10 text-primary transition-all font-semibold" href="#">
-                  <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1">inbox</span>
-                  <p class="text-sm font-medium">Messages</p>
-                </a>
-                <a class="flex items-center gap-4 px-4 py-2.5 rounded-full text-text-muted-light dark:text-text-muted-dark hover:bg-primary/10 hover:text-primary transition-all" href="#">
-                  <span class="material-symbols-outlined">favorite</span>
-                  <p class="text-sm font-medium">Favorites</p>
-                </a>
-                <a class="flex items-center gap-4 px-4 py-2.5 rounded-full text-text-muted-light dark:text-text-muted-dark hover:bg-primary/10 hover:text-primary transition-all" href="#">
-                  <span class="material-symbols-outlined">person</span>
-                  <p class="text-sm font-medium">Profile</p>
-                </a>
-              </div>
-            </div>
-            <button class="flex w-full cursor-pointer items-center justify-center overflow-hidden rounded-full h-12 px-4 bg-accent-yellow text-text-light text-sm font-bold mt-6 shadow-md hover:scale-105 active:scale-95 transition-transform duration-150">
-              <span class="truncate">Create Listing</span>
-            </button>
-          </div>
-        </div>
-
-        <!-- Inbox List -->
-        <div class="bg-component-light dark:bg-component-dark p-4 rounded-lg shadow-bouncy flex flex-col gap-4 flex-grow min-h-0">
-          <div class="flex flex-wrap justify-between items-center gap-3">
-            <p class="text-text-light dark:text-text-dark text-2xl font-bold leading-tight">Messages</p>
-          </div>
-
-          <!-- SearchBar -->
-          <div class="flex-shrink-0">
-            <label class="flex flex-col w-full">
-              <div class="flex w-full flex-1 items-stretch rounded-full h-12 bg-background-light dark:bg-background-dark shadow-bouncy-inner">
-                <div class="text-text-muted-light dark:text-text-muted-dark flex items-center justify-center pl-4">
-                  <span class="material-symbols-outlined">search</span>
-                </div>
-                <input class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden text-text-light dark:text-text-dark focus:outline-0 focus:ring-0 border-none bg-transparent h-full placeholder:text-text-muted-light dark:placeholder:text-text-muted-dark px-2 text-base font-normal" placeholder="Search conversations..." value="">
-              </div>
-            </label>
-          </div>
-
-          <!-- Message Thread List -->
-          <div class="flex flex-col gap-2 overflow-y-auto pr-2 -mr-2" id="conversationList">
-            <!-- Conversations will be rendered here by JavaScript -->
-          </div>
-        </div>
-      </aside>
-
-      <!-- Right Column Conversation View -->
-      <main class="col-span-12 lg:col-span-8 xl:col-span-9 flex flex-col gap-4 lg:gap-6 min-h-0">
-        <div class="bg-component-light dark:bg-component-dark rounded-lg shadow-bouncy-lg flex-grow flex flex-col">
-          <!-- Conversation Header -->
-          <header class="sticky top-0 z-10 flex items-center justify-between p-4 border-b border-background-light dark:border-background-dark flex-shrink-0">
-            <div class="flex items-center gap-4">
-              <div class="relative">
-                <div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-12" style="background-image: url(https://lh3.googleusercontent.com/aida-public/AB6AXuCm-1SeavDVqzibcHztOCxP7QKQdyokJGUB7hzdsXNGWl_nyvIbjsV3blxorkxGY5NnXGqcKT0IFkVIyDMFGeHm-Kx0Ts8YsgXI3FYNxFlRuplr9oGwbgGE9-_bL9ckLZfBGOVCxI2ojEYvWmKuf9Zf_g2sWA-jLESerHe74x2CdJniRID0Di05krQVbQ0Twp38eFgedT1gUOEtP-1QoPpY0CrMP7WappoaK0-7eh-rubqy6gVWV3c9f0E2NRkxbiuIEWayd0dki97H);"></div>
-                <div class="absolute bottom-0 right-0 size-3 rounded-full bg-green-500 border-2 border-component-light dark:border-component-dark"></div>
-              </div>
-              <div>
-                <h2 class="text-lg font-bold text-text-light dark:text-text-dark">Jane Smith</h2>
-                <p class="text-sm text-green-500">Online</p>
-              </div>
-            </div>
-            <button class="p-2 rounded-full hover:bg-background-light dark:hover:bg-background-dark text-text-muted-light dark:text-text-muted-dark">
-              <span class="material-symbols-outlined">more_horiz</span>
-            </button>
-          </header>
-
-          <!-- Associated Listing Banner -->
-          <div class="p-4 border-b border-background-light dark:border-background-dark flex-shrink-0">
-            <a class="flex items-center gap-4 p-3 rounded-lg bg-background-light dark:bg-background-dark hover:shadow-bouncy transition-shadow" href="#">
-              <div class="bg-center bg-no-repeat aspect-video bg-cover rounded w-24" style="background-image: url(https://lh3.googleusercontent.com/aida-public/AB6AXuCCO7d_IQtO4saCrA0Rn5aLhu-pC6lLwgfRwkqpMVtaVwsNpR2_jxK-YTflTuVTepGIXehKjjRugEKNiQZD3CqSDz5SsNhfp-gB6mwBfeHCfHLEI7nge3e4fSidseaAd6QoIu430vhZ8o4e2HqI2WEgz-VDUrlVtZOcOUZGqCCwGsT-8-DRFrmhUkhrJoqqYjyo93f87RsBUVCZMALCQeE5uO6h2NzV2DSIzZFUlXq4CYBJbFkaYWxohp8b1w6mJLzyViBZoSHpOhSd);"></div>
-              <div class="flex-grow">
-                <p class="text-sm text-text-muted-light dark:text-text-muted-dark">Conversation about:</p>
-                <h3 class="font-semibold text-text-light dark:text-text-dark">Vintage Leather Jacket</h3>
-              </div>
-              <p class="text-lg font-bold text-primary">$120</p>
-            </a>
-          </div>
-
-          <!-- Message History -->
-          <div class="flex-grow p-6 overflow-y-auto space-y-6" id="messagesContainer">
-            <!-- Messages will be rendered here by JavaScript -->
-          </div>
-
-          <!-- Message Input Field -->
-          <div class="p-4 border-t border-background-light dark:border-background-dark flex-shrink-0">
-            <div class="flex items-center gap-4 bg-background-light dark:bg-background-dark rounded-full h-14 p-2 shadow-bouncy-inner">
-              <button class="p-2 rounded-full hover:bg-primary/10 text-text-muted-light dark:text-text-muted-dark hover:text-primary transition-colors">
-                <span class="material-symbols-outlined">add_photo_alternate</span>
-              </button>
-              <button class="p-2 rounded-full hover:bg-primary/10 text-text-muted-light dark:text-text-muted-dark hover:text-primary transition-colors">
-                <span class="material-symbols-outlined">attach_file</span>
-              </button>
-              <input id="messageInput" class="flex-grow bg-transparent border-none focus:ring-0 text-text-light dark:text-text-dark placeholder:text-text-muted-light dark:placeholder:text-text-muted-dark" placeholder="Type your message..." type="text">
-              <button id="sendBtn" class="flex items-center justify-center size-10 rounded-full bg-primary text-white shadow-primary hover:scale-105 active:scale-95 transition-transform duration-150">
-                <span class="material-symbols-outlined">send</span>
-              </button>
-            </div>
-          </div>
-        </div>
-      </main>
+  <header class="bg-white border-b border-gray-200 h-16 flex items-center justify-between px-6 z-10 flex-shrink-0">
+    <div class="flex items-center gap-3">
+      <a href="classifieds.html" class="text-primary hover:text-green-700 transition-colors">
+        <span class="material-symbols-outlined text-3xl">all_inclusive</span>
+      </a>
+      <h1 class="font-bold text-xl tracking-tight text-gray-800">Messages</h1>
     </div>
+    <div class="flex items-center gap-4">
+      <a href="Seller Dashboard.html" class="hidden md:flex items-center gap-2 text-sm font-bold text-gray-600 hover:text-primary transition-colors">
+        <span class="material-symbols-outlined text-lg">dashboard</span> Dashboard
+      </a>
+      <div class="h-9 w-9 rounded-full bg-primary text-white flex items-center justify-center font-bold shadow-md border-2 border-white" id="userAvatar">U</div>
+    </div>
+  </header>
+
+  <div class="flex-1 flex overflow-hidden">
+    
+    <aside class="w-full md:w-80 lg:w-96 bg-white border-r border-gray-200 flex flex-col z-20 md:flex" id="sidebar">
+      <div class="p-4 border-b border-gray-100">
+        <div class="relative">
+          <span class="material-symbols-outlined absolute left-3 top-2.5 text-gray-400 text-lg">search</span>
+          <input type="text" id="searchBox" placeholder="Search chats..." class="w-full bg-gray-50 border border-gray-200 rounded-full py-2 pl-10 pr-4 text-sm focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all">
+        </div>
+      </div>
+
+      <div class="flex-1 overflow-y-auto custom-scroll" id="conversationList">
+        </div>
+    </aside>
+
+    <main class="flex-1 flex-col bg-[#efeae2] relative hidden md:flex" id="chatArea">
+      
+      <div id="emptyState" class="absolute inset-0 flex flex-col items-center justify-center text-center p-8 bg-gray-50 z-0">
+        <div class="w-40 h-40 bg-green-100 rounded-full flex items-center justify-center mb-6 text-green-500">
+           <span class="material-symbols-outlined text-7xl">chat</span>
+        </div>
+        <h2 class="text-2xl font-bold text-gray-700 mb-2">Select a Conversation</h2>
+        <p class="text-gray-500 max-w-sm">Choose a chat from the left to view messages or negotiate prices.</p>
+      </div>
+
+      <div id="activeChat" class="flex flex-col h-full hidden z-10 w-full bg-[#efeae2]">
+        
+        <div class="bg-white px-4 py-3 border-b border-gray-200 flex items-center justify-between shadow-sm">
+          <div class="flex items-center gap-3">
+            <button class="md:hidden p-2 -ml-2 text-gray-600 hover:bg-gray-100 rounded-full" onclick="closeChatMobile()">
+              <span class="material-symbols-outlined">arrow_back</span>
+            </button>
+            
+            <div class="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center text-gray-500 font-bold text-lg" id="chatAvatar">?</div>
+            <div>
+              <h3 class="font-bold text-gray-800 leading-tight" id="chatName">User Name</h3>
+              <p class="text-xs text-green-600 font-medium flex items-center gap-1" id="typingIndicator">
+                <span class="w-2 h-2 rounded-full bg-green-500"></span> Online
+              </p>
+            </div>
+          </div>
+          <div class="flex items-center gap-2">
+             <button class="hidden md:flex p-2 text-gray-400 hover:text-red-500 rounded-full hover:bg-gray-100" onclick="closeChatDesktop()" title="Close Chat">
+               <span class="material-symbols-outlined">close</span>
+             </button>
+             <button class="md:hidden text-gray-400"><span class="material-symbols-outlined">more_vert</span></button>
+          </div>
+        </div>
+
+        <div class="bg-white/95 backdrop-blur-sm px-4 py-2 border-b border-gray-200 flex items-center justify-between text-sm shadow-sm z-10" id="contextBanner">
+           <div class="flex items-center gap-3 overflow-hidden">
+             <div class="w-10 h-10 bg-gray-100 rounded bg-cover bg-center flex-shrink-0" id="contextImg" style="background-image: url('https://via.placeholder.com/150');"></div>
+             <div class="min-w-0">
+               <p class="font-bold text-gray-800 truncate" id="contextTitle">Listing Title</p>
+               <p class="text-primary font-bold text-xs" id="contextPrice">₹ 0</p>
+             </div>
+           </div>
+           <a href="#" id="contextLink" class="text-xs font-bold text-blue-600 hover:underline bg-blue-50 px-3 py-1 rounded-full whitespace-nowrap">View Ad</a>
+        </div>
+
+        <div class="flex-1 overflow-y-auto p-4 space-y-2 custom-scroll" id="messagesFeed" style="background-image: url('https://user-images.githubusercontent.com/15075759/28719144-86dc0f70-73b1-11e7-911d-60d70fcded21.png'); background-blend-mode: overlay;">
+           </div>
+
+        <div class="px-4 py-2 flex gap-2 overflow-x-auto no-scrollbar bg-[#efeae2]/50" id="quickReplies">
+           <button class="bg-white border border-gray-200 rounded-full px-3 py-1 text-xs font-medium text-gray-600 hover:bg-gray-50 hover:text-primary shadow-sm whitespace-nowrap transition-colors" onclick="setInput('Is this still available?')">Is this available?</button>
+           <button class="bg-white border border-gray-200 rounded-full px-3 py-1 text-xs font-medium text-gray-600 hover:bg-gray-50 hover:text-primary shadow-sm whitespace-nowrap transition-colors" onclick="setInput('What is your best price?')">Best price?</button>
+           <button class="bg-white border border-gray-200 rounded-full px-3 py-1 text-xs font-medium text-gray-600 hover:bg-gray-50 hover:text-primary shadow-sm whitespace-nowrap transition-colors" onclick="setInput('Yes, it is available!')">Yes, available!</button>
+        </div>
+
+        <div class="bg-white p-3 border-t border-gray-200 flex items-center gap-2">
+          <button class="p-2 text-gray-400 hover:text-primary rounded-full hover:bg-gray-100 transition-colors"><span class="material-symbols-outlined">add_circle</span></button>
+          <input type="text" id="msgInput" class="flex-1 bg-gray-100 border-none rounded-full px-4 py-2.5 focus:ring-2 focus:ring-primary/50 outline-none transition-all placeholder-gray-400" placeholder="Type a message...">
+          <button onclick="sendMessage()" class="p-2.5 bg-primary text-white rounded-full shadow-lg hover:bg-green-700 transition-transform active:scale-95 flex items-center justify-center">
+            <span class="material-symbols-outlined text-lg">send</span>
+          </button>
+        </div>
+
+      </div>
+    </main>
   </div>
 
   <script>
-    // ✅ CORRECTED INBOX SCRIPT
+    const currentUser = JSON.parse(localStorage.getItem('zzz_user'));
+    const STORAGE_KEY = 'zzz_messages';
     
-    // DOM refs using IDs directly
-    const convListEl = document.getElementById('conversationList');
-    const convHeaderName = document.querySelector('header h2');
-    const convHeaderStatus = document.querySelector('header p');
-    const messagesContainer = document.getElementById('messagesContainer');
-    const inputEl = document.querySelector('input[placeholder="Type your message..."]');
+    document.getElementById('userAvatar').textContent = currentUser.name.charAt(0).toUpperCase();
 
-    // Store setup
-    // CORRECT - Initialize store FIRST, then load messages
-const KEY = 'zzzinboxdatav1';
-let store = JSON.parse(sessionStorage.getItem(KEY)) || null;
-if (!store) {
-  store = { conversations: [], selectedId: null };
-}
+    // --- 1. DATA SEEDING (Auto-fill if empty) ---
+    function seedData() {
+      let allMsgs = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+      if(allMsgs.length > 0) return; 
 
-// NOW call loadMessagesFromLocalStorage
-loadMessagesFromLocalStorage(); // ✅ store exists now!
-
-// Load messages from localStorage - FIXED ✅
-function loadMessagesFromLocalStorage() {
-  const zzz_messages = JSON.parse(localStorage.getItem('zzz_messages') || '[]');
-  const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{"id":"user2"}');
-  
-  console.log('📥 Found', zzz_messages.length, 'messages in localStorage');
-  console.log('👤 Current user:', currentUser);
-  
-  if (zzz_messages.length === 0) {
-    console.log('⚠️ No messages in localStorage yet');
-    return;
-  }
-
-  const conversationMap = {};
-  
-  zzz_messages.forEach(msg => {
-    const fromName = msg.fromName || 'User ' + msg.fromUserId;
-    const key = `${msg.fromUserId}_${msg.listingId}_${fromName}`;
-    
-    if (!conversationMap[key]) {
-      conversationMap[key] = {
-        id: 'conv_' + key,
-        name: fromName,
-        avatar: '',
-        online: false,
-        unread: 0,
-        listing: {
-          id: msg.listingId,
-          title: msg.listingTitle || 'Listing',
-          price: 0,
-          url: '#'
+      const now = Date.now();
+      const samples = [
+        {
+          id: 'msg_1', fromUserId: 'user_bob', fromName: 'Bob Builder', toUserId: currentUser.id, toName: currentUser.name,
+          listingId: '101', listingTitle: 'iPhone 14 Pro - Deep Purple', text: 'Hi, is the price negotiable?', timestamp: new Date(now - 86400000).toISOString(), read: false
         },
-        messages: []
-      };
-    } else {
-      // Always update name to the latest senderName
-      conversationMap[key].name = fromName;
-    }
-    
-    conversationMap[key].messages.push({
-      id: msg.id,
-      from: msg.fromUserId === currentUser.id ? 'me' : 'them',
-      text: msg.text,
-      at: msg.timestamp
-    });
-    
-    if (msg.toUserId === currentUser.id && !msg.read) {
-      conversationMap[key].unread += 1;
-    }
-  });
-
-  const newConversations = Object.values(conversationMap);
-  store.conversations = [
-    ...store.conversations.filter(c => !newConversations.find(nc => nc.id === c.id)),
-    ...newConversations
-  ];
-  
-  console.log('✅ Total conversations:', store.conversations.length);
-  save();
-}
-
-    // Utilities
-    function save() {
-      sessionStorage.setItem(KEY, JSON.stringify(store));
+        {
+          id: 'msg_2', fromUserId: 'user_alice', fromName: 'Alice Wonderland', toUserId: currentUser.id, toName: currentUser.name,
+          listingId: '102', listingTitle: 'Royal Enfield Classic 350', text: 'Can I come see the bike tomorrow?', timestamp: new Date(now - 3600000).toISOString(), read: false
+        }
+      ];
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(samples));
     }
 
-    function timeAgo(ts) {
-      const diff = Math.floor((Date.now() - ts) / 60000);
-      if (diff < 1) return 'Now';
-      if (diff < 60) return diff + 'm';
-      if (diff < 1440) return Math.floor(diff / 60) + 'h';
-      return Math.floor(diff / 1440) + 'd';
-    }
+    // --- 2. LOAD CONVERSATIONS ---
+    function getConversations() {
+      seedData();
+      const allMsgs = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+      const convMap = {};
 
-    // Render conversation list
-    function renderList() {
-      if (!convListEl) return;
-      convListEl.innerHTML = '';
-      
-      if (store.conversations.length === 0) {
-        convListEl.innerHTML = '<p class="text-center text-text-muted-light py-4">No messages yet</p>';
-        return;
-      }
-      
-      store.conversations.forEach(conv => {
-        const item = document.createElement('div');
-        item.className = 'flex gap-4 p-3 justify-between rounded-lg hover:bg-background-light dark:hover:bg-background-dark cursor-pointer transition-all';
-        if (store.selectedId === conv.id) item.classList.add('bg-primary/10');
+      allMsgs.forEach(msg => {
+        const participants = [msg.fromUserId, msg.toUserId].sort().join('_');
+        const convId = `${participants}_${msg.listingId}`;
+
+        if (!convMap[convId]) {
+          convMap[convId] = {
+            id: convId,
+            listingId: msg.listingId,
+            listingTitle: msg.listingTitle,
+            otherUser: msg.fromUserId === currentUser.id ? msg.toName : msg.fromName,
+            lastMsg: msg,
+            unreadCount: 0
+          };
+        }
         
-        const lastMsg = conv.messages[conv.messages.length - 1];
-        item.innerHTML = `
-          <div class="flex items-start gap-3">
-            <div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-12" style="background-image: url('${conv.avatar||'https://via.placeholder.com/64'}')"></div>
-            <div class="flex flex-col">
-              <p class="text-base font-medium">${conv.name}</p>
-              <p class="text-primary text-sm font-medium truncate max-w-40">${lastMsg?.text || 'No messages'}</p>
-            </div>
-          </div>
-          <div class="shrink-0 flex flex-col items-end gap-1">
-            <p class="text-text-muted-light text-xs">${lastMsg ? timeAgo(new Date(lastMsg.at).getTime()) : ''}</p>
-            ${conv.unread > 0 ? `<div class="flex size-6 items-center justify-center rounded-full bg-primary text-white text-xs font-bold">${conv.unread}</div>` : ''}
-          </div>
-        `;
-        item.addEventListener('click', () => selectConversation(conv.id));
-        convListEl.appendChild(item);
-      });
-    }
-
-    // Render selected conversation
-    function renderConversation(id) {
-      const conv = store.conversations.find(c => c.id === id);
-      if (!conv) return;
-
-      if (convHeaderName) convHeaderName.textContent = conv.name;
-      if (convHeaderStatus) convHeaderStatus.textContent = conv.online ? 'Online' : 'Offline';
-
-      if (messagesContainer) {
-        messagesContainer.innerHTML = '';
-        conv.messages.forEach(m => {
-          const side = m.from === 'me' ? 'justify-end' : 'justify-start';
-          const bubbleBg = m.from === 'me' ? 'bg-primary text-white' : 'bg-gray-200 darkbg-gray-600 text-text-light darktext-text-dark';
-          const pWrap = document.createElement('div');
-          pWrap.className = `flex ${side}`;
-          pWrap.innerHTML = `
-            <div class="max-w-md">
-              <div class="p-4 rounded-lg ${m.from === 'me' ? 'rounded-br-none' : 'rounded-bl-none'} ${bubbleBg} shadow-bouncy">
-                <p>${m.text}</p>
-              </div>
-              <p class="text-xs text-text-muted-light dark:text-text-muted-dark mt-1 ${m.from === 'me' ? 'text-right mr-1' : 'ml-1'}">${new Date(m.at).toLocaleTimeString()}</p>
-            </div>
-          `;
-          messagesContainer.appendChild(pWrap);
-        });
-        messagesContainer.scrollTop = messagesContainer.scrollHeight;
-      }
-
-      conv.unread = 0;
-      save();
-      renderList();
-    }
-
-    function selectConversation(id) {
-      store.selectedId = id;
-      save();
-      renderConversation(id);
-      renderList();
-    }
-
-    // Load and render
-    loadMessagesFromLocalStorage();
-    renderList();
-    if (store.conversations.length > 0 && !store.selectedId) {
-      store.selectedId = store.conversations[0].id;
-      renderConversation(store.selectedId);
-    }
-
-    // Refresh when page gains focus
-    window.addEventListener('focus', loadMessagesFromLocalStorage);
-    // ============================================
-    // SEND MESSAGE FUNCTION ✅
-    // ============================================
-    const sendBtn = document.getElementById('sendBtn');
-    const msgInput = document.getElementById('messageInput');
-
-    function sendReply() {
-      const text = msgInput.value.trim();
-      
-      if (!text) {
-        alert('⚠️ Please type a message');
-        return;
-      }
-
-      const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{"id":"user2"}');
-      const conv = store.conversations.find(c => c.id === store.selectedId);
-      
-      if (!conv) {
-        alert('❌ Select a conversation first');
-        return;
-      }
-
-      // Add message to conversation
-      const newMsg = {
-        id: 'msg_' + Date.now(),
-        from: 'me',
-        text: text,
-        at: new Date().toISOString()
-      };
-
-      conv.messages.push(newMsg);
-
-      // Also save to localStorage
-      const zzz_messages = JSON.parse(localStorage.getItem('zzz_messages') || '[]');
-      zzz_messages.push({
-        id: newMsg.id,
-        fromUserId: currentUser.id,
-        toUserId: 'seller',
-        listingId: conv.listing.id,
-        listingTitle: conv.listing.title,
-        text: text,
-        timestamp: newMsg.at,
-        read: false
-      });
-      localStorage.setItem('zzz_messages', JSON.stringify(zzz_messages));
-
-      // Clear input
-      msgInput.value = '';
-
-      // Refresh UI
-      save();
-      renderConversation(conv.id);
-      renderList();
-
-      console.log('✅ Message sent!');
-    }
-
-    // Attach send button click
-    if (sendBtn) {
-      sendBtn.addEventListener('click', sendReply);
-    }
-
-    // Also allow Enter key to send
-    if (msgInput) {
-      msgInput.addEventListener('keypress', (e) => {
-        if (e.key === 'Enter') {
-          e.preventDefault();
-          sendReply();
+        if (new Date(msg.timestamp) > new Date(convMap[convId].lastMsg.timestamp)) {
+          convMap[convId].lastMsg = msg;
+        }
+        
+        if(msg.toUserId === currentUser.id && !msg.read) {
+           convMap[convId].unreadCount++;
         }
       });
+
+      return Object.values(convMap).sort((a, b) => new Date(b.lastMsg.timestamp) - new Date(a.lastMsg.timestamp));
     }
 
-    // Expose for debugging
-    window._zzz_inbox = { store, save, sendReply };
+    let activeConvId = null;
+
+    function renderList() {
+      const list = getConversations();
+      const container = document.getElementById('conversationList');
+      const search = document.getElementById('searchBox').value.toLowerCase();
+
+      if (list.length === 0) {
+        container.innerHTML = `<div class="p-8 text-center text-gray-400"><p>No messages yet.</p></div>`;
+        return;
+      }
+
+      container.innerHTML = list
+        .filter(c => c.listingTitle.toLowerCase().includes(search) || (c.lastMsg.text && c.lastMsg.text.toLowerCase().includes(search)))
+        .map(c => {
+          const isActive = c.id === activeConvId;
+          const date = new Date(c.lastMsg.timestamp).toLocaleDateString([], {month:'short', day:'numeric'});
+          
+          return `
+          <div onclick="openChat('${c.id}')" class="flex gap-3 p-4 cursor-pointer hover:bg-gray-50 border-b border-gray-100 transition-colors ${isActive ? 'bg-blue-50 border-l-4 border-l-primary' : 'border-l-4 border-l-transparent'}">
+            <div class="w-12 h-12 rounded-full bg-gray-200 flex-shrink-0 flex items-center justify-center font-bold text-gray-500">${c.otherUser ? c.otherUser.charAt(0) : '?'}</div>
+            <div class="flex-1 min-w-0">
+              <div class="flex justify-between items-baseline mb-1">
+                <h4 class="font-bold text-gray-800 truncate text-sm">${c.otherUser || 'User'}</h4>
+                <span class="text-xs text-gray-400 whitespace-nowrap">${date}</span>
+              </div>
+              <p class="text-xs text-gray-500 truncate mb-1">${c.listingTitle}</p>
+              <div class="flex justify-between items-center">
+                 <p class="text-sm text-gray-600 truncate ${c.unreadCount > 0 ?'font-bold text-gray-900':''}">${c.lastMsg.text}</p>
+                 ${c.unreadCount > 0 ? `<span class="bg-primary text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full ml-2">${c.unreadCount}</span>` : ''}
+              </div>
+            </div>
+          </div>
+          `;
+        }).join('');
+    }
+
+    // --- 3. OPEN CHAT ---
+    function openChat(convId) {
+      activeConvId = convId;
+      
+      const allMsgs = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+      let updated = false;
+      const parts = convId.split('_'); 
+      const listingId = parts[2]; 
+
+      const msgs = allMsgs.filter(m => {
+         const p = [m.fromUserId, m.toUserId].sort().join('_');
+         const isMatch = `${p}_${m.listingId}` === convId;
+         if(isMatch && m.toUserId === currentUser.id && !m.read) {
+             m.read = true; updated = true;
+         }
+         return isMatch;
+      }).sort((a,b) => new Date(a.timestamp) - new Date(b.timestamp));
+
+      if(updated) { localStorage.setItem(STORAGE_KEY, JSON.stringify(allMsgs)); renderList(); }
+      
+      // UI Updates (Responsive Handling)
+      document.getElementById('emptyState').classList.add('hidden'); // Always hide empty state when chatting
+      document.getElementById('chatArea').classList.remove('hidden'); // Ensure right col is visible
+      document.getElementById('activeChat').classList.remove('hidden'); // Show chat UI
+      
+      // On Mobile (< 768px), hide the sidebar
+      if(window.innerWidth < 768) {
+        document.getElementById('sidebar').classList.add('hidden');
+      }
+
+      const otherName = msgs[0].fromUserId === currentUser.id ? msgs[0].toName : msgs[0].fromName;
+      document.getElementById('chatName').textContent = otherName || 'User';
+      document.getElementById('chatAvatar').textContent = (otherName || '?').charAt(0);
+      document.getElementById('contextTitle').textContent = msgs[0].listingTitle;
+      document.getElementById('contextLink').href = `Listing Detail.html?id=${listingId}`;
+
+      const feed = document.getElementById('messagesFeed');
+      feed.innerHTML = msgs.map(m => {
+        const isMe = m.fromUserId === currentUser.id;
+        return `
+          <div class="flex w-full ${isMe ? 'justify-end' : 'justify-start'} slide-in">
+            <div class="msg-bubble px-4 py-2 rounded-xl shadow-sm relative text-sm ${isMe ? 'bg-bubble-me text-gray-800 rounded-tr-none' : 'bg-white text-gray-800 rounded-tl-none'}">
+              ${m.text}
+              <div class="msg-time ${isMe ? 'text-green-100' : 'text-gray-400'}">${new Date(m.timestamp).toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'})} 
+              ${isMe ? '<span class="material-symbols-outlined text-[10px] text-blue-500 align-middle ml-1">done_all</span>' : ''}</div>
+            </div>
+          </div>
+        `;
+      }).join('');
+      
+      feed.scrollTop = feed.scrollHeight;
+    }
+
+    // --- 4. SEND MESSAGE & AUTO-REPLY ---
+    function sendMessage() {
+      const txt = document.getElementById('msgInput').value.trim();
+      if(!txt || !activeConvId) return;
+
+      const allMsgs = JSON.parse(localStorage.getItem(STORAGE_KEY));
+      const parts = activeConvId.split('_');
+      const otherUserId = parts[0] === currentUser.id ? parts[1] : parts[0]; 
+      
+      const refMsg = allMsgs.find(m => {
+         const p = [m.fromUserId, m.toUserId].sort().join('_');
+         return `${p}_${m.listingId}` === activeConvId;
+      });
+      const otherName = refMsg ? (refMsg.fromUserId === currentUser.id ? refMsg.toName : refMsg.fromName) : 'User';
+
+      const newMsg = {
+        id: 'msg_' + Date.now(),
+        fromUserId: currentUser.id,
+        fromName: currentUser.name,
+        toUserId: otherUserId,
+        toName: otherName,
+        listingId: refMsg.listingId,
+        listingTitle: refMsg.listingTitle,
+        text: txt,
+        timestamp: new Date().toISOString(),
+        read: false
+      };
+
+      allMsgs.push(newMsg);
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(allMsgs));
+      
+      document.getElementById('msgInput').value = '';
+      openChat(activeConvId); // Refresh Chat UI instantly
+      renderList(); // Update Sidebar Snippet
+      
+      // TRIGGER SIMULATED REPLY
+      document.getElementById('typingIndicator').innerHTML = '<span class="animate-pulse text-primary">typing...</span>';
+      
+      setTimeout(() => {
+         simulateReply(activeConvId, otherUserId, otherName, refMsg.listingId, refMsg.listingTitle);
+      }, 2000);
+    }
+
+    function simulateReply(convId, userId, userName, listId, listTitle) {
+      const replies = ["Yes, it is available!", "Can you send more pics?", "I can offer ₹500 less.", "When can I come see it?", "Let's meet tomorrow.", "Okay, sounds good."];
+      const randomText = replies[Math.floor(Math.random() * replies.length)];
+
+      const replyMsg = {
+        id: 'msg_' + Date.now(),
+        fromUserId: userId,
+        fromName: userName,
+        toUserId: currentUser.id,
+        toName: currentUser.name,
+        listingId: listId,
+        listingTitle: listTitle,
+        text: randomText,
+        timestamp: new Date().toISOString(),
+        read: false
+      };
+
+      const allMsgs = JSON.parse(localStorage.getItem(STORAGE_KEY));
+      allMsgs.push(replyMsg);
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(allMsgs));
+
+      // If user is currently looking at THIS chat, refresh it
+      if (activeConvId === convId) {
+        document.getElementById('typingIndicator').innerHTML = '<span class="w-2 h-2 rounded-full bg-green-500"></span> Online';
+        openChat(convId);
+      }
+      renderList(); // Update badge
+    }
+
+    function setInput(text) {
+      document.getElementById('msgInput').value = text;
+      document.getElementById('msgInput').focus();
+    }
+
+    // --- 5. RESPONSIVE HELPERS ---
+    
+    // CLOSE CHAT (Mobile): Go back to list
+    function closeChatMobile() {
+      document.getElementById('activeChat').classList.add('hidden');
+      document.getElementById('sidebar').classList.remove('hidden'); // Show List
+      activeConvId = null;
+      renderList(); // Clear active styling
+    }
+
+    // CLOSE CHAT (Desktop): Show Empty State
+    function closeChatDesktop() {
+      document.getElementById('activeChat').classList.add('hidden');
+      document.getElementById('emptyState').classList.remove('hidden'); // Show "Select a Conversation"
+      activeConvId = null;
+      renderList(); // Clear active styling
+    }
+
+    document.getElementById('msgInput').addEventListener('keypress', function (e) {
+      if (e.key === 'Enter') sendMessage();
+    });
+
+    document.getElementById('searchBox').addEventListener('input', renderList);
+
+    // Initial Load
+    renderList();
+
   </script>
-  <script src="scripts/auth.js"></script>
-  <script src="scripts/boot.js"></script>
 </body>
 </html>

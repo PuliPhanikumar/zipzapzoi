@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>ZipZapZoi - Help Center</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Spline+Sans:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet"/>
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: { sans: ["Spline Sans", "sans-serif"] },
+          colors: {
+            "primary": "#019863",
+            "secondary": "#4D96A9",
+            "background-light": "#F7F9FC",
+          },
+          boxShadow: {
+            "bouncy": "0 10px 20px -5px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)",
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+    /* Accordion Transition */
+    .faq-content { max-height: 0; overflow: hidden; transition: max-height 0.3s ease-out; }
+    .faq-open .faq-content { max-height: 500px; transition: max-height 0.5s ease-in; }
+    .faq-open .icon-rotate { transform: rotate(180deg); }
+  </style>
+</head>
+<body class="bg-background-light min-h-screen flex flex-col text-gray-800">
+
+  <header class="bg-white border-b border-gray-200 sticky top-0 z-50 shadow-sm">
+    <div class="container mx-auto px-6 h-16 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <a href="classifieds.html" class="flex items-center gap-2 text-primary hover:text-green-700 transition-colors">
+          <span class="material-symbols-outlined text-3xl">all_inclusive</span>
+          <span class="font-bold text-xl tracking-tight hidden sm:block">ZipZapZoi</span>
+        </a>
+      </div>
+      <div class="flex items-center gap-6">
+        <a href="classifieds.html" class="text-sm font-bold text-gray-500 hover:text-primary transition-colors">Back to Home</a>
+        <div class="h-9 w-9 rounded-full bg-primary text-white flex items-center justify-center font-bold shadow-md border-2 border-white" id="userAvatar">U</div>
+      </div>
+    </div>
+  </header>
+
+  <section class="bg-primary text-white py-16 px-6 text-center relative overflow-hidden">
+    <div class="absolute top-0 left-0 w-full h-full bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10"></div>
+    <div class="relative z-10 max-w-2xl mx-auto">
+      <h1 class="text-4xl font-bold mb-4">How can we help you?</h1>
+      <div class="relative">
+        <span class="material-symbols-outlined absolute left-4 top-3.5 text-gray-400">search</span>
+        <input type="text" id="searchInput" placeholder="Search for answers (e.g., 'payment', 'scam', 'password')" 
+               class="w-full pl-12 pr-4 py-3 rounded-full text-gray-800 focus:ring-4 focus:ring-green-400/50 outline-none shadow-lg transition-shadow">
+      </div>
+    </div>
+  </section>
+
+  <main class="flex-grow container mx-auto px-6 py-12 max-w-5xl">
+    
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-12">
+      <button onclick="filterCategory('Buying')" class="bg-white p-6 rounded-2xl shadow-sm hover:shadow-bouncy hover:-translate-y-1 transition-all text-center group">
+        <span class="material-symbols-outlined text-4xl text-blue-500 mb-2 group-hover:scale-110 transition-transform">shopping_bag</span>
+        <h3 class="font-bold text-gray-700">Buying</h3>
+      </button>
+      <button onclick="filterCategory('Selling')" class="bg-white p-6 rounded-2xl shadow-sm hover:shadow-bouncy hover:-translate-y-1 transition-all text-center group">
+        <span class="material-symbols-outlined text-4xl text-green-500 mb-2 group-hover:scale-110 transition-transform">storefront</span>
+        <h3 class="font-bold text-gray-700">Selling</h3>
+      </button>
+      <button onclick="filterCategory('Account')" class="bg-white p-6 rounded-2xl shadow-sm hover:shadow-bouncy hover:-translate-y-1 transition-all text-center group">
+        <span class="material-symbols-outlined text-4xl text-purple-500 mb-2 group-hover:scale-110 transition-transform">manage_accounts</span>
+        <h3 class="font-bold text-gray-700">Account</h3>
+      </button>
+      <button onclick="filterCategory('Safety')" class="bg-white p-6 rounded-2xl shadow-sm hover:shadow-bouncy hover:-translate-y-1 transition-all text-center group">
+        <span class="material-symbols-outlined text-4xl text-red-500 mb-2 group-hover:scale-110 transition-transform">shield</span>
+        <h3 class="font-bold text-gray-700">Safety</h3>
+      </button>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-10">
+      
+      <div class="lg:col-span-2">
+        <h2 class="text-2xl font-bold mb-6 text-gray-800 flex items-center gap-2">
+          <span class="material-symbols-outlined text-primary">quiz</span> Frequently Asked Questions
+        </h2>
+        
+        <div id="faqContainer" class="space-y-4">
+          </div>
+      </div>
+
+      <div class="lg:col-span-1">
+        <div class="bg-white p-6 rounded-2xl shadow-bouncy sticky top-24">
+          <h2 class="text-xl font-bold mb-4">Still need help?</h2>
+          <p class="text-sm text-gray-500 mb-6">Our support team usually responds within 24 hours.</p>
+          
+          <form id="contactForm" class="space-y-4">
+            <div>
+              <label class="block text-xs font-bold uppercase text-gray-500 mb-1">Topic</label>
+              <select id="ticketTopic" class="w-full bg-gray-50 border border-gray-200 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-primary outline-none">
+                <option>Report a Bug</option>
+                <option>Report a User/Ad</option>
+                <option>Account Issue</option>
+                <option>Other</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-xs font-bold uppercase text-gray-500 mb-1">Message</label>
+              <textarea id="ticketMsg" rows="4" class="w-full bg-gray-50 border border-gray-200 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-primary outline-none" placeholder="Describe your issue..." required></textarea>
+            </div>
+            <button type="submit" class="w-full bg-secondary hover:bg-cyan-700 text-white font-bold py-3 rounded-xl transition-colors shadow-lg">
+              Send Request
+            </button>
+          </form>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <footer class="bg-white border-t border-gray-200 py-8 mt-auto">
+    <div class="container mx-auto px-6 text-center text-sm text-gray-500">
+      &copy; 2024 ZipZapZoi. All Rights Reserved.
+    </div>
+  </footer>
+
+  <script>
+    // --- 1. AUTH & SETUP ---
+    const currentUser = JSON.parse(localStorage.getItem('zzz_user'));
+    if(currentUser) {
+        document.getElementById('userAvatar').textContent = currentUser.name.charAt(0).toUpperCase();
+    } else {
+        document.getElementById('userAvatar').textContent = 'G';
+    }
+
+    // --- 2. FAQ DATA ---
+    const faqs = [
+      { category: 'Buying', q: "How do I contact a seller?", a: "Go to the listing page and click the 'Chat' or 'Call' button. You must be logged in to start a conversation." },
+      { category: 'Buying', q: "Is payment handled on ZipZapZoi?", a: "Currently, we connect buyers and sellers. Payments should be made in person or via trusted methods after inspecting the item. Avoid sending money in advance." },
+      { category: 'Selling', q: "How do I post an ad?", a: "Click the 'Post Listing' button in the top right corner. Fill in the details, upload photos, and your ad will go live instantly." },
+      { category: 'Selling', q: "Can I edit my listing?", a: "Yes. Go to your Seller Dashboard > My Listings, and click the Edit (pencil) icon." },
+      { category: 'Account', q: "I forgot my password.", a: "On the Login page, click 'Forgot Password' to receive a reset link via email." },
+      { category: 'Safety', q: "How to avoid scams?", a: "Never share OTPs. Inspect items in person. Do not pay upfront for delivery charges. Report suspicious users immediately." },
+      { category: 'Safety', q: "How do I report a user?", a: "Go to the user's profile or listing page and click the 'Flag' or 'Report' icon." }
+    ];
+
+    // --- 3. RENDER LOGIC ---
+    const faqContainer = document.getElementById('faqContainer');
+
+    function renderFAQs(filterText = '', categoryFilter = '') {
+      faqContainer.innerHTML = '';
+      
+      const filtered = faqs.filter(item => {
+        const matchesText = item.q.toLowerCase().includes(filterText.toLowerCase()) || item.a.toLowerCase().includes(filterText.toLowerCase());
+        const matchesCat = categoryFilter ? item.category === categoryFilter : true;
+        return matchesText && matchesCat;
+      });
+
+      if (filtered.length === 0) {
+        faqContainer.innerHTML = `<div class="text-center p-8 text-gray-400">No results found. Try a different search.</div>`;
+        return;
+      }
+
+      filtered.forEach((item, index) => {
+        const div = document.createElement('div');
+        div.className = "bg-white border border-gray-100 rounded-xl overflow-hidden cursor-pointer hover:shadow-sm transition-shadow";
+        div.onclick = () => toggleAccordion(index);
+        
+        div.innerHTML = `
+          <div class="p-4 flex justify-between items-center bg-gray-50/50">
+            <h3 class="font-bold text-gray-800 text-sm md:text-base">${item.q}</h3>
+            <span class="material-symbols-outlined text-gray-400 transition-transform duration-300 icon-rotate" id="icon-${index}">expand_more</span>
+          </div>
+          <div class="faq-content bg-white px-4 text-gray-600 text-sm leading-relaxed" id="content-${index}">
+            <div class="py-4 border-t border-gray-100">${item.a}</div>
+          </div>
+        `;
+        // ID wrapper for toggle logic
+        div.id = `faq-wrapper-${index}`;
+        faqContainer.appendChild(div);
+      });
+    }
+
+    // --- 4. INTERACTION ---
+    function toggleAccordion(index) {
+      const wrapper = document.getElementById(`faq-wrapper-${index}`);
+      const wasOpen = wrapper.classList.contains('faq-open');
+      
+      // Close all others (Accordion behavior)
+      document.querySelectorAll('[id^="faq-wrapper-"]').forEach(el => el.classList.remove('faq-open'));
+      
+      // Toggle clicked one
+      if (!wasOpen) {
+        wrapper.classList.add('faq-open');
+      }
+    }
+
+    window.filterCategory = (cat) => {
+      document.getElementById('searchInput').value = ''; // Clear search
+      renderFAQs('', cat);
+    };
+
+    document.getElementById('searchInput').addEventListener('input', (e) => {
+      renderFAQs(e.target.value);
+    });
+
+    // --- 5. CONTACT FORM ---
+    document.getElementById('contactForm').onsubmit = (e) => {
+      e.preventDefault();
+      const topic = document.getElementById('ticketTopic').value;
+      const msg = document.getElementById('ticketMsg').value;
+      
+      // Simulation: Save to localStorage for Admin Console? 
+      // For now, just alert success.
+      alert(`✅ Support Request Sent!\nTopic: ${topic}\nWe will contact you shortly.`);
+      document.getElementById('contactForm').reset();
+    };
+
+    // Initial Load
+    renderFAQs();
+
+  </script>
+</body>
+</html>

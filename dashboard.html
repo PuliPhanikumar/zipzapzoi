@@ -51,7 +51,7 @@ body { overflow-x: hidden; height: 100vh; width: 100vw; min-height: max(884px, 1
 }
 .animate-card-bounce-in { animation: card-bounce-in 1s cubic-bezier(0.34,1.56,0.64,1) both; }
 
-/* --- NEW OVERLAY STYLES --- */
+/* --- VIDEO OVERLAY STYLES --- */
 .overlay {
     height: 100%;
     width: 100%;
@@ -59,96 +59,25 @@ body { overflow-x: hidden; height: 100vh; width: 100vw; min-height: max(884px, 1
     z-index: 9999;
     left: 0;
     top: 0;
-    background-color: #000; /* Pure black for cinema feel */
-    display: none; /* Hidden by default */
+    background-color: #000;
+    display: none;
     justify-content: center;
     align-items: center;
     flex-direction: column;
 }
-
-/* Full screen video container */
-#videoWrapper {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-video {
-    width: 100%;
-    max-height: 100vh;
-    object-fit: contain; /* Ensures video isn't cut off */
-    outline: none;
-}
-
-/* Close/Exit Button */
-.closebtn {
-    position: absolute;
-    top: 20px;
-    right: 40px;
-    font-size: 50px;
-    color: rgba(255,255,255,0.5);
-    text-decoration: none;
-    cursor: pointer;
-    z-index: 10001;
-    transition: color 0.3s;
-}
+#videoWrapper { width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; }
+video { width: 100%; max-height: 100vh; object-fit: contain; outline: none; }
+.closebtn { position: absolute; top: 20px; right: 40px; font-size: 50px; color: rgba(255,255,255,0.5); text-decoration: none; cursor: pointer; z-index: 10001; transition: color 0.3s; }
 .closebtn:hover { color: #fff; }
-
-.overlay-content {
-    position: relative;
-    width: 100%;
-    height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-/* Message appearing after video */
-#messageContainer {
-    color: white;
-    font-family: 'Poppins', sans-serif;
-    animation: fadeIn 1s ease-in;
-    padding: 20px;
-    text-align: center;
-    display: none; /* Hidden initially */
-    z-index: 10002;
-}
-
-#dynamicTitle {
-    font-size: 40px;
-    font-weight: 700;
-    color: #F97316; /* Primary Orange */
-    margin-bottom: 20px;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-}
-
-.sub-text {
-    font-size: 20px;
-    color: #cbd5e1;
-    margin-bottom: 40px;
-}
-
-.action-btn {
-    padding: 15px 35px;
-    margin: 0 10px;
-    font-size: 18px;
-    border: none;
-    border-radius: 50px;
-    cursor: pointer;
-    font-weight: 600;
-    transition: transform 0.2s;
-}
+.overlay-content { position: relative; width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; }
+#messageContainer { color: white; font-family: 'Poppins', sans-serif; animation: fadeIn 1s ease-in; padding: 20px; text-align: center; display: none; z-index: 10002; }
+#dynamicTitle { font-size: 40px; font-weight: 700; color: #F97316; margin-bottom: 20px; text-transform: uppercase; letter-spacing: 2px; }
+.sub-text { font-size: 20px; color: #cbd5e1; margin-bottom: 40px; }
+.action-btn { padding: 15px 35px; margin: 0 10px; font-size: 18px; border: none; border-radius: 50px; cursor: pointer; font-weight: 600; transition: transform 0.2s; }
 .action-btn:hover { transform: scale(1.05); }
 .btn-close { background-color: white; color: black; }
 .btn-replay { background-color: #333; color: white; border: 1px solid #555; }
-
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
-}
+@keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
 </style>
 <script src="js/data-manager.js"></script>
 </head>
@@ -157,10 +86,12 @@ video {
 
 <nav class="w-full flex justify-between items-center px-6 py-4 bg-white/80 dark:bg-background-dark/80 backdrop-blur-lg shadow-bouncy sticky top-0 z-50">
   <div class="flex items-center gap-2">
-    <img src="Assets/zipzapzoi-logo.png" alt="ZipZapZoi Logo" class="h-8 w-8 object-contain animate-logo-bounce"/>
+    <span class="material-icons text-primary text-4xl animate-logo-bounce">bolt</span>
     <h1 class="text-2xl font-bold text-dark-charcoal dark:text-white tracking-tight">ZipZapZoi</h1>
   </div>
-  <div id="navAuthArea" class="flex items-center gap-4"></div>
+  
+  <div id="navAuthArea" class="flex items-center gap-4">
+    </div>
 </nav>
 
 <div class="h-[calc(100vh-80px)] w-screen flex flex-col items-center justify-center p-4">
@@ -172,9 +103,9 @@ video {
 
     <div class="grid grid-cols-2 lg:grid-cols-3 gap-6 w-full">
       
-      <a href="classifieds.html" class="card animate-card-bounce-in card-shadow rounded-3xl bg-gradient-to-br from-blue-100 to-blue-200 dark:from-blue-900/50 dark:to-blue-800/50 p-6 flex flex-col items-start justify-between cursor-pointer">
+      <a href="Classifieds LandingPage.html" class="card animate-card-bounce-in card-shadow rounded-3xl bg-gradient-to-br from-blue-100 to-blue-200 dark:from-blue-900/50 dark:to-blue-800/50 p-6 flex flex-col items-start justify-between cursor-pointer group">
         <div>
-          <div class="w-16 h-16 rounded-2xl bg-blue-500 text-white flex items-center justify-center mb-4 shadow-lg">
+          <div class="w-16 h-16 rounded-2xl bg-blue-500 text-white flex items-center justify-center mb-4 shadow-lg group-hover:scale-110 transition-transform">
             <span class="material-icons text-4xl">storefront</span>
           </div>
           <h2 class="text-xl font-bold text-blue-800 dark:text-blue-200">Classifieds</h2>
@@ -182,9 +113,9 @@ video {
         </div>
       </a>
 
-      <div onclick="openVideo('Food Delivery')" class="card animate-card-bounce-in card-shadow rounded-3xl bg-gradient-to-br from-green-100 to-green-200 dark:from-green-900/50 dark:to-green-800/50 p-6 flex flex-col items-start justify-between cursor-pointer">
+      <div onclick="openVideo('Food Delivery')" class="card animate-card-bounce-in card-shadow rounded-3xl bg-gradient-to-br from-green-100 to-green-200 dark:from-green-900/50 dark:to-green-800/50 p-6 flex flex-col items-start justify-between cursor-pointer group">
         <div>
-          <div class="w-16 h-16 rounded-2xl bg-green-500 text-white flex items-center justify-center mb-4 shadow-lg">
+          <div class="w-16 h-16 rounded-2xl bg-green-500 text-white flex items-center justify-center mb-4 shadow-lg group-hover:scale-110 transition-transform">
             <span class="material-icons text-4xl">restaurant</span>
           </div>
           <h2 class="text-xl font-bold text-green-800 dark:text-green-200">Food Delivery</h2>
@@ -192,9 +123,9 @@ video {
         </div>
       </div>
 
-      <div onclick="openVideo('Drive Services')" class="card animate-card-bounce-in card-shadow rounded-3xl bg-gradient-to-br from-indigo-100 to-indigo-200 dark:from-indigo-900/50 dark:to-indigo-800/50 p-6 flex flex-col items-start justify-between cursor-pointer">
+      <div onclick="openVideo('Drive Services')" class="card animate-card-bounce-in card-shadow rounded-3xl bg-gradient-to-br from-indigo-100 to-indigo-200 dark:from-indigo-900/50 dark:to-indigo-800/50 p-6 flex flex-col items-start justify-between cursor-pointer group">
         <div>
-          <div class="w-16 h-16 rounded-2xl bg-indigo-500 text-white flex items-center justify-center mb-4 shadow-lg">
+          <div class="w-16 h-16 rounded-2xl bg-indigo-500 text-white flex items-center justify-center mb-4 shadow-lg group-hover:scale-110 transition-transform">
             <span class="material-icons text-4xl">directions_car</span>
           </div>
           <h2 class="text-xl font-bold text-indigo-800 dark:text-indigo-200">Drive Services</h2>
@@ -202,9 +133,9 @@ video {
         </div>
       </div>
 
-      <div onclick="openVideo('Shopping')" class="card animate-card-bounce-in card-shadow rounded-3xl bg-gradient-to-br from-red-100 to-red-200 dark:from-red-900/50 dark:to-red-800/50 p-6 flex flex-col items-start justify-between cursor-pointer">
+      <div onclick="openVideo('Shopping')" class="card animate-card-bounce-in card-shadow rounded-3xl bg-gradient-to-br from-red-100 to-red-200 dark:from-red-900/50 dark:to-red-800/50 p-6 flex flex-col items-start justify-between cursor-pointer group">
         <div>
-          <div class="w-16 h-16 rounded-2xl bg-red-500 text-white flex items-center justify-center mb-4 shadow-lg">
+          <div class="w-16 h-16 rounded-2xl bg-red-500 text-white flex items-center justify-center mb-4 shadow-lg group-hover:scale-110 transition-transform">
             <span class="material-icons text-4xl">shopping_bag</span>
           </div>
           <h2 class="text-xl font-bold text-red-800 dark:text-red-200">Shopping</h2>
@@ -212,9 +143,9 @@ video {
         </div>
       </div>
 
-      <div onclick="openVideo('Explore')" class="card animate-card-bounce-in card-shadow rounded-3xl bg-gradient-to-br from-yellow-100 to-yellow-200 dark:from-yellow-900/50 dark:to-yellow-800/50 p-6 flex flex-col items-start justify-between cursor-pointer">
+      <div onclick="openVideo('Explore')" class="card animate-card-bounce-in card-shadow rounded-3xl bg-gradient-to-br from-yellow-100 to-yellow-200 dark:from-yellow-900/50 dark:to-yellow-800/50 p-6 flex flex-col items-start justify-between cursor-pointer group">
         <div>
-          <div class="w-16 h-16 rounded-2xl bg-yellow-500 text-white flex items-center justify-center mb-4 shadow-lg">
+          <div class="w-16 h-16 rounded-2xl bg-yellow-500 text-white flex items-center justify-center mb-4 shadow-lg group-hover:scale-110 transition-transform">
             <span class="material-icons text-4xl">explore</span>
           </div>
           <h2 class="text-xl font-bold text-yellow-800 dark:text-yellow-200">Explore</h2>
@@ -222,9 +153,9 @@ video {
         </div>
       </div>
 
-      <div onclick="openVideo('Recipes')" class="card animate-card-bounce-in card-shadow rounded-3xl bg-gradient-to-br from-cyan-100 to-cyan-200 dark:from-cyan-900/50 dark:to-cyan-800/50 p-6 flex flex-col items-start justify-between cursor-pointer">
+      <div onclick="openVideo('Recipes')" class="card animate-card-bounce-in card-shadow rounded-3xl bg-gradient-to-br from-cyan-100 to-cyan-200 dark:from-cyan-900/50 dark:to-cyan-800/50 p-6 flex flex-col items-start justify-between cursor-pointer group">
         <div>
-          <div class="w-16 h-16 rounded-2xl bg-cyan-500 text-white flex items-center justify-center mb-4 shadow-lg">
+          <div class="w-16 h-16 rounded-2xl bg-cyan-500 text-white flex items-center justify-center mb-4 shadow-lg group-hover:scale-110 transition-transform">
             <span class="material-icons text-4xl">menu_book</span>
           </div>
           <h2 class="text-xl font-bold text-cyan-800 dark:text-cyan-200">Recipes</h2>
@@ -236,123 +167,126 @@ video {
 </div>
 
 <div id="videoOverlay" class="overlay">
-    
     <div class="overlay-content">
-        
         <div id="videoWrapper">
             <video id="promoVideo" playsinline>
                 Your browser does not support HTML5 video.
             </video>
         </div>
-
         <div id="messageContainer">
             <div id="dynamicTitle">MODULE NAME</div>
-            <p class="sub-text">We are currently building this feature. It will be live very soon on ZipZapZoi!</p>
-            
+            <p class="sub-text">We are currently building this feature. It will be live very soon!</p>
             <button class="action-btn btn-close" onclick="closeVideo()">Go Back</button>
-            <button class="action-btn btn-replay" onclick="replayVideo()">Replay Video</button>
+            <button class="action-btn btn-replay" onclick="replayVideo()">Replay</button>
         </div>
-
     </div>
 </div>
 
 <script>
+// ===============================================
+// 1. UNIVERSAL AUTH & REDIRECT LOGIC
+// ===============================================
 (function(){
   const navArea = document.getElementById('navAuthArea');
-  const userData = JSON.parse(sessionStorage.getItem('zzz_user') || 'null');
-
-  if(!navArea) return;
+  const userData = JSON.parse(sessionStorage.getItem('zzz_user') || localStorage.getItem('zzz_user') || 'null');
 
   if(userData){
+    // LOGGED IN STATE
+    document.getElementById('welcomeTitle').textContent = `Welcome back, ${userData.name}!`;
+    
+    // Check Role for Redirects
+    let dashboardLink = 'Seller Dashboard.html'; // Default for user
+    let roleBadge = '';
+
+    if(userData.role === 'admin' || userData.role === 'super_admin') {
+       dashboardLink = 'AdminConsoleV2.html';
+       roleBadge = '<span class="bg-red-500 text-white text-xs px-2 py-0.5 rounded-full ml-2">ADMIN</span>';
+    }
+
     navArea.innerHTML = `
       <div class="flex items-center gap-3">
-        <div class="bg-primary/10 rounded-full w-10 h-10 flex items-center justify-center text-primary font-bold uppercase shadow-bouncy">
-          ${userData.email.charAt(0).toUpperCase()}
-        </div>
-        <div class="flex flex-col leading-tight">
-          <p class="font-semibold text-dark-charcoal dark:text-white">${userData.email.split('@')[0]}</p>
-          <button id="logoutBtn" class="text-sm text-red-500 font-medium hover:underline">Logout</button>
-        </div>
+        <a href="${dashboardLink}" class="flex items-center gap-2 px-3 py-1.5 rounded-lg hover:bg-gray-100 transition-colors">
+          <div class="bg-primary/10 rounded-full w-8 h-8 flex items-center justify-center text-primary font-bold shadow-sm">
+            ${userData.name.charAt(0).toUpperCase()}
+          </div>
+          <span class="font-semibold text-sm text-gray-700 dark:text-white hidden md:block">${userData.name}</span>
+          ${roleBadge}
+        </a>
+        <button id="logoutBtn" class="text-sm font-bold text-red-500 hover:text-red-700 transition-colors">Logout</button>
       </div>
     `;
+
     document.getElementById('logoutBtn').addEventListener('click', ()=>{
+      // Universal Logout Logic
       sessionStorage.removeItem('zzz_user');
-      window.location.reload();
+      localStorage.removeItem('zzz_user');
+      window.location.reload(); // Refresh to show login state
     });
-    document.getElementById('welcomeTitle').textContent = `Welcome back, ${userData.email.split('@')[0]}!`;
+
   } else {
+    // GUEST STATE
     navArea.innerHTML = `
-      <a href="Login Page.html?redirect=dashboard.html" class="px-4 py-2 text-sm font-semibold text-dark-charcoal dark:text-white hover:text-primary transition-colors">Log In</a>
-      <a href="User Registration.html" class="px-5 py-2 bg-primary text-white rounded-full font-bold shadow-bouncy hover:-translate-y-0.5 hover:shadow-bouncy-lg transition-all">Sign Up</a>
+      <a href="Login Page.html?redirect=dashboard.html" class="px-4 py-2 text-sm font-bold text-gray-600 hover:text-primary transition-colors">Log In</a>
+      <a href="User Registration.html" class="px-5 py-2 bg-primary text-white rounded-full text-sm font-bold shadow hover:bg-orange-600 hover:-translate-y-0.5 transition-all">Sign Up</a>
     `;
     document.getElementById('welcomeTitle').textContent = 'Welcome to ZipZapZoi!';
   }
 })();
+
+// ===============================================
+// 2. VIDEO OVERLAY LOGIC
+// ===============================================
+const videoPaths = {
+    'Food Delivery': 'Assets/ZipZapZoi1.mp4',
+    'Drive Services': 'Assets/ZIpZapZoi3.mp4',
+    'Shopping': 'Assets/ZIpZapZoi5.mp4',
+    'Explore': 'Assets/ZipZapZoi2.mp4',
+    'Recipes': 'Assets/ZIpZapZoi4.mp4'
+};
+
+const overlay = document.getElementById("videoOverlay");
+const videoWrapper = document.getElementById("videoWrapper");
+const messageContainer = document.getElementById("messageContainer");
+const video = document.getElementById("promoVideo");
+const titleText = document.getElementById("dynamicTitle");
+
+function openVideo(moduleName) {
+    const videoFile = videoPaths[moduleName];
+    if(!videoFile) {
+        alert("Video not found: " + moduleName);
+        return;
+    }
+
+    video.src = videoFile;
+    video.load();
+
+    videoWrapper.style.display = "flex";
+    messageContainer.style.display = "none";
+    titleText.innerText = moduleName + " COMING SOON";
+    overlay.style.display = "flex";
+    
+    video.currentTime = 0;
+    video.play().catch(e => console.log("Autoplay blocked:", e));
+}
+
+video.addEventListener('ended', function() {
+    videoWrapper.style.display = "none";
+    messageContainer.style.display = "block";
+});
+
+function closeVideo() {
+    overlay.style.display = "none";
+    video.pause();
+    video.src = "";
+}
+
+function replayVideo() {
+    videoWrapper.style.display = "flex";
+    messageContainer.style.display = "none";
+    video.currentTime = 0;
+    video.play();
+}
 </script>
 
-<script>
-    // VIDEO FILE MAPPING
-    // Note: I used 'Assets/' assuming this HTML file is in the parent folder.
-    const videoPaths = {
-        'Food Delivery': 'Assets/ZipZapZoi1.mp4',
-        'Drive Services': 'Assets/ZIpZapZoi3.mp4',
-        'Shopping': 'Assets/ZIpZapZoi5.mp4',
-        'Explore': 'Assets/ZipZapZoi2.mp4',
-        'Recipes': 'Assets/ZIpZapZoi4.mp4'
-    };
-
-    const overlay = document.getElementById("videoOverlay");
-    const videoWrapper = document.getElementById("videoWrapper");
-    const messageContainer = document.getElementById("messageContainer");
-    const video = document.getElementById("promoVideo");
-    const titleText = document.getElementById("dynamicTitle");
-
-    function openVideo(moduleName) {
-        // 1. Get the correct video file path
-        const videoFile = videoPaths[moduleName];
-        if(!videoFile) {
-            console.error("No video found for module: " + moduleName);
-            return;
-        }
-
-        // 2. Load the video source dynamically
-        video.src = videoFile;
-        video.load(); // Refresh video element
-
-        // 3. Reset UI: Show video, Hide text
-        videoWrapper.style.display = "flex";
-        messageContainer.style.display = "none";
-        titleText.innerText = moduleName + " COMING SOON";
-
-        // 4. Show Full Screen Overlay
-        overlay.style.display = "flex";
-        
-        // 5. Play automatically
-        video.currentTime = 0;
-        video.play().catch(e => console.log("Autoplay blocked:", e));
-    }
-
-    // Detect when video ends
-    video.addEventListener('ended', function() {
-        videoWrapper.style.display = "none"; // Hide video completely
-        messageContainer.style.display = "block"; // Show pop up message
-    });
-
-    function closeVideo() {
-        overlay.style.display = "none";
-        video.pause();
-        video.src = ""; // Clear source to stop buffering
-    }
-
-    function replayVideo() {
-        videoWrapper.style.display = "flex";
-        messageContainer.style.display = "none";
-        video.currentTime = 0;
-        video.play();
-    }
-</script>
-
-<script src="scripts/auth.js"></script>
-<script src="scripts/boot.js"></script>
 </body>
 </html>
