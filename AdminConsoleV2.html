@@ -7,16 +7,18 @@
     const raw = localStorage.getItem('zzz_user');
     if (raw) {
       const user = JSON.parse(raw);
-      if (user.role === 'user') { // Simple check: if explicit user role, deny.
+      if (user.role !== 'admin' && user.role !== 'super_admin') {
         alert("Access Denied: Admin privileges required.");
         window.location.href = 'classifieds.html';
       }
+    } else {
+        window.location.href = 'Login Page.html?redirect=AdminConsoleV2.html';
     }
   })();
   </script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Admin Console V2 - ZipZapZoi</title>
+  <title>Admin Command Center - ZipZapZoi</title>
   
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@300;400;600&display=swap">
   <link href="https://fonts.googleapis.com/css2?family=Spline+Sans:wght@400;500;600;700&display=swap" rel="stylesheet"/>
@@ -29,15 +31,8 @@
       theme: {
         extend: {
           fontFamily: { sans: ["Spline Sans", "sans-serif"] },
-          colors: {
-            "primary": "#019863",
-            "secondary": "#4D96A9",
-            "secondary-yellow": "#FFD700",
-            "secondary-coral": "#FF6F61",
-          },
-          boxShadow: {
-            "bouncy": "0px 10px 20px -5px rgba(0, 0, 0, 0.1), 0px 4px 6px -2px rgba(0, 0, 0, 0.05)",
-          }
+          colors: { "primary": "#019863", "secondary": "#4D96A9", "warning": "#F59E0B", "danger": "#EF4444", "dark": "#0F172A" },
+          boxShadow: { "glass": "0 8px 32px 0 rgba(31, 38, 135, 0.07)" }
         }
       }
     }
@@ -45,641 +40,747 @@
 
   <style>
     .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
-    body { font-family: 'Spline Sans', sans-serif; }
+    body { font-family: 'Spline Sans', sans-serif; background: #F8FAFC; }
     
-    /* Layout & Scrollbars */
-    .sidebar { background: #1a2332; }
-    .sidebar a { color: #9ca3af; transition: all 0.3s; }
-    .sidebar a.active { color: #10b981; background: rgba(16,185,129,0.1); }
-    .sidebar a:hover { color: #10b981; }
+    .sidebar { background: #0F172A; }
+    .sidebar a { color: #94A3B8; transition: all 0.2s; border-left: 3px solid transparent; }
+    .sidebar a.active { color: #fff; background: rgba(255,255,255,0.05); border-left-color: #019863; }
+    .sidebar a:hover:not(.active) { color: #fff; background: rgba(255,255,255,0.02); }
     
-    .section-content { display: none; }
-    .section-content.active { display: block; animation: fadeIn 0.3s ease-out; }
-    @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+    .section-content { display: none; opacity: 0; transform: translateY(10px); transition: opacity 0.3s ease, transform 0.3s ease; }
+    .section-content.active { display: block; opacity: 1; transform: translateY(0); }
 
-    /* Live Data Animations */
-    .data-value { transition: color 0.3s ease, transform 0.2s ease; }
-    .flash-up { color: #16a34a !important; transform: scale(1.1); }
-    .flash-down { color: #dc2626 !important; transform: scale(1.1); }
-    
-    /* Toggle Switches */
+    .custom-scroll::-webkit-scrollbar { width: 6px; }
+    .custom-scroll::-webkit-scrollbar-track { background: transparent; }
+    .custom-scroll::-webkit-scrollbar-thumb { background-color: #334155; border-radius: 20px; }
+
     .toggle-wrapper { position: relative; display: inline-flex; align-items: center; cursor: pointer; width: 44px; height: 24px; }
     .toggle-input { position: absolute; opacity: 0; width: 0; height: 0; }
-    .toggle-track { width: 100%; height: 100%; background: #e5e7eb; border-radius: 9999px; transition: 0.2s; }
-    .toggle-knob { position: absolute; top: 2px; left: 2px; width: 20px; height: 20px; background: white; border-radius: 50%; transition: 0.2s; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+    .toggle-track { width: 100%; height: 100%; background: #CBD5E1; border-radius: 9999px; transition: 0.3s; }
+    .toggle-knob { position: absolute; top: 2px; left: 2px; width: 20px; height: 20px; background: white; border-radius: 50%; transition: 0.3s; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
     .toggle-input:checked + .toggle-track { background: #019863; }
     .toggle-input:checked + .toggle-track .toggle-knob { transform: translateX(20px); }
-
-    /* Custom Field Cards */
-    .field-card { transition: transform 0.1s; }
-    .field-card:hover { transform: translateX(3px); }
+    
+    @keyframes shake { 0% { transform: rotate(0deg); } 25% { transform: rotate(15deg); } 75% { transform: rotate(-15deg); } 100% { transform: rotate(0deg); } }
+    .bell-shake { animation: shake 0.5s infinite; color: #EF4444; }
   </style>
 </head>
-<body class="bg-gray-50 h-screen overflow-hidden flex text-gray-800">
+<body class="h-screen overflow-hidden flex text-slate-800">
 
-  <aside class="sidebar w-64 text-white p-6 flex-shrink-0 flex flex-col h-full shadow-xl z-20">
-    <div class="mb-8 flex items-center gap-3">
-      <div class="w-8 h-8 bg-gradient-to-br from-primary to-secondary rounded-lg flex items-center justify-center text-white font-bold">Z</div>
-      <div>
-        <h1 class="text-xl font-bold text-white tracking-tight">ZipZapZoi</h1>
-        <p class="text-xs text-gray-400">Admin Console V2</p>
-      </div>
+  <aside class="sidebar w-64 text-white p-6 flex-shrink-0 flex flex-col h-full shadow-2xl z-50">
+    <div class="mb-8 flex items-center gap-3 px-2">
+      <div class="w-9 h-9 bg-gradient-to-br from-primary to-secondary rounded-xl flex items-center justify-center text-white font-black text-xl shadow-lg">Z</div>
+      <div><h1 class="text-lg font-bold text-white tracking-tight leading-tight">ZipZapZoi</h1><p class="text-[10px] text-slate-400 font-medium uppercase tracking-wider">Admin Console</p></div>
     </div>
 
-    <nav class="space-y-1 flex-1 overflow-y-auto">
-      <a href="#" class="nav-link active block px-3 py-2.5 rounded-lg flex items-center gap-3" data-section="dashboard">
-        <span class="material-symbols-outlined">analytics</span> Reports & Analytics
-      </a>
-      <a href="#" class="nav-link block px-3 py-2.5 rounded-lg flex items-center gap-3" data-section="categories">
-        <span class="material-symbols-outlined">category</span> Category Manager
-      </a>
-      <a href="#" class="nav-link block px-3 py-2.5 rounded-lg flex items-center gap-3" data-section="users">
-        <span class="material-symbols-outlined">group</span> User Management
-      </a>
-      <a href="#" class="nav-link block px-3 py-2.5 rounded-lg flex items-center gap-3" data-section="roles">
-        <span class="material-symbols-outlined">admin_panel_settings</span> Roles & Permissions
-      </a>
-      <a href="#" class="nav-link block px-3 py-2.5 rounded-lg flex items-center gap-3" data-section="listings">
-        <span class="material-symbols-outlined">inventory_2</span> Listings
-      </a>
-      <a href="#" class="nav-link block px-3 py-2.5 rounded-lg flex items-center gap-3" data-section="alerts">
-        <span class="material-symbols-outlined">notifications_active</span> Custom Alerts
-      </a>
-    </nav>
+    <div class="mb-4">
+        <p class="text-xs font-bold text-slate-500 uppercase px-3 mb-2">Main Menu</p>
+        <nav class="space-y-1">
+          <a href="#" class="nav-link active block px-3 py-2.5 rounded-lg flex items-center gap-3 text-sm font-medium" data-section="dashboard"><span class="material-symbols-outlined text-[20px]">analytics</span> Dashboard</a>
+          <a href="#" class="nav-link block px-3 py-2.5 rounded-lg flex items-center gap-3 text-sm font-medium" data-section="listings"><span class="material-symbols-outlined text-[20px]">inventory_2</span> Listings & Mods</a>
+          <a href="#" class="nav-link block px-3 py-2.5 rounded-lg flex items-center gap-3 text-sm font-medium" data-section="users"><span class="material-symbols-outlined text-[20px]">group</span> User Base</a>
+        </nav>
+    </div>
 
-    <div class="mt-auto pt-6 border-t border-gray-700 space-y-2">
-      <button onclick="resetDefaults()" class="w-full px-4 py-2 rounded-lg bg-yellow-600/20 text-yellow-400 hover:bg-yellow-600/30 text-sm flex items-center gap-2 transition-colors">
-        <span class="material-symbols-outlined text-sm">restart_alt</span> Reset Schema
-      </button>
-      <button onclick="handleLogout()" class="w-full px-4 py-2 rounded-lg text-red-400 hover:bg-red-900/20 text-sm flex items-center gap-2 transition-colors">
-        <span class="material-symbols-outlined text-sm">logout</span> Logout
+    <div class="mb-4">
+        <p class="text-xs font-bold text-slate-500 uppercase px-3 mb-2">Configuration</p>
+        <nav class="space-y-1">
+          <a href="#" class="nav-link block px-3 py-2.5 rounded-lg flex items-center gap-3 text-sm font-medium" data-section="categories"><span class="material-symbols-outlined text-[20px]">category</span> Schema Manager</a>
+          <a href="#" class="nav-link block px-3 py-2.5 rounded-lg flex items-center gap-3 text-sm font-medium" data-section="settings"><span class="material-symbols-outlined text-[20px]">settings_suggest</span> Global Settings</a>
+          <a href="#" class="nav-link block px-3 py-2.5 rounded-lg flex items-center gap-3 text-sm font-medium" data-section="alerts"><span class="material-symbols-outlined text-[20px]">notifications</span> System Alerts</a>
+          <a href="#" class="nav-link block px-3 py-2.5 rounded-lg flex items-center gap-3 text-sm font-medium" data-section="logs"><span class="material-symbols-outlined text-[20px]">history</span> Audit Logs</a>
+        </nav>
+    </div>
+
+    <div class="mt-auto pt-6 border-t border-slate-700">
+      <button onclick="handleLogout()" class="w-full px-4 py-2.5 rounded-lg bg-white/5 hover:bg-red-500/20 text-slate-300 hover:text-red-400 text-sm flex items-center justify-center gap-2 transition-all font-bold">
+        <span class="material-symbols-outlined text-sm">logout</span> Secure Logout
       </button>
     </div>
   </aside>
 
-  <main class="flex-1 flex flex-col h-full overflow-hidden relative">
+  <main class="flex-1 flex flex-col h-full overflow-hidden relative bg-[#F8FAFC]">
     
-    <header class="bg-white border-b border-gray-200 px-8 py-4 flex items-center justify-between flex-shrink-0 z-10">
-      <h1 class="text-2xl font-bold text-gray-800" id="pageTitle">Reports & Analytics</h1>
-      <div class="flex items-center gap-4">
-        <button id="globalSaveBtn" onclick="saveAndPublish()" class="hidden bg-primary hover:bg-green-700 text-white px-4 py-2 rounded-lg font-bold flex items-center gap-2 shadow-sm transition-transform active:scale-95">
-           <span class="material-symbols-outlined text-lg">save</span> Save Changes
+    <header class="bg-white/80 backdrop-blur-md border-b border-slate-200 px-8 py-4 flex items-center justify-between flex-shrink-0 z-40 sticky top-0">
+      <div>
+          <h1 class="text-2xl font-bold text-slate-800" id="pageTitle">Dashboard</h1>
+          <p class="text-xs text-slate-500 font-medium" id="currentDate">Loading date...</p>
+      </div>
+      
+      <div class="flex items-center gap-6">
+        <button onclick="backupData()" class="hidden md:flex items-center gap-2 text-xs font-bold text-slate-500 hover:text-primary bg-slate-100 hover:bg-primary/10 px-3 py-1.5 rounded-full transition-colors">
+            <span class="material-symbols-outlined text-sm">cloud_download</span> Backup
+        </button>
+
+        <button class="relative p-2 rounded-full hover:bg-slate-100 transition-colors" onclick="showSection('alerts')">
+           <span class="material-symbols-outlined text-slate-500" id="headerBellIcon">notifications</span>
+           <span id="headerAlertBadge" class="absolute top-1.5 right-1.5 h-2.5 w-2.5 rounded-full bg-red-500 ring-2 ring-white hidden"></span>
+        </button>
+
+        <button id="globalSaveBtn" onclick="saveSchema()" class="hidden bg-primary hover:bg-green-700 text-white px-4 py-2 rounded-lg font-bold flex items-center gap-2 shadow-lg shadow-primary/20 transition-transform active:scale-95 text-sm">
+           <span class="material-symbols-outlined text-lg">save</span> Save Schema
         </button>
         
-        <div class="flex items-center gap-3 pl-4 border-l border-gray-200">
-          <div class="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center text-gray-600 font-bold">A</div>
-          <div class="text-sm">
-            <p class="font-bold text-gray-800 leading-none">Super Admin</p>
-            <p class="text-xs text-gray-500">Access: All</p>
+        <div class="flex items-center gap-3 pl-6 border-l border-slate-200 cursor-pointer hover:opacity-80 transition-opacity">
+          <div class="text-right hidden md:block">
+            <p class="font-bold text-slate-800 text-sm leading-none" id="adminName">Admin</p>
+            <p class="text-[10px] text-slate-500 font-bold uppercase tracking-wider mt-0.5" id="adminRole">Super Admin</p>
           </div>
+          <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-slate-200 to-slate-100 border border-white shadow-sm flex items-center justify-center text-slate-600 font-bold text-lg" id="adminInit">A</div>
         </div>
       </div>
     </header>
 
-    <div class="flex-1 overflow-y-auto p-8 bg-gray-50 scroll-smooth" id="mainScrollArea">
+    <div class="flex-1 overflow-y-auto p-8 custom-scroll" id="mainScrollArea">
 
       <section id="dashboard" class="section-content active">
-        <div class="flex justify-between items-center mb-8">
-          <div>
-            <div class="flex items-center gap-3">
-              <h2 class="text-2xl font-bold text-gray-800">Live Overview</h2>
-              <span class="px-2 py-0.5 rounded-full bg-green-100 text-green-700 text-xs font-bold flex items-center gap-1">
-                <span class="relative flex h-2 w-2"><span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span><span class="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span></span>
-                Live
-              </span>
-            </div>
-            <p class="text-gray-500 text-sm">Real-time system performance and user activity.</p>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+          <div class="bg-white p-6 rounded-2xl shadow-glass border border-slate-100"><p class="text-slate-500 text-xs font-bold uppercase tracking-wider">Total Listings</p><p id="stat-listings" class="text-3xl font-black text-slate-800 mt-2">0</p></div>
+          <div class="bg-white p-6 rounded-2xl shadow-glass border border-slate-100 border-b-4 border-b-green-500">
+              <p class="text-slate-500 text-xs font-bold uppercase tracking-wider">Platform GMV</p>
+              <p id="stat-gmv" class="text-3xl font-black text-green-600 mt-2">₹0</p>
+              <p class="text-[10px] text-slate-400 mt-1">Total Sold Value</p>
           </div>
-          <button onclick="document.getElementById('customizeModal').showModal()" class="flex items-center gap-2 px-4 py-2 bg-white border border-gray-300 rounded-lg text-sm font-semibold hover:bg-gray-50 shadow-sm transition-all">
-            <span class="material-symbols-outlined text-lg">tune</span> Customize
-          </button>
+          <div class="bg-white p-6 rounded-2xl shadow-glass border border-slate-100"><p class="text-slate-500 text-xs font-bold uppercase tracking-wider">Pending Reports</p><p id="stat-flags" class="text-3xl font-black text-red-600 mt-2">0</p></div>
+          <div class="bg-white p-6 rounded-2xl shadow-glass border border-slate-100"><p class="text-slate-500 text-xs font-bold uppercase tracking-wider">User Base</p><p id="stat-users" class="text-3xl font-black text-primary mt-2">0</p></div>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8" id="metricsGrid">
-          <div class="bg-white p-6 rounded-xl shadow-bouncy border border-gray-100 relative overflow-hidden group">
-            <div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity"><span class="material-symbols-outlined text-6xl text-primary">payments</span></div>
-            <p class="text-gray-500 text-sm font-medium">Total Revenue</p>
-            <p id="metric-revenue" class="data-value text-3xl font-bold text-gray-800 mt-1">$15,489</p>
-            <p class="text-green-500 text-xs font-bold mt-2 flex items-center gap-1"><span class="material-symbols-outlined text-sm">trending_up</span> +8.3% this week</p>
-          </div>
-
-          <div class="bg-white p-6 rounded-xl shadow-bouncy border border-gray-100 relative overflow-hidden group">
-            <div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity"><span class="material-symbols-outlined text-6xl text-secondary-yellow">group</span></div>
-            <p class="text-gray-500 text-sm font-medium">Active Users</p>
-            <p id="metric-users" class="data-value text-3xl font-bold text-gray-800 mt-1">1,251</p>
-            <p class="text-green-500 text-xs font-bold mt-2 flex items-center gap-1"><span class="material-symbols-outlined text-sm">trending_up</span> +3.8% today</p>
-          </div>
-
-          <div class="bg-white p-6 rounded-xl shadow-bouncy border border-gray-100 relative overflow-hidden group">
-            <div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity"><span class="material-symbols-outlined text-6xl text-blue-500">inventory_2</span></div>
-            <p class="text-gray-500 text-sm font-medium">New Listings</p>
-            <p id="metric-listings" class="data-value text-3xl font-bold text-gray-800 mt-1">317</p>
-            <p class="text-green-500 text-xs font-bold mt-2 flex items-center gap-1"><span class="material-symbols-outlined text-sm">trending_up</span> +12% last hour</p>
-          </div>
-
-          <div class="bg-white p-6 rounded-xl shadow-bouncy border border-gray-100 relative overflow-hidden group">
-            <div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity"><span class="material-symbols-outlined text-6xl text-red-500">flag</span></div>
-            <p class="text-gray-500 text-sm font-medium">Flagged Items</p>
-            <p id="metric-flags" class="data-value text-3xl font-bold text-gray-800 mt-1">45</p>
-            <p class="text-red-500 text-xs font-bold mt-2 flex items-center gap-1"><span class="material-symbols-outlined text-sm">warning</span> Action Required</p>
-          </div>
+        <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden mb-8">
+            <div class="p-5 border-b border-slate-100 flex justify-between items-center bg-slate-50/50">
+                <h3 class="font-bold text-lg text-slate-800 flex items-center gap-2"><span class="material-symbols-outlined text-red-500">warning</span> Urgent Moderation</h3>
+                <button onclick="clearAllFlags()" class="text-xs font-bold text-slate-400 hover:text-red-600 transition-colors uppercase tracking-wide">Dismiss All</button>
+            </div>
+            <table class="w-full text-left">
+                <thead class="bg-slate-50 text-[11px] uppercase text-slate-500 font-bold tracking-wider"><tr><th class="px-6 py-3">Item ID</th><th class="px-6 py-3">Title</th><th class="px-6 py-3">Reason</th><th class="px-6 py-3">Reported At</th><th class="px-6 py-3 text-right">Action</th></tr></thead>
+                <tbody id="flagsTableBody" class="divide-y divide-slate-100 text-sm font-medium"></tbody>
+            </table>
         </div>
+      </section>
 
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
-          <div id="chart-revenue-container" class="bg-white p-6 rounded-xl shadow-bouncy border border-gray-100">
-            <div class="flex justify-between items-center mb-4">
-              <h3 class="font-bold text-gray-800">Revenue Trend</h3>
-              <button class="text-gray-400 hover:text-primary"><span class="material-symbols-outlined">more_horiz</span></button>
+      <section id="listings" class="section-content">
+        <div class="flex flex-col md:flex-row justify-between items-center mb-6 gap-4">
+            <div><h2 class="text-2xl font-bold text-slate-800">Listings Database</h2><p class="text-sm text-slate-500">Full control over all marketplace items.</p></div>
+            <div class="flex gap-2 w-full md:w-auto">
+                <select id="listingFilterCat" onchange="renderListingsManager()" class="border border-slate-300 rounded-lg px-3 py-2 text-sm bg-white focus:ring-2 focus:ring-primary outline-none"><option value="">All Categories</option></select>
+                <input type="text" id="listingSearch" onkeyup="renderListingsManager()" placeholder="Search..." class="border border-slate-300 rounded-lg px-4 py-2 text-sm w-full md:w-64 focus:ring-2 focus:ring-primary outline-none shadow-sm">
+                <button onclick="exportData('listings')" class="bg-white border border-slate-300 text-slate-700 px-3 py-2 rounded-lg hover:bg-slate-50" title="Export CSV"><span class="material-symbols-outlined text-lg">download</span></button>
             </div>
-            <div class="h-64 w-full">
-              <canvas id="chartRevenue"></canvas>
-            </div>
-          </div>
-
-          <div id="chart-users-container" class="bg-white p-6 rounded-xl shadow-bouncy border border-gray-100">
-            <div class="flex justify-between items-center mb-4">
-              <h3 class="font-bold text-gray-800">User Activity</h3>
-              <button class="text-gray-400 hover:text-primary"><span class="material-symbols-outlined">more_horiz</span></button>
-            </div>
-            <div class="h-64 w-full">
-              <canvas id="chartUsers"></canvas>
-            </div>
-          </div>
+        </div>
+        <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
+            <table class="w-full text-left">
+                <thead class="bg-slate-50 text-[11px] uppercase text-slate-500 font-bold tracking-wider">
+                    <tr><th class="px-6 py-3">Item</th><th class="px-6 py-3">Category</th><th class="px-6 py-3">Seller</th><th class="px-6 py-3">Price</th><th class="px-6 py-3">Status</th><th class="px-6 py-3 text-right">Controls</th></tr>
+                </thead>
+                <tbody id="listingsManagerBody" class="divide-y divide-slate-100 text-sm font-medium text-slate-700"></tbody>
+            </table>
         </div>
       </section>
 
       <section id="categories" class="section-content">
-        <div class="flex justify-between items-end mb-6">
-          <div>
-            <h2 class="text-2xl font-bold text-gray-800">Dynamic Schema Manager</h2>
-            <p class="text-sm text-gray-500">Structure your marketplace categories and fields.</p>
-          </div>
+        <div class="flex justify-between items-center mb-6">
+            <h2 class="text-2xl font-bold text-slate-800">Schema Architecture</h2>
+            <button onclick="resetSchemaToDefaults()" class="text-xs bg-slate-100 hover:bg-red-50 hover:text-red-600 px-4 py-2 rounded-lg font-bold border border-slate-200 transition-colors">Reset Defaults</button>
         </div>
-
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 h-[600px]">
-          <div class="lg:col-span-3 flex flex-col bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden h-full">
-            <div class="p-3 bg-gray-50 border-b border-gray-100 flex justify-between items-center">
-              <span class="text-xs font-bold uppercase text-gray-500 tracking-wider">Categories</span>
-              <button onclick="document.getElementById('catModal').showModal(); catForm.reset();" class="p-1 hover:bg-blue-100 text-blue-600 rounded"><span class="material-symbols-outlined text-lg">add</span></button>
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 h-[650px]">
+          <div class="flex flex-col bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden h-full">
+            <div class="p-4 bg-slate-50 border-b border-slate-100 flex justify-between items-center font-bold text-xs uppercase text-slate-500 tracking-wider">
+              <span>Categories</span><button onclick="promptAddCategory()" class="p-1.5 hover:bg-blue-100 text-blue-600 rounded-md transition-colors"><span class="material-symbols-outlined text-lg">add</span></button>
             </div>
-            <div class="flex-1 overflow-y-auto p-2 space-y-1" id="categoriesList"></div>
+            <div class="flex-1 overflow-y-auto p-2 space-y-1 custom-scroll" id="categoriesList"></div>
           </div>
-
-          <div class="lg:col-span-4 flex flex-col bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden h-full">
-            <div class="p-3 bg-gray-50 border-b border-gray-100 flex justify-between items-center">
-              <span class="text-xs font-bold uppercase text-gray-500 tracking-wider" id="subHeader">Subcategories</span>
-              <button id="btnAddSub" onclick="addSubcategory()" disabled class="p-1 hover:bg-green-100 text-green-600 rounded disabled:opacity-50"><span class="material-symbols-outlined text-lg">add</span></button>
+          <div class="flex flex-col bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden h-full">
+            <div class="p-4 bg-slate-50 border-b border-slate-100 flex justify-between items-center font-bold text-xs uppercase text-slate-500 tracking-wider">
+              <span>Subcategories</span><button id="btnAddSub" onclick="promptAddSub()" disabled class="p-1.5 hover:bg-green-100 text-green-600 rounded-md disabled:opacity-30 transition-colors"><span class="material-symbols-outlined text-lg">add</span></button>
             </div>
-            <div class="flex-1 overflow-y-auto p-2 space-y-1" id="subcategoriesList">
-               <div class="h-full flex items-center justify-center text-gray-400 text-sm">Select a Category</div>
-            </div>
+            <div class="flex-1 overflow-y-auto p-2 space-y-1 custom-scroll" id="subcategoriesList"><div class="h-full flex flex-col items-center justify-center text-slate-300 text-xs gap-2">Select Category</div></div>
           </div>
-
-          <div class="lg:col-span-5 flex flex-col bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden h-full">
-            <div class="p-3 bg-gray-50 border-b border-gray-100 flex justify-between items-center">
-              <span class="text-xs font-bold uppercase text-gray-500 tracking-wider" id="fieldHeader">Form Fields</span>
-              <button id="btnAddField" onclick="addField()" disabled class="p-1 hover:bg-purple-100 text-purple-600 rounded disabled:opacity-50"><span class="material-symbols-outlined text-lg">add</span></button>
+          <div class="flex flex-col bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden h-full">
+            <div class="p-4 bg-slate-50 border-b border-slate-100 flex justify-between items-center font-bold text-xs uppercase text-slate-500 tracking-wider">
+              <span>Fields</span><button id="btnAddField" onclick="promptAddField()" disabled class="p-1.5 hover:bg-purple-100 text-purple-600 rounded-md disabled:opacity-30 transition-colors"><span class="material-symbols-outlined text-lg">add</span></button>
             </div>
-            <div class="flex-1 overflow-y-auto p-4 space-y-2 bg-gray-50/50" id="fieldsList">
-               <div class="h-full flex items-center justify-center text-gray-400 text-sm">Select a Subcategory</div>
-            </div>
+            <div class="flex-1 overflow-y-auto p-4 space-y-2 bg-slate-50/30 custom-scroll" id="fieldsList"><div class="h-full flex flex-col items-center justify-center text-slate-300 text-xs gap-2">Select Subcategory</div></div>
           </div>
         </div>
       </section>
 
       <section id="users" class="section-content">
-        <div class="flex justify-between items-center mb-6">
-          <div>
-            <h2 class="text-2xl font-bold text-gray-800">Internal Users</h2>
-            <p class="text-sm text-gray-500">Manage Moderators, Support Agents, and Admins.</p>
+        <div class="flex flex-col md:flex-row justify-between items-center mb-6 gap-4">
+          <div><h2 class="text-2xl font-bold text-slate-800">User Base</h2><p class="text-sm text-slate-500">Manage internal team and marketplace authors.</p></div>
+          <div class="flex gap-2">
+             <button onclick="broadcastMessage()" class="bg-blue-600 text-white px-3 py-2 rounded-lg text-sm font-bold shadow hover:bg-blue-700 flex items-center gap-2"><span class="material-symbols-outlined text-sm">campaign</span> Broadcast</button>
+             <input type="text" id="userSearch" onkeyup="loadData()" placeholder="Find user..." class="border border-slate-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-primary outline-none">
+             <button onclick="document.getElementById('userModal').showModal()" class="bg-primary text-white px-4 py-2 rounded-lg font-bold text-sm shadow hover:bg-green-700 transition-colors">Add Admin</button>
           </div>
-          <button onclick="openCreateUserModal()" class="flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-lg font-bold shadow-bouncy hover:bg-green-700 transition-all">
-            <span class="material-symbols-outlined">person_add</span> Create New Admin
-          </button>
         </div>
-
-        <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
-          <table class="w-full text-left">
-            <thead class="bg-gray-50 border-b border-gray-200 text-xs uppercase text-gray-500 font-semibold">
-              <tr>
-                <th class="px-6 py-4">User</th>
-                <th class="px-6 py-4">Role</th>
-                <th class="px-6 py-4">Status</th>
-                <th class="px-6 py-4">Actions</th>
-              </tr>
-            </thead>
-            <tbody id="adminUsersList" class="divide-y divide-gray-100 text-sm text-gray-700">
-              </tbody>
-          </table>
-        </div>
-      </section>
-
-      <section id="roles" class="section-content">
-        <div class="flex justify-between items-center mb-8">
-          <div>
-            <h2 class="text-2xl font-bold text-gray-800">Roles & Permissions</h2>
-            <p class="text-sm text-gray-500">Define what each administrator type can access.</p>
-          </div>
-          <button onclick="document.getElementById('roleModal').showModal(); document.getElementById('roleForm').reset();" class="flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-lg font-bold shadow-bouncy hover:bg-green-700 transition-all">
-            <span class="material-symbols-outlined">add_circle</span> Create New Role
-          </button>
-        </div>
-
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 items-start">
-          <div class="md:col-span-1 bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
-            <h3 class="p-4 bg-gray-50 border-b border-gray-100 font-bold text-gray-700">Roles</h3>
-            <div class="p-2 space-y-1" id="roleList"></div>
-          </div>
-          <div class="md:col-span-2 bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-            <div class="flex justify-between items-center mb-6 border-b border-gray-100 pb-4">
-              <h3 class="text-xl font-bold text-gray-800" id="selectedRoleName">Super Admin</h3>
-              <button id="deleteRoleBtn" onclick="deleteRole()" class="text-red-500 hover:bg-red-50 p-2 rounded transition-colors hidden"><span class="material-symbols-outlined">delete</span> Delete Role</button>
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden lg:col-span-1 h-fit">
+                <div class="p-4 bg-slate-50 font-bold border-b border-slate-200 text-slate-700 text-sm">Internal Team</div>
+                <table class="w-full text-left"><tbody id="adminUsersList" class="divide-y divide-slate-100 text-sm"></tbody></table>
             </div>
-            <div id="permissionsContainer" class="space-y-4"></div>
-          </div>
+            <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden lg:col-span-2">
+                <div class="p-4 bg-slate-50 font-bold border-b border-slate-200 text-slate-700 text-sm flex justify-between">
+                    <span>Marketplace Authors</span>
+                    <button onclick="exportData('users')" class="text-xs text-blue-600 hover:underline">Export Data</button>
+                </div>
+                <table class="w-full text-left"><tbody id="marketplaceUsersList" class="divide-y divide-slate-100 text-sm"></tbody></table>
+            </div>
         </div>
       </section>
 
       <section id="alerts" class="section-content">
-        <div class="flex justify-between items-center mb-6">
-          <h2 class="text-2xl font-bold text-gray-800">System Alerts</h2>
-          <button class="bg-primary text-white px-4 py-2 rounded-lg font-bold flex items-center gap-2 shadow hover:bg-green-700 transition-colors">
-            <span class="material-symbols-outlined">add_alert</span> New Alert
-          </button>
-        </div>
-
-        <div class="space-y-4">
-          <div class="bg-white p-5 rounded-xl shadow-sm border border-gray-200 flex items-center justify-between">
+        <h2 class="text-2xl font-bold text-slate-800 mb-6">System Alerts & Notifications</h2>
+        <div class="max-w-2xl space-y-4">
+          <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm flex items-center justify-between">
             <div class="flex items-center gap-4">
-              <div class="w-12 h-12 rounded-full bg-red-100 text-red-500 flex items-center justify-center"><span class="material-symbols-outlined">flag</span></div>
-              <div>
-                <h3 class="font-bold text-gray-800">Flagged Content</h3>
-                <p class="text-sm text-gray-500">Notify me when a listing receives > 3 reports</p>
-              </div>
+              <div class="w-10 h-10 rounded-full bg-red-100 text-red-500 flex items-center justify-center"><span class="material-symbols-outlined">flag</span></div>
+              <div><h3 class="font-bold text-slate-800">High Report Volume</h3><p class="text-sm text-gray-500">Alert me when > 5 pending flags exist.</p></div>
             </div>
-            <label class="toggle-wrapper">
-              <input type="checkbox" class="toggle-input" id="alert-flagged" onchange="toggleAlert('flagged', this.checked)">
-              <div class="toggle-track"><div class="toggle-knob"></div></div>
-            </label>
+            <label class="toggle-wrapper"><input type="checkbox" class="toggle-input" checked><div class="toggle-track"><div class="toggle-knob"></div></div></label>
+          </div>
+          
+          <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm flex items-center justify-between">
+            <div class="flex items-center gap-4">
+              <div class="w-10 h-10 rounded-full bg-blue-100 text-blue-500 flex items-center justify-center"><span class="material-symbols-outlined">person_add</span></div>
+              <div><h3 class="font-bold text-slate-800">New Admin Registration</h3><p class="text-sm text-gray-500">Notify when a new staff member is added.</p></div>
+            </div>
+            <label class="toggle-wrapper"><input type="checkbox" class="toggle-input" checked><div class="toggle-track"><div class="toggle-knob"></div></div></label>
           </div>
 
-          <div class="bg-white p-5 rounded-xl shadow-sm border border-gray-200 flex items-center justify-between">
-            <div class="flex items-center gap-4">
-              <div class="w-12 h-12 rounded-full bg-yellow-100 text-yellow-600 flex items-center justify-center"><span class="material-symbols-outlined">person_off</span></div>
-              <div>
-                <h3 class="font-bold text-gray-800">Suspicious Activity</h3>
-                <p class="text-sm text-gray-500">Alert on multiple failed login attempts</p>
+          <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm mt-6">
+              <h3 class="font-bold text-lg mb-4 flex items-center gap-2"><span class="material-symbols-outlined text-yellow-500">campaign</span> Global Announcement</h3>
+              <textarea id="globalBannerInput" class="w-full border border-slate-200 rounded-lg p-3 text-sm focus:ring-2 focus:ring-primary outline-none mb-3" rows="3" placeholder="e.g. Site maintenance scheduled for 10 PM."></textarea>
+              <div class="flex justify-between items-center">
+                  <label class="flex items-center gap-2 text-sm text-slate-600"><input type="checkbox" id="bannerActive" class="rounded text-primary"> Active</label>
+                  <button onclick="saveBanner()" class="px-4 py-2 bg-primary text-white rounded-lg text-xs font-bold">Update Banner</button>
               </div>
-            </div>
-            <label class="toggle-wrapper">
-              <input type="checkbox" class="toggle-input" id="alert-suspicious" onchange="toggleAlert('suspicious', this.checked)">
-              <div class="toggle-track"><div class="toggle-knob"></div></div>
-            </label>
-          </div>
-
-          <div class="bg-white p-5 rounded-xl shadow-sm border border-gray-200 flex items-center justify-between">
-            <div class="flex items-center gap-4">
-              <div class="w-12 h-12 rounded-full bg-blue-100 text-blue-500 flex items-center justify-center"><span class="material-symbols-outlined">payments</span></div>
-              <div>
-                <h3 class="font-bold text-gray-800">High Value Transactions</h3>
-                <p class="text-sm text-gray-500">Notify when transaction > $1000</p>
-              </div>
-            </div>
-            <label class="toggle-wrapper">
-              <input type="checkbox" class="toggle-input" id="alert-payments" onchange="toggleAlert('payments', this.checked)">
-              <div class="toggle-track"><div class="toggle-knob"></div></div>
-            </label>
           </div>
         </div>
       </section>
 
+      <section id="logs" class="section-content">
+        <div class="flex justify-between items-center mb-6">
+            <h2 class="text-2xl font-bold text-slate-800">System Audit Log</h2>
+            <button onclick="clearLogs()" class="text-sm font-bold text-red-500 hover:underline">Clear History</button>
+        </div>
+        <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
+            <table class="w-full text-left">
+                <thead class="bg-slate-50 text-[11px] uppercase text-slate-500 font-bold"><tr><th class="px-6 py-3">Timestamp</th><th class="px-6 py-3">Admin</th><th class="px-6 py-3">Action</th><th class="px-6 py-3">Details</th></tr></thead>
+                <tbody id="logsTableBody" class="divide-y divide-slate-100 text-sm font-mono text-slate-600"></tbody>
+            </table>
+        </div>
+      </section>
+
       <section id="settings" class="section-content">
-        <div class="bg-white p-8 rounded-xl shadow-sm border border-gray-200">
-          <h2 class="text-xl font-bold mb-4">Admin Settings</h2>
-          <p class="text-gray-500">Configure platform variables, API keys, and admin permissions.</p>
+        <div class="max-w-4xl mx-auto">
+            <h2 class="text-2xl font-bold text-slate-800 mb-6">Global Configuration</h2>
+            <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 mb-6">
+                <h3 class="font-bold text-lg mb-4 flex items-center gap-2"><span class="material-symbols-outlined text-blue-500">database</span> Database Management</h3>
+                <div class="space-y-3">
+                    <button onclick="backupData()" class="w-full py-2.5 border border-slate-300 rounded-lg text-sm font-bold text-slate-700 hover:bg-slate-50 flex justify-center gap-2"><span class="material-symbols-outlined text-sm">download</span> Download Full Backup</button>
+                    <div class="relative">
+                        <input type="file" id="restoreFile" class="absolute inset-0 opacity-0 cursor-pointer" onchange="restoreData(this)">
+                        <button class="w-full py-2.5 bg-slate-800 text-white rounded-lg text-sm font-bold hover:bg-slate-900 flex justify-center gap-2"><span class="material-symbols-outlined text-sm">upload</span> Restore from Backup</button>
+                    </div>
+                </div>
+            </div>
         </div>
       </section>
 
     </div>
   </main>
 
-  <dialog id="customizeModal" class="p-0 rounded-xl shadow-2xl w-full max-w-lg backdrop:bg-black/50">
-    <div class="p-6 bg-white">
-      <div class="flex justify-between items-center mb-4">
-        <h3 class="text-lg font-bold">Customize Dashboard</h3>
-        <button onclick="document.getElementById('customizeModal').close()" class="text-gray-400 hover:text-gray-600"><span class="material-symbols-outlined">close</span></button>
+  <dialog id="viewListingModal" class="p-0 rounded-2xl shadow-2xl w-full max-w-2xl backdrop:bg-black/60">
+      <div class="bg-white overflow-hidden h-full flex flex-col max-h-[80vh]">
+          <div class="p-4 border-b border-slate-100 flex justify-between items-center bg-slate-50">
+              <h3 class="font-bold text-lg text-slate-800">Inspection</h3>
+              <button onclick="document.getElementById('viewListingModal').close()" class="text-slate-400 hover:text-red-500"><span class="material-symbols-outlined">close</span></button>
+          </div>
+          <div class="p-6 overflow-y-auto" id="viewModalContent"></div>
       </div>
+  </dialog>
+
+  <dialog id="editListingModal" class="p-6 rounded-2xl shadow-2xl w-96 backdrop:bg-black/60">
+      <h3 class="text-xl font-bold mb-4 text-slate-800">Edit Listing</h3>
+      <input type="hidden" id="editListingId">
       <div class="space-y-4">
-        <div class="flex justify-between items-center p-3 bg-gray-50 rounded-lg">
-          <span class="font-medium">Show Revenue Chart</span>
-          <label class="toggle-wrapper"><input type="checkbox" id="toggle-revenue-chart" onchange="toggleWidget('chart-revenue-container', this.checked)" checked class="toggle-input"><div class="toggle-track"><div class="toggle-knob"></div></div></label>
-        </div>
-        <div class="flex justify-between items-center p-3 bg-gray-50 rounded-lg">
-          <span class="font-medium">Show User Activity</span>
-          <label class="toggle-wrapper"><input type="checkbox" id="toggle-users-chart" onchange="toggleWidget('chart-users-container', this.checked)" checked class="toggle-input"><div class="toggle-track"><div class="toggle-knob"></div></div></label>
-        </div>
+          <div><label class="block text-xs font-bold text-slate-500 mb-1">TITLE</label><input type="text" id="editListingTitle" class="w-full border rounded-lg px-3 py-2 text-sm font-bold"></div>
+          <div><label class="block text-xs font-bold text-slate-500 mb-1">PRICE</label><input type="text" id="editListingPrice" class="w-full border rounded-lg px-3 py-2 text-sm"></div>
+          <div><label class="block text-xs font-bold text-slate-500 mb-1">STATUS</label><select id="editListingStatus" class="w-full border rounded-lg px-3 py-2 text-sm"><option value="active">Active</option><option value="sold">Sold</option><option value="banned">Banned</option><option value="pending">Pending</option></select></div>
+          <div class="flex justify-end gap-2 pt-2">
+              <button onclick="document.getElementById('editListingModal').close()" class="px-4 py-2 border rounded-lg text-sm font-bold hover:bg-slate-50">Cancel</button>
+              <button onclick="saveListingChanges()" class="bg-primary text-white px-4 py-2 rounded-lg text-sm font-bold shadow hover:bg-green-700">Save</button>
+          </div>
       </div>
-      <div class="mt-6 flex justify-end">
-        <button onclick="document.getElementById('customizeModal').close()" class="bg-primary text-white px-4 py-2 rounded-lg font-bold">Done</button>
-      </div>
-    </div>
   </dialog>
 
-  <dialog id="userModal" class="p-0 rounded-xl shadow-2xl w-full max-w-md backdrop:bg-black/50">
-    <div class="p-6 bg-white">
-      <h3 class="text-xl font-bold mb-4 text-gray-800">Create New Admin User</h3>
+  <dialog id="userDetailModal" class="p-0 rounded-2xl shadow-2xl w-full max-w-lg backdrop:bg-black/60">
+      <div class="bg-white">
+          <div class="h-24 bg-gradient-to-r from-primary to-secondary relative">
+             <button onclick="document.getElementById('userDetailModal').close()" class="absolute top-2 right-2 text-white/80 hover:text-white"><span class="material-symbols-outlined">close</span></button>
+          </div>
+          <div class="px-6 pb-6 -mt-10">
+              <div class="w-20 h-20 rounded-full bg-white p-1 shadow-lg mb-3">
+                  <div class="w-full h-full rounded-full bg-slate-200 flex items-center justify-center font-bold text-2xl text-slate-500" id="modalUserInit">U</div>
+              </div>
+              <h2 class="text-2xl font-bold text-slate-800" id="modalUserName">User Name</h2>
+              <p class="text-slate-500 text-sm mb-6">Marketplace Author</p>
+              
+              <div class="grid grid-cols-2 gap-4 mb-6">
+                  <div class="bg-slate-50 p-3 rounded-lg border border-slate-100 text-center">
+                      <p class="text-xs text-slate-400 uppercase font-bold">Items Posted</p>
+                      <p class="text-xl font-bold text-primary" id="modalUserCount">0</p>
+                  </div>
+                  <div class="bg-slate-50 p-3 rounded-lg border border-slate-100 text-center">
+                      <p class="text-xs text-slate-400 uppercase font-bold">Total Value</p>
+                      <p class="text-xl font-bold text-slate-700" id="modalUserValue">$0</p>
+                  </div>
+              </div>
+              
+              <div class="flex gap-2">
+                  <button id="modalVerifyBtn" class="flex-1 py-2.5 rounded-lg font-bold border transition-colors">Verify User</button>
+                  <button id="modalBanBtn" class="flex-1 py-2.5 rounded-lg font-bold border transition-colors">Ban User</button>
+              </div>
+          </div>
+      </div>
+  </dialog>
+
+  <dialog id="userModal" class="p-6 rounded-2xl shadow-2xl w-full max-w-md backdrop:bg-black/50">
+      <h3 class="text-xl font-bold mb-4 text-slate-800">New Staff Account</h3>
       <form id="createUserForm" class="space-y-4">
-        <div><label class="block text-sm font-medium mb-1">Full Name</label><input type="text" id="newUserName" class="w-full border rounded-lg px-3 py-2 outline-none focus:ring-2 focus:ring-primary" required></div>
-        <div><label class="block text-sm font-medium mb-1">Email Address</label><input type="email" id="newUserEmail" class="w-full border rounded-lg px-3 py-2 outline-none focus:ring-2 focus:ring-primary" required></div>
-        <div><label class="block text-sm font-medium mb-1">Assign Role</label><select id="newUserRole" class="w-full border rounded-lg px-3 py-2 bg-white outline-none focus:ring-2 focus:ring-primary"></select></div>
-        <div id="tempPassContainer" class="hidden bg-green-50 border border-green-200 rounded-lg p-3">
-           <p class="text-xs text-green-700 font-bold mb-1">✅ User Created! Copy credentials:</p>
-           <div class="flex justify-between items-center bg-white border border-green-200 rounded px-2 py-1"><code id="tempPassDisplay" class="text-sm font-mono text-gray-800">pass123</code><button type="button" onclick="copyPass()" class="text-xs text-green-600 hover:underline">Copy</button></div>
+        <div><label class="block text-xs font-bold text-slate-500 mb-1">FULL NAME</label><input type="text" id="newUserName" class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-primary outline-none" required></div>
+        <div><label class="block text-xs font-bold text-slate-500 mb-1">EMAIL</label><input type="email" id="newUserEmail" class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-primary outline-none" required></div>
+        <div><label class="block text-xs font-bold text-slate-500 mb-1">PASSWORD</label><input type="password" id="newUserPass" class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-primary outline-none" placeholder="Set initial password" required></div>
+        <div><label class="block text-xs font-bold text-slate-500 mb-1">ROLE</label><select id="newUserRole" class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm bg-white"><option value="admin">Administrator</option><option value="moderator">Moderator</option></select></div>
+        <div class="flex justify-end gap-2 pt-4">
+            <button type="button" onclick="document.getElementById('userModal').close()" class="px-4 py-2 border rounded-lg text-sm font-bold hover:bg-slate-50">Cancel</button>
+            <button type="submit" class="bg-primary text-white px-4 py-2 rounded-lg text-sm font-bold shadow hover:bg-green-700">Create</button>
         </div>
-        <div class="flex justify-end gap-2 pt-4 border-t"><button type="button" onclick="document.getElementById('userModal').close()" class="px-4 py-2 text-gray-600 hover:bg-gray-100 rounded-lg">Close</button><button type="submit" id="createUsrBtn" class="bg-primary text-white px-4 py-2 rounded-lg font-bold">Create & Generate Password</button></div>
       </form>
-    </div>
-  </dialog>
-
-  <dialog id="roleModal" class="p-0 rounded-xl shadow-2xl w-full max-w-md backdrop:bg-black/50">
-    <div class="p-6 bg-white">
-      <h3 class="text-xl font-bold mb-4">Create New Role</h3>
-      <form id="roleForm" class="space-y-4">
-        <div><label class="block text-sm font-medium mb-1">Role Name</label><input type="text" id="roleNameInput" class="w-full border rounded-lg px-3 py-2 outline-none focus:ring-2 focus:ring-primary" required></div>
-        <div class="flex justify-end gap-2 pt-4"><button type="button" onclick="document.getElementById('roleModal').close()" class="px-4 py-2 text-gray-600 hover:bg-gray-100 rounded-lg">Cancel</button><button type="submit" class="bg-primary text-white px-4 py-2 rounded-lg font-bold">Create Role</button></div>
-      </form>
-    </div>
-  </dialog>
-
-  <dialog id="catModal" class="p-0 rounded-xl shadow-2xl w-full max-w-md backdrop:bg-black/50">
-    <div class="p-6 bg-white">
-      <h3 class="text-xl font-bold mb-4">Add Category</h3>
-      <form id="catForm" class="space-y-4">
-        <div><label class="block text-sm font-medium mb-1">Name</label><input type="text" id="catName" class="w-full border rounded-lg px-3 py-2 outline-none focus:ring-2 focus:ring-primary" required></div>
-        <div><label class="block text-sm font-medium mb-1">Icon</label><input type="text" id="catIcon" class="w-full border rounded-lg px-3 py-2 outline-none focus:ring-2 focus:ring-primary" placeholder="e.g. devices"></div>
-        <div><label class="block text-sm font-medium mb-1">Color</label><select id="catColor" class="w-full border rounded-lg px-3 py-2 bg-white"><option value="text-cyan-500">Cyan</option><option value="text-blue-600">Blue</option><option value="text-green-600">Green</option></select></div>
-        <div class="flex justify-end gap-2 pt-4"><button type="button" onclick="document.getElementById('catModal').close()" class="px-4 py-2 text-gray-600 hover:bg-gray-100 rounded-lg">Cancel</button><button type="submit" class="bg-primary text-white px-4 py-2 rounded-lg font-bold">Save</button></div>
-      </form>
-    </div>
   </dialog>
 
 <script>
 // ==========================================
-// 1. REPORT & ANALYTICS LOGIC (Charts + Metrics)
+// 1. DATA CORE & SCHEMA
 // ==========================================
-const metrics = { revenue: 15489, users: 1251, listings: 317, flags: 45 };
-let revenueChart, usersChart;
-
-function initCharts() {
-  const ctxRev = document.getElementById('chartRevenue')?.getContext('2d');
-  const ctxUser = document.getElementById('chartUsers')?.getContext('2d');
-  
-  if(ctxRev && ctxUser) {
-    if(revenueChart) revenueChart.destroy();
-    if(usersChart) usersChart.destroy();
-
-    revenueChart = new Chart(ctxRev, {
-      type: 'line',
-      data: {
-        labels: ['10:00', '10:05', '10:10', '10:15', '10:20', '10:25'],
-        datasets: [{ label: 'Revenue', data: [15000, 15200, 15100, 15350, 15400, 15489], borderColor: '#019863', tension: 0.4, fill: false }]
-      },
-      options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } }
-    });
-
-    usersChart = new Chart(ctxUser, {
-      type: 'bar',
-      data: {
-        labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
-        datasets: [{ label: 'Users', data: [1000, 1100, 1050, 1200, 1150, 1251], backgroundColor: '#4D96A9' }]
-      },
-      options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } }
-    });
-  }
-}
-
-function updateMetrics() {
-  // Simulate Random Shifts
-  metrics.revenue += Math.floor(Math.random() * 200 - 50);
-  metrics.users += Math.floor(Math.random() * 10 - 2);
-  metrics.listings += Math.floor(Math.random() * 5 - 1);
-  
-  // Update DOM
-  updateVal('metric-revenue', '$' + metrics.revenue.toLocaleString());
-  updateVal('metric-users', metrics.users.toLocaleString());
-  updateVal('metric-listings', metrics.listings.toLocaleString());
-  
-  // Update Charts
-  if(revenueChart) {
-    revenueChart.data.datasets[0].data.push(metrics.revenue);
-    if(revenueChart.data.datasets[0].data.length > 10) revenueChart.data.datasets[0].data.shift();
-    revenueChart.update('none');
-  }
-}
-
-function updateVal(id, val) {
-  const el = document.getElementById(id);
-  if(el) {
-    el.textContent = val;
-    el.classList.add('flash-up');
-    setTimeout(()=> el.classList.remove('flash-up'), 500);
-  }
-}
-
-setInterval(updateMetrics, 3000); // 3-sec interval
-
-// Toggle Logic for Customize Modal
-window.toggleWidget = (id, show) => {
-  const el = document.getElementById(id);
-  if(el) el.style.display = show ? 'block' : 'none';
-}
-
-// Alert Toggles Logic (Persist)
-window.toggleAlert = (key, val) => {
-  localStorage.setItem('zzz_alert_'+key, val);
-}
-// Load Alerts State
-['flagged','suspicious','payments'].forEach(k => {
-  const el = document.getElementById('alert-'+k);
-  if(el) el.checked = localStorage.getItem('zzz_alert_'+k) === 'true';
-});
-
-
-// ==========================================
-// 2. USER MANAGEMENT LOGIC
-// ==========================================
-function loadAdminUsers() {
-  const users = JSON.parse(localStorage.getItem('zzz_users') || '[]');
-  const list = document.getElementById('adminUsersList');
-  if(!list) return;
-
-  const admins = users.filter(u => u.role !== 'user');
-  if(admins.length === 0) {
-    list.innerHTML = `<tr><td colspan="4" class="px-6 py-4 text-center text-gray-400">No admin users found. Create one!</td></tr>`;
-    return;
-  }
-
-  list.innerHTML = admins.map(u => `
-    <tr>
-      <td class="px-6 py-4">
-        <div class="flex items-center gap-3">
-          <div class="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center text-gray-500 font-bold uppercase">${u.name.charAt(0)}</div>
-          <div><p class="font-bold text-gray-800">${u.name}</p><p class="text-xs text-gray-500">${u.email}</p></div>
-        </div>
-      </td>
-      <td class="px-6 py-4"><span class="px-2 py-1 bg-blue-50 text-blue-700 rounded-full text-xs font-bold uppercase">${rolesData[u.role]?.label || u.role}</span></td>
-      <td class="px-6 py-4"><span class="px-2 py-1 bg-green-100 text-green-700 rounded-full text-xs font-bold">Active</span></td>
-      <td class="px-6 py-4"><button class="text-gray-400 hover:text-red-500" onclick="deleteUser('${u.id}')"><span class="material-symbols-outlined text-lg">delete</span></button></td>
-    </tr>
-  `).join('');
-}
-
-function openCreateUserModal() {
-  const modal = document.getElementById('userModal');
-  document.getElementById('createUserForm').reset();
-  document.getElementById('tempPassContainer').classList.add('hidden');
-  document.getElementById('createUsrBtn').classList.remove('hidden');
-  const select = document.getElementById('newUserRole');
-  select.innerHTML = Object.keys(rolesData).map(k => `<option value="${k}">${rolesData[k].label}</option>`).join('');
-  modal.showModal();
-}
-
-document.getElementById('createUserForm').onsubmit = (e) => {
-  e.preventDefault();
-  const name = document.getElementById('newUserName').value;
-  const email = document.getElementById('newUserEmail').value;
-  const role = document.getElementById('newUserRole').value;
-  const tempPass = "ZipZap" + Math.floor(Math.random() * 9000 + 1000);
-  
-  const newUser = { id: 'adm_'+Date.now(), name: name, email: email, password: tempPass, role: role, status: 'active', avatar: '' };
-  const users = JSON.parse(localStorage.getItem('zzz_users') || '[]');
-  
-  if(users.some(u => u.email === email)) { alert("Email exists!"); return; }
-  users.push(newUser);
-  localStorage.setItem('zzz_users', JSON.stringify(users));
-  
-  document.getElementById('tempPassDisplay').textContent = tempPass;
-  document.getElementById('tempPassContainer').classList.remove('hidden');
-  document.getElementById('createUsrBtn').classList.add('hidden');
-  loadAdminUsers();
-};
-
-window.copyPass = () => { navigator.clipboard.writeText(document.getElementById('tempPassDisplay').textContent); alert("Copied!"); };
-window.deleteUser = (id) => { if(confirm("Delete User?")) { let users = JSON.parse(localStorage.getItem('zzz_users')||'[]'); users = users.filter(u=>u.id!==id); localStorage.setItem('zzz_users',JSON.stringify(users)); loadAdminUsers(); } };
-
-
-// ==========================================
-// 3. ROLES & PERMISSIONS LOGIC
-// ==========================================
-const ROLES_KEY = 'zzz_admin_roles';
-let rolesData = {
-  'super_admin': { label: 'Super Admin', isSystem: true, permissions: { 'view_dashboard': true, 'manage_users': true, 'manage_roles': true, 'delete_content': true, 'manage_schema': true } },
-  'moderator': { label: 'Moderator', isSystem: true, permissions: { 'view_dashboard': true, 'delete_content': true, 'approve_listings': true } },
-  'support': { label: 'Support Agent', isSystem: true, permissions: { 'view_dashboard': true, 'manage_users': true } }
-};
-let currentRole = 'super_admin';
-
-function loadRoles() {
-  const saved = localStorage.getItem(ROLES_KEY);
-  if (saved) rolesData = JSON.parse(saved);
-  renderRoles();
-}
-
-function renderRoles() {
-  const list = document.getElementById('roleList');
-  if(!list) return;
-  list.innerHTML = Object.keys(rolesData).map(key => `
-    <div onclick="selectRole('${key}')" class="flex items-center justify-between p-3 rounded-lg cursor-pointer ${key===currentRole ? 'bg-primary/10 border-l-4 border-primary' : 'hover:bg-gray-50 border-l-4 border-transparent'}">
-      <span class="font-bold text-sm ${key===currentRole?'text-primary':'text-gray-700'}">${rolesData[key].label}</span>
-      <span class="material-symbols-outlined text-gray-400 text-sm">chevron_right</span>
-    </div>
-  `).join('');
-  renderPermissions();
-}
-
-function selectRole(key) { currentRole = key; renderRoles(); }
-
-function renderPermissions() {
-  const container = document.getElementById('permissionsContainer');
-  document.getElementById('selectedRoleName').textContent = rolesData[currentRole].label;
-  const delBtn = document.getElementById('deleteRoleBtn');
-  if(rolesData[currentRole].isSystem) delBtn.classList.add('hidden'); else delBtn.classList.remove('hidden');
-
-  const perms = [
-    { k:'view_dashboard', l:'View Dashboard', d:'Access analytics' },
-    { k:'manage_users', l:'Manage Users', d:'Suspend/Ban users' },
-    { k:'manage_roles', l:'Manage Roles', d:'Edit permissions' },
-    { k:'manage_schema', l:'Category Manager', d:'Edit categories/fields' },
-    { k:'approve_listings', l:'Approve Listings', d:'Moderation queue' },
-    { k:'delete_content', l:'Delete Content', d:'Remove listings' }
-  ];
-
-  container.innerHTML = perms.map(p => `
-    <div class="flex justify-between items-center p-3 bg-gray-50 rounded-lg border border-gray-100">
-      <div><p class="font-bold text-sm">${p.l}</p><p class="text-xs text-gray-500">${p.d}</p></div>
-      <label class="toggle-wrapper"><input type="checkbox" class="toggle-input" ${rolesData[currentRole].permissions[p.k]?'checked':''} onchange="togglePerm('${p.k}', this.checked)"><div class="toggle-track"><div class="toggle-knob"></div></div></label>
-    </div>
-  `).join('');
-}
-
-window.togglePerm = (perm, val) => { rolesData[currentRole].permissions[perm] = val; localStorage.setItem(ROLES_KEY, JSON.stringify(rolesData)); };
-document.getElementById('roleForm').onsubmit = (e) => { e.preventDefault(); const name = document.getElementById('roleNameInput').value; const id = name.toLowerCase().replace(/[^a-z0-9]/g, '_'); rolesData[id] = { label: name, isSystem: false, permissions: {'view_dashboard': true} }; localStorage.setItem(ROLES_KEY, JSON.stringify(rolesData)); currentRole = id; renderRoles(); document.getElementById('roleModal').close(); };
-window.deleteRole = () => { if(confirm("Delete Role?")) { delete rolesData[currentRole]; localStorage.setItem(ROLES_KEY, JSON.stringify(rolesData)); currentRole = 'super_admin'; renderRoles(); } };
-
-
-// ==========================================
-// 4. SCHEMA MANAGER LOGIC (Categories)
-// ==========================================
-const STORAGE_KEY = 'zzz_classifieds_schema';
 const DEFAULT_SCHEMA = {
-    categories: [{ id: 'electronics', label: 'Electronics', icon: 'devices', color: 'text-cyan-500' }],
-    subcategories: [{ id: 'mobiles', categoryId: 'electronics', label: 'Mobiles' }],
-    fields: [{ id: 'brand', subcategoryId: 'mobiles', label: 'Brand', type: 'text', required: true }]
+    categories: [ { id: 'electronics', label: 'Electronics', icon: 'devices' }, { id: 'vehicles', label: 'Vehicles', icon: 'directions_car' }, { id: 'home', label: 'Home', icon: 'yard' }, { id: 'real_estate', label: 'Real Estate', icon: 'real_estate_agent' } ],
+    subcategories: [ { id: 'mobiles', categoryId: 'electronics', label: 'Mobiles' }, { id: 'cars', categoryId: 'vehicles', label: 'Cars' } ],
+    fields: [ { id: 'brand', subcategoryId: 'mobiles', label: 'Brand', type: 'text' } ]
 };
-let schema = JSON.parse(JSON.stringify(DEFAULT_SCHEMA));
+
+let schema = JSON.parse(localStorage.getItem('zzz_classifieds_schema') || JSON.stringify(DEFAULT_SCHEMA));
 let catState = { selCat: null, selSub: null };
 
-function loadSchema() {
-    const saved = localStorage.getItem(STORAGE_KEY);
-    if(saved) { try { schema = JSON.parse(saved); if(!schema.fields) schema.fields=[]; } catch(e) { console.error(e); } } else { saveSchema(); }
-    renderCatAll();
+// --- HELPERS ---
+function logAction(action, details) {
+    const logs = JSON.parse(localStorage.getItem('zzz_admin_logs') || '[]');
+    const admin = document.getElementById('adminName').textContent;
+    logs.unshift({ time: new Date().toISOString(), admin, action, details });
+    if(logs.length > 100) logs.pop(); 
+    localStorage.setItem('zzz_admin_logs', JSON.stringify(logs));
 }
-function saveSchema() { localStorage.setItem(STORAGE_KEY, JSON.stringify(schema)); }
-function saveAndPublish() { saveSchema(); const btn = document.getElementById('globalSaveBtn'); const t = btn.innerHTML; btn.innerHTML = "Saved!"; setTimeout(()=>btn.innerHTML=t, 1500); }
-function resetDefaults() { if(confirm("Reset Schema?")) { schema=JSON.parse(JSON.stringify(DEFAULT_SCHEMA)); saveAndPublish(); renderCatAll(); } }
+
+function sendSystemNotification(targetUserName, message) {
+    const msgs = JSON.parse(localStorage.getItem('zzz_messages') || '[]');
+    msgs.unshift({
+        id: 'sys_msg_' + Date.now(),
+        fromUserId: 'admin_system',
+        fromName: 'ZipZapZoi Support', 
+        toName: targetUserName,     
+        listingTitle: 'Notification',
+        text: message,
+        timestamp: new Date().toISOString(),
+        read: false,
+        type: 'system'
+    });
+    localStorage.setItem('zzz_messages', JSON.stringify(msgs));
+}
+
+function loadData() {
+    const listings = JSON.parse(localStorage.getItem('zzz_listings') || '[]');
+    const flags = JSON.parse(localStorage.getItem('zzz_flags') || '[]');
+    const users = JSON.parse(localStorage.getItem('zzz_users') || '[]');
+    const logs = JSON.parse(localStorage.getItem('zzz_admin_logs') || '[]');
+
+    document.getElementById('stat-listings').textContent = listings.length;
+    document.getElementById('stat-flags').textContent = flags.length;
+    document.getElementById('stat-cats').textContent = schema.categories.length;
+    
+    // REVENUE CALCULATION
+    const soldItems = listings.filter(l => l.status === 'sold');
+    const totalGMV = soldItems.reduce((sum, item) => sum + (parseFloat(item.price) || 0), 0);
+    document.getElementById('stat-gmv').textContent = '₹' + totalGMV.toLocaleString();
+    
+    // Unique User Count (Admins + Authors)
+    document.getElementById('stat-users').textContent = users.length + [...new Set(listings.map(l => l.userName))].length;
+    
+    // Alerts Logic
+    const bell = document.getElementById('headerBellIcon');
+    const badge = document.getElementById('headerAlertBadge');
+    if(flags.length > 0) { bell.classList.add('bell-shake'); badge.classList.remove('hidden'); } else { bell.classList.remove('bell-shake'); badge.classList.add('hidden'); }
+
+    // Init Dropdown
+    const filterSelect = document.getElementById('listingFilterCat');
+    if(filterSelect.children.length <= 1) { 
+        schema.categories.forEach(c => {
+            const opt = document.createElement('option'); opt.value = c.label; opt.textContent = c.label; filterSelect.appendChild(opt);
+        });
+    }
+
+    renderListingsManager();
+    renderFlags(flags);
+    renderUsers(users, listings);
+    renderCatAll();
+    renderLogs(logs);
+    
+    document.getElementById('currentDate').textContent = new Date().toLocaleDateString('en-US', { weekday:'long', year:'numeric', month:'long', day:'numeric' });
+}
+
+// --- RENDER FUNCTIONS ---
+function renderLogs(logs) {
+    const tbody = document.getElementById('logsTableBody');
+    if(!tbody) return;
+    tbody.innerHTML = logs.map(l => `<tr class="border-b border-slate-50 hover:bg-slate-50/50"><td class="px-6 py-3 text-slate-400 text-xs">${new Date(l.time).toLocaleString()}</td><td class="px-6 py-3 font-bold text-slate-700">${l.admin}</td><td class="px-6 py-3 text-primary font-medium">${l.action}</td><td class="px-6 py-3 text-slate-600 truncate max-w-xs">${l.details}</td></tr>`).join('');
+}
+
+function renderListingsManager() {
+    const listings = JSON.parse(localStorage.getItem('zzz_listings') || '[]');
+    const tbody = document.getElementById('listingsManagerBody');
+    const search = document.getElementById('listingSearch').value.toLowerCase();
+    const filter = document.getElementById('listingFilterCat').value;
+    
+    const filtered = listings.filter(l => {
+        const matchesSearch = (l.title+l.id).toLowerCase().includes(search);
+        const matchesFilter = filter ? l.category === filter : true;
+        return matchesSearch && matchesFilter;
+    });
+
+    if(filtered.length === 0) { tbody.innerHTML = `<tr><td colspan="6" class="p-8 text-center text-slate-400 italic">No listings match.</td></tr>`; return; }
+
+    tbody.innerHTML = filtered.map(l => {
+        const isPending = l.status === 'pending';
+        return `
+        <tr class="hover:bg-slate-50 border-b border-slate-100 transition-colors ${isPending ? 'bg-yellow-50' : ''}">
+            <td class="px-6 py-3 flex items-center gap-3"><img src="${l.image || 'https://via.placeholder.com/40'}" class="w-10 h-10 rounded-lg object-cover border border-slate-200"><div><div class="font-bold text-sm text-slate-800 truncate w-48">${l.title}</div><div class="text-[10px] text-slate-400 font-mono">${l.id}</div></div></td>
+            <td class="px-6 py-3 text-sm text-slate-600"><span class="bg-blue-50 text-blue-600 px-2 py-0.5 rounded text-xs">${l.category}</span></td>
+            <td class="px-6 py-3 text-sm font-medium text-slate-700 cursor-pointer hover:text-primary hover:underline" onclick="openUserDetail('${l.userName}')">${l.userName || 'User'}</td>
+            <td class="px-6 py-3 font-bold text-slate-800">₹${l.price}</td>
+            <td class="px-6 py-3"><span class="text-[10px] uppercase px-2 py-1 rounded-full font-bold tracking-wide ${l.status==='active'?'bg-green-100 text-green-700':(l.status==='pending'?'bg-yellow-100 text-yellow-700':'bg-red-100 text-red-600')}">${l.status || 'Active'}</span></td>
+            <td class="px-6 py-3 text-right space-x-1">
+                ${isPending ? `<button onclick="approveListing('${l.id}')" class="text-white bg-green-500 hover:bg-green-600 p-1.5 rounded shadow-sm" title="Approve"><span class="material-symbols-outlined text-lg">check</span></button>` : `<button onclick="featureListing('${l.id}')" class="text-yellow-500 hover:bg-yellow-50 p-1.5 rounded" title="Feature"><span class="material-symbols-outlined text-lg">star</span></button>`}
+                <button onclick="viewListing('${l.id}')" class="text-slate-400 hover:text-blue-500 p-1.5 hover:bg-blue-50 rounded" title="View"><span class="material-symbols-outlined text-lg">visibility</span></button>
+                <button onclick="openEditListing('${l.id}')" class="text-slate-400 hover:text-orange-500 p-1.5 hover:bg-orange-50 rounded" title="Edit"><span class="material-symbols-outlined text-lg">edit</span></button>
+                <button onclick="deleteListing('${l.id}')" class="text-slate-400 hover:text-red-500 p-1.5 hover:bg-red-50 rounded" title="Delete"><span class="material-symbols-outlined text-lg">delete</span></button>
+            </td>
+        </tr>
+    `}).join('');
+}
+
+function renderFlags(flags) {
+    const tbody = document.getElementById('flagsTableBody');
+    if (flags.length === 0) { tbody.innerHTML = '<tr><td colspan="5" class="p-6 text-center text-slate-400 font-medium">All clear! No reports pending.</td></tr>'; return; }
+    tbody.innerHTML = flags.map(f => `<tr class="border-b border-slate-50 hover:bg-red-50/10 group"><td class="px-6 py-3 font-mono text-xs text-slate-500">${f.itemId}</td><td class="px-6 py-3 font-bold text-slate-800">${f.title}</td><td class="px-6 py-3 text-red-600 font-bold text-xs uppercase bg-red-50 px-2 py-1 rounded w-fit">${f.reason}</td><td class="px-6 py-3 text-xs text-slate-500">${new Date(f.time).toLocaleDateString()}</td><td class="px-6 py-3 text-right"><button onclick="viewListing('${f.itemId}')" class="text-xs font-bold text-blue-500 hover:underline mr-3">Inspect</button><button onclick="deleteListing('${f.itemId}')" class="text-xs font-bold text-red-500 hover:underline">Ban Item</button></td></tr>`).join('');
+}
+
+function renderUsers(admins, listings) {
+    const banned = JSON.parse(localStorage.getItem('zzz_banned_users') || '[]');
+    const search = document.getElementById('userSearch') ? document.getElementById('userSearch').value.toLowerCase() : '';
+
+    // Admin List
+    document.getElementById('adminUsersList').innerHTML = admins.filter(u=>u.role!=='user').map(u => `<tr class="hover:bg-purple-50/30 border-b border-slate-100"><td class="px-6 py-3 flex items-center gap-3"><div class="w-8 h-8 bg-purple-100 text-purple-600 rounded-full flex items-center justify-center font-bold text-xs">${u.name.charAt(0)}</div><span class="font-bold text-sm text-slate-700">${u.name}</span></td><td class="px-6 py-3 text-xs uppercase font-bold text-slate-500">${u.role}</td><td class="px-6 py-3 text-green-600 text-xs font-bold">Active</td><td class="px-6 py-3"><button onclick="deleteUser('${u.id}')" class="text-slate-400 hover:text-red-600 transition-colors"><span class="material-symbols-outlined text-lg">block</span></button></td></tr>`).join('');
+
+    // Marketplace Authors
+    const authors = [...new Set(listings.map(l => l.userName))];
+    const filteredAuthors = authors.filter(a => a && a.toLowerCase().includes(search));
+    
+    document.getElementById('marketplaceUsersList').innerHTML = filteredAuthors.map(name => {
+        const isBanned = banned.includes(name);
+        return `<tr class="hover:bg-slate-50 border-b border-slate-100 cursor-pointer" onclick="openUserDetail('${name}')"><td class="px-6 py-3 font-bold text-slate-700 text-sm">${name}</td><td class="px-6 py-3 text-xs text-slate-500">Author</td><td class="px-6 py-3 ${isBanned ? 'text-red-600' : 'text-green-600'} text-xs font-bold uppercase">${isBanned ? 'Banned' : 'Active'}</td><td class="px-6 py-3 text-right"><span class="material-symbols-outlined text-slate-300 text-lg flex justify-end gap-2"><button onclick="impersonateUser('${name}'); event.stopPropagation()" class="text-xs border px-1 rounded hover:bg-slate-100">Ghost</button></span></td></tr>`;
+    }).join('');
+}
 
 function renderCatAll() {
-    const cl = document.getElementById('categoriesList');
-    if(cl) cl.innerHTML = schema.categories.map(c => `<div onclick="selCat('${c.id}')" class="p-2 cursor-pointer hover:bg-gray-50 flex justify-between ${catState.selCat===c.id?'bg-blue-50':''}"><span>${c.label}</span><button onclick="delCat('${c.id}', event)" class="text-red-300 hover:text-red-500">×</button></div>`).join('');
+    document.getElementById('categoriesList').innerHTML = schema.categories.map(c => `<div onclick="selCat('${c.id}')" class="flex justify-between items-center p-2.5 rounded-lg cursor-pointer transition-all ${catState.selCat===c.id ? 'bg-blue-50 text-blue-700 border border-blue-200 shadow-sm' : 'hover:bg-slate-50 border border-transparent'}"><div class="flex items-center gap-3"><span class="material-symbols-outlined text-lg opacity-70">${c.icon}</span> <span class="font-medium text-sm">${c.label}</span></div><button onclick="delCat('${c.id}', event)" class="text-slate-300 hover:text-red-500 px-2">×</button></div>`).join('');
     
-    const sl = document.getElementById('subcategoriesList');
+    const subContainer = document.getElementById('subcategoriesList');
     if(catState.selCat) {
-       const subs = schema.subcategories.filter(s => s.categoryId === catState.selCat);
-       sl.innerHTML = subs.map(s => `<div onclick="selSub('${s.id}')" class="p-2 cursor-pointer hover:bg-gray-50 flex justify-between ${catState.selSub===s.id?'bg-green-50':''}"><span>${s.label}</span><button onclick="delSub('${s.id}', event)" class="text-red-300 hover:text-red-500">×</button></div>`).join('');
-       document.getElementById('btnAddSub').disabled = false;
-    } else { sl.innerHTML='<div class="text-center text-gray-400 mt-10">Select Category</div>'; document.getElementById('btnAddSub').disabled = true; }
+        const subs = (schema.subcategories || []).filter(s => s.categoryId === catState.selCat);
+        subContainer.innerHTML = subs.length ? subs.map(s => `<div onclick="selSub('${s.id}')" class="flex justify-between items-center p-2.5 rounded-lg cursor-pointer transition-all ${catState.selSub===s.id ? 'bg-green-50 text-green-700 border border-green-200 shadow-sm' : 'hover:bg-slate-50 border border-transparent'}"><span class="font-medium text-sm">${s.label}</span><button onclick="delSub('${s.id}', event)" class="text-slate-300 hover:text-red-500 px-2">×</button></div>`).join('') : '<div class="p-8 text-center text-slate-400 text-xs italic">No subcategories defined.</div>';
+        document.getElementById('btnAddSub').disabled = false;
+    } else { subContainer.innerHTML = '<div class="h-full flex flex-col items-center justify-center text-slate-300 text-xs gap-2"><span class="material-symbols-outlined text-4xl opacity-20">arrow_back</span>Select a Category</div>'; document.getElementById('btnAddSub').disabled = true; }
 
-    const fl = document.getElementById('fieldsList');
+    const fieldContainer = document.getElementById('fieldsList');
     if(catState.selSub) {
-       const flds = schema.fields.filter(f => f.subcategoryId === catState.selSub);
-       fl.innerHTML = flds.map(f => `<div class="p-2 border mb-1 rounded bg-white flex justify-between"><div><b>${f.label}</b> <span class="text-xs text-gray-500">(${f.type})</span></div><button onclick="delField('${f.id}')" class="text-red-300 hover:text-red-500">×</button></div>`).join('');
-       document.getElementById('btnAddField').disabled = false;
-    } else { fl.innerHTML='<div class="text-center text-gray-400 mt-10">Select Subcategory</div>'; document.getElementById('btnAddField').disabled = true; }
+        const fields = (schema.fields || []).filter(f => f.subcategoryId === catState.selSub);
+        fieldContainer.innerHTML = fields.length ? fields.map(f => `<div class="flex justify-between items-center p-3 bg-white border border-slate-100 rounded-lg mb-2 shadow-sm"><div><span class="font-bold text-sm block text-slate-700">${f.label}</span> <span class="text-[10px] text-slate-400 uppercase font-bold tracking-wider">${f.type}</span></div><button onclick="delField('${f.id}')" class="text-slate-300 hover:text-red-500 px-2">×</button></div>`).join('') : '<div class="p-8 text-center text-slate-400 text-xs italic">No custom fields defined.</div>';
+        document.getElementById('btnAddField').disabled = false;
+    } else { fieldContainer.innerHTML = '<div class="h-full flex flex-col items-center justify-center text-slate-300 text-xs gap-2"><span class="material-symbols-outlined text-4xl opacity-20">arrow_back</span>Select a Subcategory</div>'; document.getElementById('btnAddField').disabled = true; }
 }
 
+// --- ACTIONS ---
+
+// Listing Actions
+window.deleteListing = (id) => {
+    if(!confirm("Permanently delete this listing?")) return;
+    let listings = JSON.parse(localStorage.getItem('zzz_listings') || '[]');
+    const item = listings.find(l => l.id == id);
+    listings = listings.filter(l => l.id != id);
+    localStorage.setItem('zzz_listings', JSON.stringify(listings));
+    
+    // Notify User
+    if(item) sendSystemNotification(item.userName, `Your listing "${item.title}" was removed by moderation.`);
+    
+    logAction('Moderation', `Deleted Listing: ${item ? item.title : id}`);
+    loadData();
+    document.getElementById('viewListingModal').close();
+}
+
+window.approveListing = (id) => {
+    let listings = JSON.parse(localStorage.getItem('zzz_listings') || '[]');
+    const idx = listings.findIndex(l => l.id == id);
+    if(idx !== -1) {
+        listings[idx].status = 'active';
+        localStorage.setItem('zzz_listings', JSON.stringify(listings));
+        sendSystemNotification(listings[idx].userName, `Your listing "${listings[idx].title}" is approved!`);
+        logAction('Moderation', `Approved: ${listings[idx].title}`);
+        loadData();
+    }
+}
+
+window.featureListing = (id) => {
+    let listings = JSON.parse(localStorage.getItem('zzz_listings') || '[]');
+    const idx = listings.findIndex(l => l.id == id);
+    if(idx !== -1) {
+        listings[idx].tag = 'Featured'; // Mark as featured
+        localStorage.setItem('zzz_listings', JSON.stringify(listings));
+        sendSystemNotification(listings[idx].userName, `Congratulations! Your listing "${listings[idx].title}" has been Featured by Admins!`);
+        alert("Listing Featured!");
+        logAction('Moderation', `Featured: ${listings[idx].title}`);
+        loadData();
+    }
+}
+
+window.openEditListing = (id) => {
+    const listings = JSON.parse(localStorage.getItem('zzz_listings') || '[]');
+    const item = listings.find(l => l.id === id);
+    if(item) {
+        document.getElementById('editListingId').value = id;
+        document.getElementById('editListingTitle').value = item.title;
+        document.getElementById('editListingPrice').value = item.price;
+        document.getElementById('editListingStatus').value = item.status || 'active';
+        document.getElementById('editListingModal').showModal();
+    }
+}
+
+window.saveListingChanges = () => {
+    const id = document.getElementById('editListingId').value;
+    let listings = JSON.parse(localStorage.getItem('zzz_listings') || '[]');
+    const idx = listings.findIndex(l => l.id === id);
+    if(idx !== -1) {
+        listings[idx].title = document.getElementById('editListingTitle').value;
+        listings[idx].price = document.getElementById('editListingPrice').value;
+        listings[idx].status = document.getElementById('editListingStatus').value;
+        localStorage.setItem('zzz_listings', JSON.stringify(listings));
+        logAction('Moderation', `Edited Listing: ${listings[idx].title}`);
+        loadData();
+        document.getElementById('editListingModal').close();
+    }
+}
+
+window.viewListing = (id) => {
+    const listings = JSON.parse(localStorage.getItem('zzz_listings') || '[]');
+    const item = listings.find(l => l.id === id);
+    if(item) {
+        document.getElementById('viewModalContent').innerHTML = `
+            <div class="flex gap-4">
+                <img src="${item.image}" class="w-1/3 h-32 object-cover rounded-lg bg-slate-100">
+                <div class="flex-1">
+                    <h2 class="text-xl font-bold text-slate-800">${item.title}</h2>
+                    <p class="text-primary font-bold text-lg mb-2">₹${item.price}</p>
+                    <div class="flex gap-2 mb-2"><span class="text-xs bg-blue-50 text-blue-600 px-2 py-1 rounded">${item.category}</span><span class="text-xs bg-slate-100 text-slate-600 px-2 py-1 rounded">${item.status || 'Active'}</span></div>
+                    <p class="text-xs text-slate-500">Seller: <span class="font-bold text-slate-700">${item.userName}</span></p>
+                </div>
+            </div>
+            <div class="mt-4 p-4 bg-slate-50 rounded-lg border border-slate-100"><h4 class="text-xs font-bold text-slate-400 uppercase mb-2">Description</h4><p class="text-sm text-slate-600">${item.description}</p></div>
+            <div class="mt-4 text-xs text-slate-400 font-mono">ID: ${item.id}</div>
+        `;
+        document.getElementById('viewListingModal').showModal();
+    }
+}
+
+window.clearAllFlags = () => { if(confirm("Dismiss all reports?")) { localStorage.setItem('zzz_flags', '[]'); logAction('Moderation', 'Cleared all reports'); loadData(); } }
+
+// User Actions (Updated with Verify)
+window.openUserDetail = (name) => {
+    const listings = JSON.parse(localStorage.getItem('zzz_listings') || '[]');
+    const banned = JSON.parse(localStorage.getItem('zzz_banned_users') || '[]');
+    const verified = JSON.parse(localStorage.getItem('zzz_verified_users') || '[]');
+    
+    const userListings = listings.filter(l => l.userName === name);
+    const totalValue = userListings.reduce((sum, item) => sum + Number(item.price), 0);
+    const isBanned = banned.includes(name);
+    const isVerified = verified.includes(name);
+
+    document.getElementById('modalUserInit').textContent = name.charAt(0).toUpperCase();
+    document.getElementById('modalUserName').textContent = name;
+    document.getElementById('modalUserCount').textContent = userListings.length;
+    document.getElementById('modalUserValue').textContent = '₹' + totalValue.toLocaleString();
+    
+    // Ban Button State
+    const banBtn = document.getElementById('modalBanBtn');
+    banBtn.textContent = isBanned ? "Unban User" : "Ban User";
+    banBtn.className = isBanned ? "flex-1 py-2.5 rounded-lg font-bold border border-green-500 text-green-600" : "flex-1 py-2.5 rounded-lg font-bold bg-red-500 text-white shadow";
+    banBtn.onclick = () => { isBanned ? unbanUser(name) : banUser(name); document.getElementById('userDetailModal').close(); };
+
+    // Verify Button State
+    const verBtn = document.getElementById('modalVerifyBtn');
+    verBtn.textContent = isVerified ? "Unverify" : "Verify User";
+    verBtn.className = isVerified ? "flex-1 py-2.5 rounded-lg font-bold border border-gray-300 text-gray-500" : "flex-1 py-2.5 rounded-lg font-bold bg-blue-500 text-white shadow";
+    verBtn.onclick = () => { toggleVerify(name); document.getElementById('userDetailModal').close(); };
+
+    document.getElementById('userDetailModal').showModal();
+}
+
+window.toggleVerify = (name) => {
+    let verified = JSON.parse(localStorage.getItem('zzz_verified_users') || '[]');
+    if(verified.includes(name)) verified = verified.filter(n => n !== name);
+    else { verified.push(name); sendSystemNotification(name, "Your profile has been verified!"); }
+    localStorage.setItem('zzz_verified_users', JSON.stringify(verified));
+    logAction('User Mgmt', `Toggled Verification: ${name}`);
+    loadData();
+}
+
+window.banUser = (name) => {
+    if(confirm(`Ban user ${name}?`)) {
+        let banned = JSON.parse(localStorage.getItem('zzz_banned_users') || '[]');
+        banned.push(name);
+        localStorage.setItem('zzz_banned_users', JSON.stringify(banned));
+        logAction('User Mgmt', `Banned User: ${name}`);
+        loadData();
+    }
+}
+window.unbanUser = (name) => {
+    let banned = JSON.parse(localStorage.getItem('zzz_banned_users') || '[]');
+    banned = banned.filter(n => n !== name);
+    localStorage.setItem('zzz_banned_users', JSON.stringify(banned));
+    logAction('User Mgmt', `Unbanned User: ${name}`);
+    loadData();
+}
+
+window.deleteUser = (id) => {
+    if(confirm("Remove this Admin access?")) {
+        let users = JSON.parse(localStorage.getItem('zzz_users') || '[]');
+        users = users.filter(u => u.id !== id);
+        localStorage.setItem('zzz_users', JSON.stringify(users));
+        logAction('Admin Mgmt', `Removed Admin ID: ${id}`);
+        loadData();
+    }
+}
+
+// IMPERSONATION
+window.impersonateUser = (userName) => {
+    if(!confirm(`Log in as "${userName}"? You will lose your Admin session.`)) return;
+    const listings = JSON.parse(localStorage.getItem('zzz_listings') || '[]');
+    const userItem = listings.find(l => l.userName === userName);
+    const ghostSession = { id: userItem ? userItem.userId : 'ghost_'+Date.now(), name: userName, role: 'user', email: 'ghost@zipzapzoi.com' };
+    localStorage.setItem('zzz_user', JSON.stringify(ghostSession));
+    window.location.href = 'Seller Dashboard.html';
+}
+
+// BROADCAST
+window.broadcastMessage = () => {
+    const msg = prompt("Enter message to send to ALL users:");
+    if(!msg) return;
+    const listings = JSON.parse(localStorage.getItem('zzz_listings') || '[]');
+    const uniqueUsers = [...new Set(listings.map(l => l.userName))];
+    uniqueUsers.forEach(user => { sendSystemNotification(user, `📢 ADMIN BROADCAST: ${msg}`); });
+    alert(`Sent to ${uniqueUsers.length} users.`);
+    logAction('Communication', `Broadcast: ${msg}`);
+}
+
+// Create Admin (With Password)
+document.getElementById('createUserForm').onsubmit = (e) => {
+    e.preventDefault();
+    const name = document.getElementById('newUserName').value;
+    const email = document.getElementById('newUserEmail').value;
+    const password = document.getElementById('newUserPass').value; 
+    const role = document.getElementById('newUserRole').value;
+    
+    const users = JSON.parse(localStorage.getItem('zzz_users') || '[]');
+    users.push({ id:'adm_'+Date.now(), name, email, password, role, status:'active' });
+    localStorage.setItem('zzz_users', JSON.stringify(users));
+    
+    alert(`Admin Created!\nEmail: ${email}\nPassword: ${password}`);
+    logAction('Admin Mgmt', `Created Admin: ${email}`);
+    document.getElementById('userModal').close();
+    loadData();
+    e.target.reset();
+};
+
+// Schema Logic
 function selCat(id) { catState.selCat = id; catState.selSub = null; renderCatAll(); }
 function selSub(id) { catState.selSub = id; renderCatAll(); }
-function addSubcategory() { const n = prompt("Subcategory Name:"); if(n) { schema.subcategories.push({ id:'sub_'+Date.now(), categoryId:catState.selCat, label:n }); saveSchema(); renderCatAll(); } }
-function addField() { const n = prompt("Field Label:"); if(n) { schema.fields.push({ id:'f_'+Date.now(), subcategoryId:catState.selSub, label:n, type:'text', required:false }); saveSchema(); renderCatAll(); } }
-window.delCat = (id,e) => { e.stopPropagation(); if(confirm("Delete?")) { schema.categories = schema.categories.filter(c=>c.id!==id); saveSchema(); catState.selCat=null; renderCatAll(); } };
-window.delSub = (id,e) => { e.stopPropagation(); if(confirm("Delete?")) { schema.subcategories = schema.subcategories.filter(s=>s.id!==id); saveSchema(); catState.selSub=null; renderCatAll(); } };
-window.delField = (id) => { if(confirm("Delete?")) { schema.fields = schema.fields.filter(f=>f.id!==id); saveSchema(); renderCatAll(); } };
-document.getElementById('catForm').onsubmit = (e) => { e.preventDefault(); const l = document.getElementById('catName').value; const id = l.toLowerCase().replace(/[^a-z]/g, '-'); schema.categories.push({ id, label:l, icon:document.getElementById('catIcon').value, color:document.getElementById('catColor').value }); saveSchema(); renderCatAll(); document.getElementById('catModal').close(); };
+function promptAddCategory() { const n = prompt("Category Name:"); if(n) { schema.categories.push({ id: n.toLowerCase().replace(/\s/g,'_'), label:n, icon:'category' }); saveSchema(); renderCatAll(); logAction('Schema', `Added Category: ${n}`); } }
+function promptAddSub() { const n = prompt("Subcategory Name:"); if(n) { schema.subcategories.push({ id:'sub_'+Date.now(), categoryId:catState.selCat, label:n }); saveSchema(); renderCatAll(); logAction('Schema', `Added Subcategory: ${n}`); } }
+function promptAddField() { const n = prompt("Field Label:"); if(n) { schema.fields.push({ id:'f_'+Date.now(), subcategoryId:catState.selSub, label:n, type:'text' }); saveSchema(); renderCatAll(); logAction('Schema', `Added Field: ${n}`); } }
+window.delCat = (id,e) => { e.stopPropagation(); if(confirm("Delete Category?")) { schema.categories=schema.categories.filter(x=>x.id!==id); saveSchema(); catState.selCat=null; renderCatAll(); logAction('Schema', `Deleted Category ${id}`); } }
+window.delSub = (id,e) => { e.stopPropagation(); if(confirm("Delete Sub?")) { schema.subcategories=schema.subcategories.filter(x=>x.id!==id); saveSchema(); catState.selSub=null; renderCatAll(); logAction('Schema', `Deleted Subcategory ${id}`); } }
+window.delField = (id) => { if(confirm("Delete Field?")) { schema.fields=schema.fields.filter(x=>x.id!==id); saveSchema(); renderCatAll(); logAction('Schema', `Deleted Field ${id}`); } }
 
+function saveSchema() {
+    localStorage.setItem('zzz_classifieds_schema', JSON.stringify(schema));
+    const btn = document.getElementById('globalSaveBtn');
+    btn.innerHTML = `<span class="material-symbols-outlined text-lg">check_circle</span> Saved!`;
+    setTimeout(() => btn.innerHTML = `<span class="material-symbols-outlined text-lg">save</span> Save Schema`, 1500);
+}
 
-// ==========================================
-// 5. GLOBAL NAVIGATION
-// ==========================================
+function resetSchemaToDefaults() {
+    if(confirm("Reset entire schema to defaults?")) {
+        localStorage.setItem('zzz_classifieds_schema', JSON.stringify(DEFAULT_SCHEMA));
+        logAction('System', 'Reset Schema to Defaults');
+        window.location.reload();
+    }
+}
+
+// Banner
+function saveBanner() {
+    const text = document.getElementById('globalBannerInput').value;
+    const active = document.getElementById('bannerActive').checked;
+    localStorage.setItem('zzz_global_alert', JSON.stringify({text, active}));
+    alert("Global Announcement Updated!");
+    logAction('Config', `Updated Banner: ${text}`);
+}
+
+window.clearAllFlags = () => { if(confirm("Dismiss all reports?")) { localStorage.setItem('zzz_flags', '[]'); logAction('Moderation', 'Cleared all reports'); loadData(); } }
+
+// System Utils
+window.backupData = () => {
+    const data = { listings: localStorage.getItem('zzz_listings'), schema: localStorage.getItem('zzz_classifieds_schema'), users: localStorage.getItem('zzz_users'), flags: localStorage.getItem('zzz_flags'), logs: localStorage.getItem('zzz_admin_logs') };
+    const blob = new Blob([JSON.stringify(data)], {type: "application/json"});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a'); a.href = url; a.download = `zipzapzoi_backup_${new Date().toISOString().slice(0,10)}.json`; a.click();
+    logAction('System', 'Downloaded Full Backup');
+}
+
+window.restoreData = (input) => {
+    const file = input.files[0];
+    if(!file) return;
+    const reader = new FileReader();
+    reader.onload = (e) => {
+        try {
+            const data = JSON.parse(e.target.result);
+            if(data.listings) localStorage.setItem('zzz_listings', data.listings);
+            if(data.schema) localStorage.setItem('zzz_classifieds_schema', data.schema);
+            if(data.users) localStorage.setItem('zzz_users', data.users);
+            if(data.flags) localStorage.setItem('zzz_flags', data.flags);
+            if(data.logs) localStorage.setItem('zzz_admin_logs', data.logs);
+            alert("System Restored Successfully!");
+            window.location.reload();
+        } catch(err) { alert("Invalid Backup File"); }
+    };
+    reader.readAsText(file);
+}
+
 document.querySelectorAll('.nav-link').forEach(link => {
   link.onclick = (e) => {
     e.preventDefault();
@@ -687,30 +788,26 @@ document.querySelectorAll('.nav-link').forEach(link => {
     link.classList.add('active');
     document.querySelectorAll('.section-content').forEach(s => s.classList.remove('active'));
     document.getElementById(link.dataset.section).classList.add('active');
-    
-    // Toggle Save Button
     const saveBtn = document.getElementById('globalSaveBtn');
-    if(saveBtn) link.dataset.section === 'categories' ? saveBtn.classList.remove('hidden') : saveBtn.classList.add('hidden');
-    
-    // Refresh Logic
-    if(link.dataset.section === 'users') loadAdminUsers();
-    if(link.dataset.section === 'dashboard') initCharts();
+    if(link.dataset.section === 'categories') saveBtn.classList.remove('hidden'); else saveBtn.classList.add('hidden');
   }
 });
 
-function handleLogout() {
-  if(confirm("Log out?")) {
-    localStorage.removeItem('zzz_user');
-    window.location.href = 'classifieds.html';
-  }
-}
+function handleLogout() { localStorage.removeItem('zzz_user'); window.location.href = 'Login Page.html'; }
+function clearLogs() { if(confirm("Clear history?")) { localStorage.setItem('zzz_admin_logs', '[]'); loadData(); } }
 
-// STARTUP
-loadRoles();
-loadAdminUsers();
-loadSchema();
-setTimeout(initCharts, 500);
-
+// Init
+document.addEventListener('DOMContentLoaded', () => {
+    const u = JSON.parse(localStorage.getItem('zzz_user'));
+    if(u) { document.getElementById('adminName').textContent = u.name; document.getElementById('adminInit').textContent = u.name.charAt(0); document.getElementById('adminRole').textContent = u.role.toUpperCase(); }
+    loadData();
+    
+    const banner = JSON.parse(localStorage.getItem('zzz_global_alert') || '{}');
+    if(banner.text) {
+        document.getElementById('globalBannerInput').value = banner.text;
+        document.getElementById('bannerActive').checked = banner.active;
+    }
+});
 </script>
 </body>
 </html>

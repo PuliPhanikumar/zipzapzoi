@@ -1,15 +1,13 @@
 <!DOCTYPE html>
 <html class="light" lang="en">
-  <head>
+<head>
     <meta charset="utf-8"/>
     <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-    <title>ZipZapZoi - Your Marketplace Awaits</title>
+    <title>ZipZapZoi - Marketplace</title>
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-    <link href="https://fonts.googleapis.com" rel="preconnect"/>
-    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
-    <link href="https://fonts.googleapis.com/css2?family=Spline+Sans:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Spline+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet"/>
-    <script id="tailwind-config">
+    <script>
       tailwind.config = {
         darkMode: "class",
         theme: {
@@ -17,85 +15,117 @@
             colors: {
               primary: "#019863",
               secondary: "#4D96A9",
-              "background-light": "#f5f8f7",
-              "background-dark": "#0f231c",
-              "text-light": "#333333",
-              "text-dark": "#F7F7F7",
-              "surface-light": "#FFFFFF",
-              "surface-dark": "#2a2a2a",
-              "border-light": "#e5e5e5",
-              "border-dark": "#444444"
+              "background-light": "#f0f4f8", /* Slightly cooler grey for contrast */
             },
-            fontFamily: {
-              display: "Spline Sans"
-            },
-            borderRadius: {
-              DEFAULT: "1rem",
-              lg: "2rem",
-              xl: "3rem",
-              full: "9999px"
-            },
+            fontFamily: { display: "Spline Sans" },
             boxShadow: {
-              '3d': '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05), inset 0 1px 0 rgba(255, 255, 255, 0.6)',
-              '3d-hover': '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04), inset 0 1px 0 rgba(255, 255, 255, 0.6)',
+              'glass': '0 8px 32px 0 rgba(31, 38, 135, 0.07)',
             }
           }
         }
       };
     </script>
     <style>
-      .material-symbols-outlined { font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24 }
-      .category-card {
-        background: linear-gradient(145deg, #ffffff, #f0f0f0);
-        border: 1px solid rgba(255,255,255,0.8);
-        transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease, border-color 0.3s ease;
+      .material-symbols-outlined { font-variation-settings: 'FILL' 1, 'wght' 500, 'GRAD' 0, 'opsz' 24 }
+      
+      /* --- BOUNCY 3D CARDS --- */
+      .bouncy-card {
+        transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1); /* The "Spring" effect */
       }
-      .dark .category-card {
-        background: linear-gradient(145deg, #2a2a2a, #222222);
-        border: 1px solid rgba(255,255,255,0.05);
+      .bouncy-card:hover {
+        transform: translateY(-10px) scale(1.05);
       }
-      .category-card:hover { transform: translateY(-6px) scale(1.03); z-index: 10; border-color: var(--hover-color, #4D96A9); }
-      .icon-box { background: linear-gradient(135deg, var(--tw-gradient-from), var(--tw-gradient-to)); box-shadow: inset 0 2px 4px rgba(255,255,255,0.3), 0 4px 6px rgba(0,0,0,0.1); }
-      .listing-card { transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease; }
-      .listing-card:hover { transform: translateY(-8px); box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04); }
+      
+      /* The 3D Icon Bubble */
+      .icon-3d {
+        position: relative;
+        background: linear-gradient(135deg, var(--c-from), var(--c-to));
+        box-shadow: 
+          0 10px 15px -3px var(--c-shadow), 
+          0 4px 6px -2px var(--c-shadow),
+          inset 0 2px 4px rgba(255,255,255,0.4), /* Top highlight */
+          inset 0 -3px 6px rgba(0,0,0,0.2);      /* Bottom shading */
+        transition: transform 0.3s ease;
+      }
+      
+      /* Icon Rotation on Hover */
+      .bouncy-card:hover .icon-3d {
+        transform: rotate(-5deg) scale(1.1);
+        box-shadow: 
+          0 20px 25px -5px var(--c-shadow), 
+          0 10px 10px -5px var(--c-shadow),
+          inset 0 2px 4px rgba(255,255,255,0.4),
+          inset 0 -3px 6px rgba(0,0,0,0.2);
+      }
+
+      /* Listing Cards */
+      .listing-card {
+        transition: all 0.3s ease;
+        background: #ffffff;
+        border: 1px solid rgba(0,0,0,0.05);
+      }
+      .listing-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 20px 40px -10px rgba(0,0,0,0.1);
+      }
+
+      /* Favorite Heart Animation */
+      .fav-btn {
+        background: rgba(0, 0, 0, 0.2);
+        backdrop-filter: blur(4px);
+        transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      }
+      .fav-btn:hover { background: rgba(0,0,0,0.4); transform: scale(1.15); }
+      .fav-btn.active .material-symbols-outlined { color: #ef4444; font-variation-settings: 'FILL' 1; }
+      .fav-btn.active { background: white; box-shadow: 0 4px 10px rgba(239, 68, 68, 0.2); }
     </style>
-    <script src="js/data-manager.js"></script>
-  </head>
-  <body class="font-display bg-background-light dark:bg-background-dark text-text-light dark:text-text-dark flex flex-col min-h-screen">
+</head>
+<body class="font-display bg-background-light text-gray-800 min-h-screen flex flex-col selection:bg-primary/30">
     
-    <header class="sticky top-0 z-50 bg-background-light/90 dark:bg-background-dark/90 backdrop-blur-md shadow-sm border-b border-border-light dark:border-border-dark">
+    <header class="sticky top-0 z-50 bg-white/80 backdrop-blur-xl border-b border-white/20 shadow-sm">
       <div class="container mx-auto px-6 py-3">
         <div class="flex items-center justify-between">
           <div class="flex items-center gap-3">
-            <div class="text-secondary dark:text-primary size-8">
-              <svg fill="none" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
-                <path d="M36.7273 44C33.9891 44 31.6043 39.8386 30.3636 33.69C29.123 39.8386 26.7382 44 24 44C21.2618 44 18.877 39.8386 17.6364 33.69C16.3957 39.8386 14.0109 44 11.2727 44C7.25611 44 4 35.0457 4 24C4 12.9543 7.25611 4 11.2727 4C14.0109 4 16.3957 8.16144 17.6364 14.31C18.877 8.16144 21.2618 4 24 4C26.7382 4 29.123 8.16144 30.3636 14.31C31.6043 8.16144 33.9891 4 36.7273 4C40.7439 4 44 12.9543 44 24C44 35.0457 40.7439 44 36.7273 44Z" fill="currentColor"></path>
-              </svg>
-            </div>
-            <h2 class="text-xl font-bold text-text-light dark:text-text-dark">ZipZapZoi</h2>
+            <span class="material-symbols-outlined text-secondary text-4xl drop-shadow-sm">all_inclusive</span>
+            <h2 class="text-2xl font-black bg-gradient-to-r from-secondary to-primary bg-clip-text text-transparent">ZipZapZoi</h2>
           </div>
+          
           <div class="flex items-center gap-6" id="headerAuthArea">
             <div data-auth-hide class="flex items-center gap-4">
-              <a href="Login Page.html?redirect=classifieds.html" class="text-sm font-semibold hover:text-secondary transition-colors">Log In</a>
-              <a href="User Registration.html" class="text-sm font-semibold bg-secondary text-white py-2 px-5 rounded-full shadow-bouncy hover:shadow-lg transition-all">Sign Up</a>
+              <a href="Login Page.html?redirect=classifieds.html" class="text-sm font-bold text-gray-600 hover:text-primary transition-colors">Log In</a>
+              <a href="User Registration.html" class="text-sm font-bold bg-primary text-white py-2.5 px-6 rounded-full shadow-lg hover:shadow-primary/30 hover:-translate-y-0.5 transition-all">Sign Up</a>
             </div>
+
             <div data-auth-show class="hidden flex items-center gap-4">
-              <div class="hidden md:flex items-center gap-2 text-sm font-medium bg-surface-light dark:bg-surface-dark p-1 rounded-full border border-border-light dark:border-border-dark">
-                <a href="Post Listing.html" class="flex items-center gap-2 py-1.5 px-3 rounded-full hover:bg-background-light dark:hover:bg-background-dark transition-all">
+              <div class="hidden md:flex items-center gap-2 text-sm font-medium bg-gray-50 p-1.5 rounded-full border border-gray-200 shadow-inner">
+                
+                <a href="Post Listing.html" class="flex items-center gap-2 py-1.5 px-4 rounded-full hover:bg-white hover:shadow-md transition-all text-gray-600">
                   <span class="material-symbols-outlined text-lg text-secondary">add_circle</span>
-                  <span class="font-semibold">Post Ad</span>
+                  <span>Post</span>
                 </a>
-                <a href="Seller Dashboard.html" class="flex items-center gap-2 py-1.5 px-3 rounded-full hover:bg-background-light dark:hover:bg-background-dark transition-all">
+                
+                <a href="Seller Dashboard.html" class="flex items-center gap-2 py-1.5 px-4 rounded-full hover:bg-white hover:shadow-md transition-all text-gray-600">
                   <span class="material-symbols-outlined text-lg text-secondary">dashboard</span>
-                  <span class="font-semibold">Dashboard</span>
+                  <span>Dashboard</span>
                 </a>
-                 <a href="Inbox.html" class="flex items-center gap-2 py-1.5 px-3 rounded-full hover:bg-background-light dark:hover:bg-background-dark transition-all">
+
+                <a href="favorites.html" class="flex items-center gap-2 py-1.5 px-4 rounded-full hover:bg-white hover:shadow-md transition-all text-gray-600">
+                  <span class="material-symbols-outlined text-lg text-secondary">favorite</span>
+                  <span>Favorites</span>
+                </a>
+
+                <a href="Inbox.html" class="flex items-center gap-2 py-1.5 px-4 rounded-full hover:bg-white hover:shadow-md transition-all text-gray-600 relative">
                   <span class="material-symbols-outlined text-lg text-secondary">inbox</span>
+                  <span>Messages</span>
+                  <span id="headerMsgBadge" class="absolute top-1 right-2 flex h-2.5 w-2.5 rounded-full bg-red-500 shadow-sm hidden"></span>
                 </a>
               </div>
-              <div class="flex items-center gap-3">
-                <span class="text-sm font-semibold hidden sm:inline">Hi, <span id="zzzUserName">User</span></span>
-                <button id="zzzLogoutBtn" class="text-sm font-semibold text-secondary hover:underline">Logout</button>
+              
+              <div class="flex items-center gap-3 pl-2">
+                <div class="w-10 h-10 rounded-full bg-gradient-to-br from-secondary to-primary flex items-center justify-center text-white font-bold shadow-lg border-2 border-white text-sm">
+                   <span id="userInit">U</span>
+                </div>
+                <button id="zzzLogoutBtn" class="text-xs font-bold text-gray-500 hover:text-red-500 transition-colors uppercase tracking-wide">Logout</button>
               </div>
             </div>
           </div>
@@ -103,222 +133,316 @@
       </div>
     </header>
 
-    <main class="flex-grow">
-      <section class="py-6 bg-gradient-to-b from-background-light to-white dark:from-background-dark dark:to-surface-dark">
-        <div class="container mx-auto px-6">
-          <div class="text-center max-w-4xl mx-auto">
-            <h1 class="text-3xl md:text-4xl font-bold tracking-tight text-secondary dark:text-primary mb-6">Find anything, instantly.</h1>
-            <div class="flex flex-col md:flex-row gap-2 items-center bg-surface-light dark:bg-surface-dark p-2 rounded-xl shadow-lg border border-border-light dark:border-border-dark">
-              <div class="w-full md:w-5/12 flex items-center bg-background-light dark:bg-background-dark rounded-lg h-12 px-3">
-                <span class="material-symbols-outlined text-gray-400">search</span>
-                <input id="searchQuery" class="w-full bg-transparent border-none focus:ring-0 text-base ml-2 placeholder-gray-400" placeholder="Search for items..." type="text" />
-              </div>
-              <div class="w-full md:w-4/12 flex items-center bg-background-light dark:bg-background-dark rounded-lg h-12 px-3">
-                <span class="material-symbols-outlined text-gray-400">location_on</span>
-                <input id="filterCity" class="w-full bg-transparent border-none focus:ring-0 text-base ml-2 placeholder-gray-400" placeholder="Location" type="text" />
-              </div>
-              <button id="btnSearch" class="w-full md:w-3/12 h-12 bg-secondary hover:bg-primary text-white font-bold rounded-lg shadow-md transition-all">Search</button>
+    <main class="flex-grow pb-20">
+      
+      <section class="pt-10 pb-8 px-6">
+        <div class="max-w-4xl mx-auto text-center">
+          <h1 class="text-4xl md:text-5xl font-black text-gray-800 mb-8 tracking-tight">Find it. Love it. <span class="text-primary">Buy it.</span></h1>
+          
+          <div class="bg-white/70 backdrop-blur-md p-2 rounded-[2rem] shadow-glass flex flex-col md:flex-row gap-2 max-w-3xl mx-auto transform hover:scale-[1.01] transition-transform border border-white">
+            
+            <div class="flex-1 flex items-center bg-white rounded-[1.5rem] px-6 h-14 shadow-sm border border-gray-100 focus-within:border-primary focus-within:ring-2 focus-within:ring-primary/20 transition-all">
+              <span class="material-symbols-outlined text-gray-400">search</span>
+              <input id="searchQuery" class="w-full bg-transparent border-none focus:ring-0 text-lg ml-2 placeholder-gray-400 font-medium text-gray-700" placeholder="Search anything..." type="text" />
             </div>
+            
+            <div class="md:w-1/3 flex items-center bg-white rounded-[1.5rem] px-6 h-14 shadow-sm border border-gray-100 focus-within:border-secondary focus-within:ring-2 focus-within:ring-secondary/20 transition-all">
+              <span class="material-symbols-outlined text-gray-400">location_on</span>
+              <input id="filterCity" class="w-full bg-transparent border-none focus:ring-0 text-base ml-2 placeholder-gray-400 font-medium text-gray-700" placeholder="City" type="text" />
+            </div>
+            
+            <button onclick="goToSearch()" class="h-14 px-8 bg-primary hover:bg-green-700 text-white font-bold rounded-[1.5rem] shadow-lg shadow-primary/30 transition-all active:scale-95 text-lg">
+              Search
+            </button>
+          
           </div>
         </div>
       </section>
 
-      <section class="py-4 bg-background-light dark:bg-background-dark">
+      <section class="py-8">
         <div class="container mx-auto px-6">
-          <h2 class="text-xl font-bold text-gray-800 dark:text-gray-200 mb-5">Explore Categories</h2>
-          <div class="grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-7 gap-3">
-            <a onclick="filterListings('Electronics')" class="group flex flex-col items-center gap-2 cursor-pointer" style="--hover-color: #06b6d4;">
-              <div class="category-card flex items-center justify-center w-20 h-20 md:w-24 md:h-24 rounded-2xl shadow-3d group-hover:shadow-3d-hover relative overflow-hidden">
-                <div class="icon-box absolute inset-0 flex items-center justify-center from-cyan-400 to-blue-500 opacity-90 group-hover:opacity-100 transition-opacity"><span class="material-symbols-outlined text-3xl md:text-4xl text-white drop-shadow-md">devices</span></div>
+          <div class="flex justify-between items-end mb-8">
+            <h2 class="text-2xl font-black text-gray-800 tracking-tight">Browse Categories</h2>
+            <a href="#" class="text-sm font-bold text-secondary hover:text-primary transition-colors bg-white px-4 py-2 rounded-full shadow-sm">View All</a>
+          </div>
+          
+          <div class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-7 gap-6 justify-items-center">
+            
+            <div onclick="filterListings('Electronics')" class="bouncy-card group flex flex-col items-center cursor-pointer gap-3">
+              <div class="icon-3d w-20 h-20 rounded-[2rem] flex items-center justify-center" style="--c-from: #22d3ee; --c-to: #0891b2; --c-shadow: rgba(8, 145, 178, 0.4);">
+                <span class="material-symbols-outlined text-4xl text-white drop-shadow-md">devices</span>
               </div>
-              <p class="text-xs md:text-sm font-bold text-gray-700 dark:text-gray-300 group-hover:text-cyan-600 transition-colors">Electronics</p>
-            </a>
-            <a onclick="filterListings('Vehicles')" class="group flex flex-col items-center gap-2 cursor-pointer" style="--hover-color: #6366f1;">
-              <div class="category-card flex items-center justify-center w-20 h-20 md:w-24 md:h-24 rounded-2xl shadow-3d group-hover:shadow-3d-hover relative overflow-hidden">
-                <div class="icon-box absolute inset-0 flex items-center justify-center from-indigo-400 to-purple-600 opacity-90 group-hover:opacity-100 transition-opacity"><span class="material-symbols-outlined text-3xl md:text-4xl text-white drop-shadow-md">directions_car</span></div>
+              <p class="text-xs font-bold text-gray-600 group-hover:text-cyan-600 transition-colors">Electronics</p>
+            </div>
+
+            <div onclick="filterListings('Vehicles')" class="bouncy-card group flex flex-col items-center cursor-pointer gap-3">
+              <div class="icon-3d w-20 h-20 rounded-[2rem] flex items-center justify-center" style="--c-from: #818cf8; --c-to: #4f46e5; --c-shadow: rgba(79, 70, 229, 0.4);">
+                <span class="material-symbols-outlined text-4xl text-white drop-shadow-md">directions_car</span>
               </div>
-              <p class="text-xs md:text-sm font-bold text-gray-700 dark:text-gray-300 group-hover:text-indigo-600 transition-colors">Vehicles</p>
-            </a>
-            <a onclick="filterListings('Home')" class="group flex flex-col items-center gap-2 cursor-pointer" style="--hover-color: #10b981;">
-              <div class="category-card flex items-center justify-center w-20 h-20 md:w-24 md:h-24 rounded-2xl shadow-3d group-hover:shadow-3d-hover relative overflow-hidden">
-                <div class="icon-box absolute inset-0 flex items-center justify-center from-emerald-400 to-green-600 opacity-90 group-hover:opacity-100 transition-opacity"><span class="material-symbols-outlined text-3xl md:text-4xl text-white drop-shadow-md">yard</span></div>
+              <p class="text-xs font-bold text-gray-600 group-hover:text-indigo-600 transition-colors">Vehicles</p>
+            </div>
+
+            <div onclick="filterListings('Home')" class="bouncy-card group flex flex-col items-center cursor-pointer gap-3">
+              <div class="icon-3d w-20 h-20 rounded-[2rem] flex items-center justify-center" style="--c-from: #34d399; --c-to: #059669; --c-shadow: rgba(5, 150, 105, 0.4);">
+                <span class="material-symbols-outlined text-4xl text-white drop-shadow-md">yard</span>
               </div>
-              <p class="text-xs md:text-sm font-bold text-gray-700 dark:text-gray-300 group-hover:text-emerald-600 transition-colors">Home</p>
-            </a>
-            <a onclick="filterListings('Clothing')" class="group flex flex-col items-center gap-2 cursor-pointer" style="--hover-color: #f43f5e;">
-              <div class="category-card flex items-center justify-center w-20 h-20 md:w-24 md:h-24 rounded-2xl shadow-3d group-hover:shadow-3d-hover relative overflow-hidden">
-                <div class="icon-box absolute inset-0 flex items-center justify-center from-rose-400 to-pink-600 opacity-90 group-hover:opacity-100 transition-opacity"><span class="material-symbols-outlined text-3xl md:text-4xl text-white drop-shadow-md">checkroom</span></div>
+              <p class="text-xs font-bold text-gray-600 group-hover:text-emerald-600 transition-colors">Home</p>
+            </div>
+
+            <div onclick="filterListings('Clothing')" class="bouncy-card group flex flex-col items-center cursor-pointer gap-3">
+              <div class="icon-3d w-20 h-20 rounded-[2rem] flex items-center justify-center" style="--c-from: #fb7185; --c-to: #e11d48; --c-shadow: rgba(225, 29, 72, 0.4);">
+                <span class="material-symbols-outlined text-4xl text-white drop-shadow-md">checkroom</span>
               </div>
-              <p class="text-xs md:text-sm font-bold text-gray-700 dark:text-gray-300 group-hover:text-rose-600 transition-colors">Clothing</p>
-            </a>
-            <a onclick="filterListings('Real Estate')" class="group flex flex-col items-center gap-2 cursor-pointer" style="--hover-color: #8b5cf6;">
-              <div class="category-card flex items-center justify-center w-20 h-20 md:w-24 md:h-24 rounded-2xl shadow-3d group-hover:shadow-3d-hover relative overflow-hidden">
-                <div class="icon-box absolute inset-0 flex items-center justify-center from-violet-400 to-purple-600 opacity-90 group-hover:opacity-100 transition-opacity"><span class="material-symbols-outlined text-3xl md:text-4xl text-white drop-shadow-md">real_estate_agent</span></div>
+              <p class="text-xs font-bold text-gray-600 group-hover:text-rose-600 transition-colors">Clothing</p>
+            </div>
+
+            <div onclick="filterListings('Real Estate')" class="bouncy-card group flex flex-col items-center cursor-pointer gap-3">
+              <div class="icon-3d w-20 h-20 rounded-[2rem] flex items-center justify-center" style="--c-from: #a78bfa; --c-to: #7c3aed; --c-shadow: rgba(124, 58, 237, 0.4);">
+                <span class="material-symbols-outlined text-4xl text-white drop-shadow-md">real_estate_agent</span>
               </div>
-              <p class="text-xs md:text-sm font-bold text-gray-700 dark:text-gray-300 group-hover:text-violet-600 transition-colors">Real Estate</p>
-            </a>
-            <a onclick="filterListings('Jobs')" class="group flex flex-col items-center gap-2 cursor-pointer" style="--hover-color: #ef4444;">
-              <div class="category-card flex items-center justify-center w-20 h-20 md:w-24 md:h-24 rounded-2xl shadow-3d group-hover:shadow-3d-hover relative overflow-hidden">
-                <div class="icon-box absolute inset-0 flex items-center justify-center from-red-400 to-orange-500 opacity-90 group-hover:opacity-100 transition-opacity"><span class="material-symbols-outlined text-3xl md:text-4xl text-white drop-shadow-md">work</span></div>
+              <p class="text-xs font-bold text-gray-600 group-hover:text-violet-600 transition-colors">Property</p>
+            </div>
+
+            <div onclick="filterListings('Jobs')" class="bouncy-card group flex flex-col items-center cursor-pointer gap-3">
+              <div class="icon-3d w-20 h-20 rounded-[2rem] flex items-center justify-center" style="--c-from: #f87171; --c-to: #dc2626; --c-shadow: rgba(220, 38, 38, 0.4);">
+                <span class="material-symbols-outlined text-4xl text-white drop-shadow-md">work</span>
               </div>
-              <p class="text-xs md:text-sm font-bold text-gray-700 dark:text-gray-300 group-hover:text-red-600 transition-colors">Jobs</p>
-            </a>
-            <a onclick="filterListings('Services')" class="group flex flex-col items-center gap-2 cursor-pointer" style="--hover-color: #f59e0b;">
-              <div class="category-card flex items-center justify-center w-20 h-20 md:w-24 md:h-24 rounded-2xl shadow-3d group-hover:shadow-3d-hover relative overflow-hidden">
-                <div class="icon-box absolute inset-0 flex items-center justify-center from-orange-400 to-amber-500 opacity-90 group-hover:opacity-100 transition-opacity"><span class="material-symbols-outlined text-3xl md:text-4xl text-white drop-shadow-md">handyman</span></div>
+              <p class="text-xs font-bold text-gray-600 group-hover:text-red-600 transition-colors">Jobs</p>
+            </div>
+
+            <div onclick="filterListings('Services')" class="bouncy-card group flex flex-col items-center cursor-pointer gap-3">
+              <div class="icon-3d w-20 h-20 rounded-[2rem] flex items-center justify-center" style="--c-from: #fbbf24; --c-to: #d97706; --c-shadow: rgba(217, 119, 6, 0.4);">
+                <span class="material-symbols-outlined text-4xl text-white drop-shadow-md">handyman</span>
               </div>
-              <p class="text-xs md:text-sm font-bold text-gray-700 dark:text-gray-300 group-hover:text-amber-600 transition-colors">Services</p>
-            </a>
-            <a onclick="filterListings('Sports')" class="group flex flex-col items-center gap-2 cursor-pointer" style="--hover-color: #14b8a6;">
-              <div class="category-card flex items-center justify-center w-20 h-20 md:w-24 md:h-24 rounded-2xl shadow-3d group-hover:shadow-3d-hover relative overflow-hidden">
-                <div class="icon-box absolute inset-0 flex items-center justify-center from-teal-400 to-green-500 opacity-90 group-hover:opacity-100 transition-opacity"><span class="material-symbols-outlined text-3xl md:text-4xl text-white drop-shadow-md">sports_soccer</span></div>
+              <p class="text-xs font-bold text-gray-600 group-hover:text-amber-600 transition-colors">Services</p>
+            </div>
+
+            <div onclick="filterListings('Sports')" class="bouncy-card group flex flex-col items-center cursor-pointer gap-3">
+              <div class="icon-3d w-20 h-20 rounded-[2rem] flex items-center justify-center" style="--c-from: #2dd4bf; --c-to: #0d9488; --c-shadow: rgba(13, 148, 136, 0.4);">
+                <span class="material-symbols-outlined text-4xl text-white drop-shadow-md">sports_soccer</span>
               </div>
-              <p class="text-xs md:text-sm font-bold text-gray-700 dark:text-gray-300 group-hover:text-teal-600 transition-colors">Sports</p>
-            </a>
-            <a onclick="filterListings('Pets')" class="group flex flex-col items-center gap-2 cursor-pointer" style="--hover-color: #eab308;">
-              <div class="category-card flex items-center justify-center w-20 h-20 md:w-24 md:h-24 rounded-2xl shadow-3d group-hover:shadow-3d-hover relative overflow-hidden">
-                <div class="icon-box absolute inset-0 flex items-center justify-center from-yellow-400 to-orange-400 opacity-90 group-hover:opacity-100 transition-opacity"><span class="material-symbols-outlined text-3xl md:text-4xl text-white drop-shadow-md">pets</span></div>
+              <p class="text-xs font-bold text-gray-600 group-hover:text-teal-600 transition-colors">Sports</p>
+            </div>
+
+            <div onclick="filterListings('Pets')" class="bouncy-card group flex flex-col items-center cursor-pointer gap-3">
+              <div class="icon-3d w-20 h-20 rounded-[2rem] flex items-center justify-center" style="--c-from: #facc15; --c-to: #ca8a04; --c-shadow: rgba(202, 138, 4, 0.4);">
+                <span class="material-symbols-outlined text-4xl text-white drop-shadow-md">pets</span>
               </div>
-              <p class="text-xs md:text-sm font-bold text-gray-700 dark:text-gray-300 group-hover:text-yellow-600 transition-colors">Pets</p>
-            </a>
-            <a onclick="filterListings('Tourism')" class="group flex flex-col items-center gap-2 cursor-pointer" style="--hover-color: #0ea5e9;">
-              <div class="category-card flex items-center justify-center w-20 h-20 md:w-24 md:h-24 rounded-2xl shadow-3d group-hover:shadow-3d-hover relative overflow-hidden">
-                <div class="icon-box absolute inset-0 flex items-center justify-center from-sky-400 to-blue-500 opacity-90 group-hover:opacity-100 transition-opacity"><span class="material-symbols-outlined text-3xl md:text-4xl text-white drop-shadow-md">flight</span></div>
+              <p class="text-xs font-bold text-gray-600 group-hover:text-yellow-600 transition-colors">Pets</p>
+            </div>
+
+            <div onclick="filterListings('Tourism')" class="bouncy-card group flex flex-col items-center cursor-pointer gap-3">
+              <div class="icon-3d w-20 h-20 rounded-[2rem] flex items-center justify-center" style="--c-from: #38bdf8; --c-to: #0284c7; --c-shadow: rgba(2, 132, 199, 0.4);">
+                <span class="material-symbols-outlined text-4xl text-white drop-shadow-md">flight</span>
               </div>
-              <p class="text-xs md:text-sm font-bold text-gray-700 dark:text-gray-300 group-hover:text-sky-600 transition-colors">Tourism</p>
-            </a>
-            <a onclick="filterListings('Doctors')" class="group flex flex-col items-center gap-2 cursor-pointer" style="--hover-color: #dc2626;">
-              <div class="category-card flex items-center justify-center w-20 h-20 md:w-24 md:h-24 rounded-2xl shadow-3d group-hover:shadow-3d-hover relative overflow-hidden">
-                <div class="icon-box absolute inset-0 flex items-center justify-center from-red-500 to-rose-600 opacity-90 group-hover:opacity-100 transition-opacity"><span class="material-symbols-outlined text-3xl md:text-4xl text-white drop-shadow-md">stethoscope</span></div>
+              <p class="text-xs font-bold text-gray-600 group-hover:text-sky-600 transition-colors">Tourism</p>
+            </div>
+
+            <div onclick="filterListings('Doctors')" class="bouncy-card group flex flex-col items-center cursor-pointer gap-3">
+              <div class="icon-3d w-20 h-20 rounded-[2rem] flex items-center justify-center" style="--c-from: #f87171; --c-to: #b91c1c; --c-shadow: rgba(185, 28, 28, 0.4);">
+                <span class="material-symbols-outlined text-4xl text-white drop-shadow-md">stethoscope</span>
               </div>
-              <p class="text-xs md:text-sm font-bold text-gray-700 dark:text-gray-300 group-hover:text-red-600 transition-colors">Doctors</p>
-            </a>
-            <a onclick="filterListings('Charity')" class="group flex flex-col items-center gap-2 cursor-pointer" style="--hover-color: #84cc16;">
-              <div class="category-card flex items-center justify-center w-20 h-20 md:w-24 md:h-24 rounded-2xl shadow-3d group-hover:shadow-3d-hover relative overflow-hidden">
-                <div class="icon-box absolute inset-0 flex items-center justify-center from-lime-500 to-green-600 opacity-90 group-hover:opacity-100 transition-opacity"><span class="material-symbols-outlined text-3xl md:text-4xl text-white drop-shadow-md">volunteer_activism</span></div>
+              <p class="text-xs font-bold text-gray-600 group-hover:text-red-700 transition-colors">Doctors</p>
+            </div>
+
+            <div onclick="filterListings('Charity')" class="bouncy-card group flex flex-col items-center cursor-pointer gap-3">
+              <div class="icon-3d w-20 h-20 rounded-[2rem] flex items-center justify-center" style="--c-from: #a3e635; --c-to: #65a30d; --c-shadow: rgba(101, 163, 13, 0.4);">
+                <span class="material-symbols-outlined text-4xl text-white drop-shadow-md">volunteer_activism</span>
               </div>
-              <p class="text-xs md:text-sm font-bold text-gray-700 dark:text-gray-300 group-hover:text-lime-600 transition-colors">Charity</p>
-            </a>
-            <a onclick="filterListings('Food')" class="group flex flex-col items-center gap-2 cursor-pointer" style="--hover-color: #ea580c;">
-              <div class="category-card flex items-center justify-center w-20 h-20 md:w-24 md:h-24 rounded-2xl shadow-3d group-hover:shadow-3d-hover relative overflow-hidden">
-                <div class="icon-box absolute inset-0 flex items-center justify-center from-orange-500 to-red-500 opacity-90 group-hover:opacity-100 transition-opacity"><span class="material-symbols-outlined text-3xl md:text-4xl text-white drop-shadow-md">restaurant</span></div>
+              <p class="text-xs font-bold text-gray-600 group-hover:text-lime-600 transition-colors">Charity</p>
+            </div>
+
+            <div onclick="filterListings('Food')" class="bouncy-card group flex flex-col items-center cursor-pointer gap-3">
+              <div class="icon-3d w-20 h-20 rounded-[2rem] flex items-center justify-center" style="--c-from: #fb923c; --c-to: #c2410c; --c-shadow: rgba(194, 65, 12, 0.4);">
+                <span class="material-symbols-outlined text-4xl text-white drop-shadow-md">restaurant</span>
               </div>
-              <p class="text-xs md:text-sm font-bold text-gray-700 dark:text-gray-300 group-hover:text-orange-600 transition-colors">Food</p>
-            </a>
-            <a onclick="filterListings('Events')" class="group flex flex-col items-center gap-2 cursor-pointer" style="--hover-color: #c026d3;">
-              <div class="category-card flex items-center justify-center w-20 h-20 md:w-24 md:h-24 rounded-2xl shadow-3d group-hover:shadow-3d-hover relative overflow-hidden">
-                <div class="icon-box absolute inset-0 flex items-center justify-center from-purple-500 to-fuchsia-600 opacity-90 group-hover:opacity-100 transition-opacity"><span class="material-symbols-outlined text-3xl md:text-4xl text-white drop-shadow-md">celebration</span></div>
+              <p class="text-xs font-bold text-gray-600 group-hover:text-orange-600 transition-colors">Food</p>
+            </div>
+
+            <div onclick="filterListings('Events')" class="bouncy-card group flex flex-col items-center cursor-pointer gap-3">
+              <div class="icon-3d w-20 h-20 rounded-[2rem] flex items-center justify-center" style="--c-from: #e879f9; --c-to: #a21caf; --c-shadow: rgba(162, 28, 175, 0.4);">
+                <span class="material-symbols-outlined text-4xl text-white drop-shadow-md">celebration</span>
               </div>
-              <p class="text-xs md:text-sm font-bold text-gray-700 dark:text-gray-300 group-hover:text-fuchsia-600 transition-colors">Events</p>
-            </a>
+              <p class="text-xs font-bold text-gray-600 group-hover:text-fuchsia-600 transition-colors">Events</p>
+            </div>
+
           </div>
         </div>
       </section>
 
-      <section class="py-8 bg-background-light dark:bg-background-dark" id="listingsSection">
+      <section class="py-8" id="listingsSection">
         <div class="container mx-auto px-6">
           <div class="flex justify-between items-center mb-6">
-            <h2 class="text-2xl font-bold text-secondary dark:text-primary" id="gridTitle">Zoi's Top Picks</h2>
-            <button onclick="filterListings('All')" id="clearFilterBtn" class="hidden text-sm text-red-500 font-bold hover:underline">Clear Filter</button>
-            <select id="sortBy" class="bg-surface-light dark:bg-surface-dark border-none rounded-lg text-sm shadow-sm py-2 px-4 focus:ring-1 ring-secondary cursor-pointer">
+            <h2 class="text-2xl font-black text-gray-800 tracking-tight" id="gridTitle">Fresh Recommendations</h2>
+            <button onclick="filterListings('All')" id="clearFilterBtn" class="hidden text-sm font-bold text-red-500 hover:underline bg-white px-3 py-1 rounded-lg shadow-sm">Clear Filters</button>
+            <select id="sortBy" onchange="sortListings(this.value)" class="bg-white border-none rounded-xl text-sm font-bold py-2.5 px-4 focus:ring-0 cursor-pointer text-gray-600 shadow-sm">
               <option value="newest">Newest first</option>
               <option value="price-low">Price: Low to High</option>
               <option value="price-high">Price: High to Low</option>
             </select>
           </div>
-          <div id="listingsGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6"></div>
+          
+          <div id="listingsGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            </div>
         </div>
       </section>
+
     </main>
 
-    <footer class="bg-surface-light dark:bg-surface-dark border-t border-border-light dark:border-border-dark mt-auto">
-      <div class="container mx-auto px-6 py-6 text-center">
-        <p class="text-sm text-text-light/60 dark:text-text-dark/60">© 2024 ZipZapZoi. All Rights Reserved.</p>
+    <footer class="bg-white border-t border-gray-100 mt-auto">
+      <div class="container mx-auto px-6 py-6 text-center text-sm font-medium text-gray-500">
+        © 2024 ZipZapZoi. Designed for Speed & Joy.
       </div>
     </footer>
 
-    <script src="scripts/auth.js"></script>
-    <script src="scripts/boot.js"></script>
     <script>
-      // 1. DATA SOURCE (Mock + LocalStorage)
+      // --- 1. DATA LOGIC ---
       const mockListings = [
-        { id: '101', title: "iPhone 14 Pro - Deep Purple", category: "Electronics", price: "65000", location: "Indiranagar, Bengaluru", time: "2 hrs ago", image: "https://images.unsplash.com/photo-1695048133142-1a20484d2569?auto=format&fit=crop&w=600&q=80", tag: "Verified" },
-        { id: '102', title: "Royal Enfield Classic 350", category: "Vehicles", price: "145000", location: "Bandra, Mumbai", time: "5 hrs ago", image: "https://images.unsplash.com/photo-1558981403-c5f9899a28bc?auto=format&fit=crop&w=600&q=80" },
-        { id: '103', title: "2 BHK Apartment for Rent", category: "Real Estate", price: "25000", location: "Gachibowli, Hyderabad", time: "Yesterday", image: "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?auto=format&fit=crop&w=600&q=80" },
-        { id: '104', title: "Graphic Designer (Remote)", category: "Jobs", price: "45000", location: "Remote", time: "1 day ago", image: "https://images.unsplash.com/photo-1626785774573-4b799314346d?auto=format&fit=crop&w=600&q=80", tag: "Hiring" },
-        { id: '105', title: "Golden Retriever Puppies", category: "Pets", price: "15000", location: "Vasant Vihar, Delhi", time: "3 days ago", image: "https://images.unsplash.com/photo-1629740032638-58bfd37eb74e?auto=format&fit=crop&w=600&q=80" }
+        { id: '101', title: "iPhone 14 Pro - Deep Purple", category: "Electronics", price: "65000", location: "Bengaluru", time: "2 hrs ago", image: "https://images.unsplash.com/photo-1695048133142-1a20484d2569?auto=format&fit=crop&w=600&q=80", tag: "Verified" },
+        { id: '102', title: "Royal Enfield Classic 350", category: "Vehicles", price: "145000", location: "Mumbai", time: "5 hrs ago", image: "https://images.unsplash.com/photo-1558981403-c5f9899a28bc?auto=format&fit=crop&w=600&q=80" },
+        { id: '103', title: "2 BHK Apartment", category: "Real Estate", price: "25000", location: "Hyderabad", time: "Yesterday", image: "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?auto=format&fit=crop&w=600&q=80" },
+        { id: '104', title: "Graphic Designer", category: "Jobs", price: "45000", location: "Remote", time: "1 day ago", image: "https://images.unsplash.com/photo-1626785774573-4b799314346d?auto=format&fit=crop&w=600&q=80", tag: "Hiring" },
+        { id: '105', title: "Golden Retriever", category: "Pets", price: "15000", location: "Delhi", time: "3 days ago", image: "https://images.unsplash.com/photo-1629740032638-58bfd37eb74e?auto=format&fit=crop&w=600&q=80" }
       ];
 
       function getAllListings() {
-        // Fetch User Posts from LocalStorage (Syncing Logic)
         const userPosts = JSON.parse(localStorage.getItem('zzz_listings') || '[]');
         return [...userPosts, ...mockListings];
       }
 
-      // 2. RENDER LOGIC
+      // --- 2. RENDER LOGIC ---
       function renderListings(filter = 'All') {
         const grid = document.getElementById('listingsGrid');
         grid.innerHTML = '';
         let data = getAllListings();
+        const favs = JSON.parse(localStorage.getItem('zzz_favorites') || '[]');
 
         if (filter !== 'All') {
-          // Allow loose matching (e.g. "Home" matches "Home & Garden")
           data = data.filter(item => item.category && item.category.includes(filter));
           document.getElementById('gridTitle').textContent = `${filter} Listings`;
           document.getElementById('clearFilterBtn').classList.remove('hidden');
         } else {
-          document.getElementById('gridTitle').textContent = "Zoi's Top Picks";
+          document.getElementById('gridTitle').textContent = "Fresh Recommendations";
           document.getElementById('clearFilterBtn').classList.add('hidden');
         }
 
         if (data.length === 0) {
-          grid.innerHTML = '<div class="col-span-full text-center text-gray-500 py-10">No listings found in this category.</div>';
+          grid.innerHTML = '<div class="col-span-full text-center text-gray-500 py-10 font-bold bg-white/50 rounded-2xl">No listings found in this category.</div>';
           return;
         }
 
         data.forEach(item => {
-          const card = document.createElement('a');
-          // LINK TO LISTING DETAIL.HTML WITH ID
-          card.href = `Listing Detail.html?id=${item.id}`;
-          card.className = "listing-card group bg-surface-light dark:bg-surface-dark rounded-xl shadow-lg overflow-hidden border border-border-light dark:border-border-dark flex flex-col cursor-pointer block";
+          const isFav = favs.find(f => f.id == item.id);
+          const heartClass = isFav ? 'active' : '';
+          
+          const card = document.createElement('div');
+          card.className = "listing-card rounded-[1.5rem] overflow-hidden flex flex-col relative group";
           
           card.innerHTML = `
-            <div class="relative h-48 overflow-hidden bg-gray-100">
-              <img src="${item.image || 'https://via.placeholder.com/400x300?text=No+Image'}" alt="${item.title}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
-              <span class="absolute top-2 left-2 bg-black/60 text-white text-[10px] uppercase font-bold px-2 py-1 rounded backdrop-blur-sm tracking-wide">${item.category}</span>
-              ${item.tag ? `<span class="absolute bottom-2 left-2 bg-secondary text-white text-[10px] font-bold px-2 py-0.5 rounded shadow-sm">${item.tag}</span>` : ''}
+            <div class="relative h-56 overflow-hidden bg-gray-200 cursor-pointer" onclick="window.location.href='Listing Detail.html?id=${item.id}'">
+              <img src="${item.image || 'https://via.placeholder.com/400x300?text=No+Image'}" alt="${item.title}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 ease-in-out">
+              
+              <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-60"></div>
+
+              <span class="absolute top-3 left-3 bg-white/90 backdrop-blur-md text-gray-800 text-[10px] uppercase font-bold px-2.5 py-1 rounded-full shadow-sm tracking-wide z-10">${item.category}</span>
+              
+              ${item.tag ? `<span class="absolute bottom-3 left-3 bg-secondary text-white text-[10px] font-bold px-2.5 py-1 rounded shadow-md z-10">${item.tag}</span>` : ''}
+              
+              <button onclick="toggleFavorite(event, '${item.id}')" class="fav-btn ${heartClass} absolute top-3 right-3 p-2 rounded-full shadow-lg z-20 flex items-center justify-center">
+                <span class="material-symbols-outlined text-white text-xl drop-shadow-md">favorite</span>
+              </button>
             </div>
-            <div class="p-4 flex flex-col flex-grow">
-              <h3 class="font-bold text-base text-text-light dark:text-text-dark line-clamp-2 leading-tight group-hover:text-secondary transition-colors mb-2">${item.title}</h3>
-              <div class="mt-auto">
-                <p class="text-lg font-bold text-primary mb-2">₹ ${item.price}</p>
-                <div class="flex items-center justify-between text-xs text-gray-500 dark:text-gray-400 border-t border-gray-100 dark:border-gray-700 pt-3">
-                  <div class="flex items-center gap-1"><span class="material-symbols-outlined text-sm">location_on</span><span class="truncate max-w-[100px]">${item.location}</span></div>
-                  <span>${item.time}</span>
+            
+            <a href="Listing Detail.html?id=${item.id}" class="p-5 flex flex-col flex-grow">
+              <div class="flex justify-between items-start mb-2">
+                 <h3 class="font-bold text-gray-800 line-clamp-2 leading-snug group-hover:text-primary transition-colors text-lg">${item.title}</h3>
+              </div>
+              
+              <div class="mt-auto pt-3 border-t border-gray-100 flex items-center justify-between">
+                <p class="text-xl font-black text-gray-900">₹ ${item.price}</p>
+                <div class="flex flex-col items-end text-xs text-gray-500 font-medium">
+                  <div class="flex items-center gap-1"><span class="material-symbols-outlined text-[14px]">location_on</span> <span class="truncate max-w-[80px]">${item.location}</span></div>
+                  <span class="mt-0.5 text-[10px]">${item.time}</span>
                 </div>
               </div>
-            </div>
+            </a>
           `;
           grid.appendChild(card);
         });
       }
 
-      // 3. EXPORT TO WINDOW FOR ONCLICK
+      // 3. FAVORITE LOGIC
+      window.toggleFavorite = (e, id) => {
+          e.stopPropagation();
+          e.preventDefault();
+          const btn = e.currentTarget;
+          
+          if (!JSON.parse(localStorage.getItem('zzz_user'))) {
+              window.location.href = 'Login Page.html?redirect=classifieds.html';
+              return;
+          }
+
+          const allItems = getAllListings();
+          const item = allItems.find(i => i.id == id);
+          if(!item) return;
+
+          let favs = JSON.parse(localStorage.getItem('zzz_favorites') || '[]');
+          const exists = favs.find(f => f.id == id);
+
+          if(exists) {
+              favs = favs.filter(f => f.id != id);
+              btn.classList.remove('active');
+          } else {
+              favs.push(item);
+              btn.classList.add('active');
+          }
+          localStorage.setItem('zzz_favorites', JSON.stringify(favs));
+      };
+
+      // 4. SEARCH LOGIC
+      window.goToSearch = () => {
+          const q = document.getElementById('searchQuery').value.trim();
+          if(q) window.location.href = `SearchResult.html?q=${encodeURIComponent(q)}`;
+      };
+      
+      document.getElementById('searchQuery').addEventListener('keypress', (e) => { if(e.key==='Enter') goToSearch(); });
+
+      // 5. EXPORT
       window.filterListings = (cat) => {
         renderListings(cat);
         document.getElementById('listingsSection').scrollIntoView({ behavior: 'smooth' });
       };
 
+      // INIT
       document.addEventListener('DOMContentLoaded', () => {
         renderListings();
-        // Check Auth
         const user = JSON.parse(sessionStorage.getItem('zzz_user') || localStorage.getItem('zzz_user'));
+        
         if (user) {
            document.querySelectorAll('[data-auth-hide]').forEach(el => el.classList.add('hidden'));
            document.querySelectorAll('[data-auth-show]').forEach(el => el.classList.remove('hidden'));
-           if (document.getElementById('zzzUserName')) document.getElementById('zzzUserName').textContent = user.name;
+           
+           if (document.getElementById('zzzUserName')) document.getElementById('zzzUserName').textContent = user.name.split(' ')[0];
+           if (document.getElementById('userInit')) document.getElementById('userInit').textContent = user.name.charAt(0).toUpperCase();
+           
+           // Badge Update
+           const msgs = JSON.parse(localStorage.getItem('zzz_messages') || '[]');
+           const unread = msgs.filter(m => m.toUserId === user.id && !m.read).length;
+           if(unread > 0) {
+               const b = document.getElementById('headerMsgBadge');
+               b.classList.remove('hidden');
+           }
+        }
+        
+        const logoutBtn = document.getElementById('zzzLogoutBtn');
+        if(logoutBtn) {
+            logoutBtn.addEventListener('click', () => {
+                localStorage.removeItem('zzz_user');
+                sessionStorage.removeItem('zzz_user');
+                window.location.reload();
+            });
         }
       });
     </script>
-  </body>
+</body>
 </html>

@@ -53,7 +53,7 @@
       <span class="material-symbols-outlined text-secondary text-3xl">all_inclusive</span>
       <h2 class="text-xl font-bold">ZipZapZoi</h2>
     </div>
-    <a href="classifieds.html" class="text-sm font-semibold hover:text-secondary transition-colors">Cancel & Exit</a>
+    <a href="Seller Dashboard.html" class="text-sm font-semibold hover:text-secondary transition-colors">Cancel & Exit</a>
   </div>
 </header>
 
@@ -72,7 +72,7 @@
 
   <form id="listingForm" class="flex flex-col gap-6" onsubmit="event.preventDefault();">
     
-    <div class="bg-card-light dark:bg-card-dark rounded-2xl shadow-bouncy p-6 border border-border-light dark:border-border-dark">
+    <div class="bg-card-light dark:bg-card-dark rounded-2xl shadow-bouncy p-6 border border-border-light dark:border-border-dark" id="catSection">
       <h3 class="text-xl font-bold mb-4 flex items-center gap-2">
         <span class="bg-secondary/10 text-secondary p-1 rounded-md material-symbols-outlined">category</span>
         Choose a Category
@@ -157,7 +157,7 @@
             <label class="block text-sm font-bold mb-2">Specific Area / Google Location</label>
             <div class="relative">
               <span class="material-symbols-outlined absolute left-3 top-3 text-gray-400">location_on</span>
-              <input type="text" class="w-full pl-10 rounded-xl border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-800 py-3 px-4" placeholder="e.g. Indiranagar, Bengaluru or Paste Google Maps Link">
+              <input type="text" id="specificLocation" class="w-full pl-10 rounded-xl border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-800 py-3 px-4" placeholder="e.g. Indiranagar, Bengaluru or Paste Google Maps Link">
             </div>
           </div>
         </div>
@@ -188,7 +188,7 @@
         <button type="button" id="previewBtn" class="flex-1 py-4 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 text-text-light dark:text-text-dark font-bold rounded-xl transition-all">
           Preview Listing
         </button>
-        <button type="submit" class="flex-[2] py-4 bg-secondary hover:bg-primary text-white font-bold rounded-xl shadow-lg transition-all transform hover:-translate-y-1 flex justify-center items-center gap-2">
+        <button type="submit" id="finalSubmitBtn" class="flex-[2] py-4 bg-secondary hover:bg-primary text-white font-bold rounded-xl shadow-lg transition-all transform hover:-translate-y-1 flex justify-center items-center gap-2">
           <span>Post Now</span>
           <span class="material-symbols-outlined">send</span>
         </button>
@@ -383,8 +383,12 @@
   const priceLabel = document.getElementById('priceLabel');
   const photoSection = document.getElementById('photoSection');
   const photoLimitText = document.getElementById('photoLimitText');
+  const finalSubmitBtn = document.getElementById('finalSubmitBtn');
+  const confirmPostBtn = document.getElementById('confirmPostBtn');
 
   let currentCategory = null;
+  let currentCategoryKey = null;
+  let uploadedImages = []; // Array to store image data URLs
 
   // --- 4. INITIALIZATION ---
   
@@ -428,10 +432,11 @@
   // --- 5. LOGIC FUNCTIONS ---
 
   function selectCategory(key) {
+    currentCategoryKey = key;
     currentCategory = schema[key];
     
     // UI Updates
-    categoryGrid.parentElement.classList.add('hidden');
+    document.getElementById('catSection').classList.add('hidden'); // Hide category grid
     detailsSection.classList.remove('hidden');
     detailsSection.classList.add('flex');
     progressBar.style.width = '66%';
@@ -457,9 +462,9 @@
         let inputHtml = '';
         if (field.type === 'select') {
           const options = field.options.map(o => `<option value="${o}">${o}</option>`).join('');
-          inputHtml = `<select name="${field.id}" class="w-full rounded-xl border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-800 py-3 px-4 focus:ring-secondary"><option value="">Select...</option>${options}</select>`;
+          inputHtml = `<select name="${field.id}" id="dyn_${field.id}" class="w-full rounded-xl border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-800 py-3 px-4 focus:ring-secondary"><option value="">Select...</option>${options}</select>`;
         } else {
-          inputHtml = `<input type="${field.type}" name="${field.id}" class="w-full rounded-xl border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-800 py-3 px-4 focus:ring-secondary" placeholder="${field.placeholder || ''}" ${field.required ? 'required' : ''}>`;
+          inputHtml = `<input type="${field.type}" name="${field.id}" id="dyn_${field.id}" class="w-full rounded-xl border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-800 py-3 px-4 focus:ring-secondary" placeholder="${field.placeholder || ''}" ${field.required ? 'required' : ''}>`;
         }
 
         wrapper.innerHTML = `
@@ -494,9 +499,8 @@
   changeCatBtn.addEventListener('click', () => {
     detailsSection.classList.add('hidden');
     detailsSection.classList.remove('flex');
-    categoryGrid.parentElement.classList.remove('hidden');
+    document.getElementById('catSection').classList.remove('hidden');
     progressBar.style.width = '33%';
-    // Optional: Reset form fields here if strict
   });
 
   // Photo Preview Logic
@@ -505,13 +509,14 @@
   
   fileInput.addEventListener('change', function() {
     photoPreview.innerHTML = '';
+    uploadedImages = []; // Clear previous
     const files = Array.from(this.files);
-    // Enforce limit based on category
     const max = (currentCategory && currentCategory.photoLimit) ? currentCategory.photoLimit : 8;
     
     files.slice(0, max).forEach(file => {
       const reader = new FileReader();
       reader.onload = function(e) {
+        uploadedImages.push(e.target.result); // Save Base64
         const div = document.createElement('div');
         div.className = 'aspect-square rounded-lg bg-cover bg-center border border-gray-300 relative group overflow-hidden';
         div.style.backgroundImage = `url(${e.target.result})`;
@@ -564,7 +569,97 @@
     previewModal.classList.add('flex');
   }
 
+  // --- 7. EDIT MODE LOGIC ---
+  const urlParams = new URLSearchParams(window.location.search);
+  const editId = urlParams.get('id');
+
+  if(editId) {
+    const listings = JSON.parse(localStorage.getItem('zzz_listings') || '[]');
+    const item = listings.find(l => l.id === editId);
+    if(item) {
+        // Find key by label
+        const key = Object.keys(schema).find(k => schema[k].label === item.category);
+        if(key) {
+            selectCategory(key);
+            // Wait for UI to render
+            setTimeout(() => {
+                document.getElementById('postTitle').value = item.title;
+                document.getElementById('postPrice').value = item.price;
+                document.getElementById('postDescription').value = item.description;
+                document.getElementById('stateSelect').value = item.state || '';
+                stateSelect.dispatchEvent(new Event('change'));
+                document.getElementById('citySelect').value = item.city || '';
+                document.getElementById('subCategorySelect').value = item.subcategory || '';
+                document.getElementById('specificLocation').value = item.specificLocation || '';
+                
+                // Load Dynamic Fields
+                if(item.dynamicData) {
+                    Object.keys(item.dynamicData).forEach(fieldId => {
+                        const el = document.getElementById('dyn_' + fieldId);
+                        if(el) el.value = item.dynamicData[fieldId];
+                    });
+                }
+                
+                finalSubmitBtn.innerHTML = '<span>Update Listing</span><span class="material-symbols-outlined">save</span>';
+                confirmPostBtn.textContent = "Update Listing";
+            }, 500);
+        }
+    }
+  }
+
+  // --- 8. SUBMIT HANDLER ---
+  function handleSubmit() {
+    const currentUser = JSON.parse(localStorage.getItem('zzz_user'));
+    
+    // Gather Dynamic Data
+    const dynamicData = {};
+    if (currentCategory.fields) {
+        currentCategory.fields.forEach(f => {
+            const el = document.getElementById('dyn_' + f.id);
+            if(el) dynamicData[f.id] = el.value;
+        });
+    }
+
+    const newItem = {
+        id: editId || 'item_' + Date.now(),
+        userId: currentUser.id,
+        userName: currentUser.name,
+        category: schema[currentCategoryKey].label,
+        subcategory: subCategorySelect.value,
+        title: document.getElementById('postTitle').value,
+        price: document.getElementById('postPrice').value,
+        description: document.getElementById('postDescription').value,
+        state: document.getElementById('stateSelect').value,
+        city: document.getElementById('citySelect').value,
+        specificLocation: document.getElementById('specificLocation').value,
+        location: `${document.getElementById('citySelect').value}, ${document.getElementById('stateSelect').value}`,
+        image: uploadedImages[0] || 'https://via.placeholder.com/400',
+        images: uploadedImages,
+        dynamicData: dynamicData,
+        time: 'Just now',
+        status: 'active'
+    };
+
+    // Save to LocalStorage
+    const listings = JSON.parse(localStorage.getItem('zzz_listings') || '[]');
+    
+    if(editId) {
+        const idx = listings.findIndex(l => l.id === editId);
+        if(idx !== -1) listings[idx] = newItem;
+    } else {
+        listings.unshift(newItem);
+    }
+    
+    localStorage.setItem('zzz_listings', JSON.stringify(listings));
+    
+    alert(editId ? "Listing Updated Successfully!" : "Listing Posted Successfully!");
+    window.location.href = 'Seller Dashboard.html';
+  }
+
+  // BIND EVENTS
   previewBtn.addEventListener('click', generatePreview);
+  finalSubmitBtn.addEventListener('click', handleSubmit);
+  confirmPostBtn.addEventListener('click', handleSubmit);
   
   const hideModal = () => {
     previewModal.classList.add('hidden');
